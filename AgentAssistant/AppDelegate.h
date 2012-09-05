@@ -7,8 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ListingsViewController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : NSObject <UIApplicationDelegate> {
+    NSManagedObjectModel *managedObjectModel;
+    NSManagedObjectContext *managedObjectContext;
+    NSPersistentStoreCoordinator *persistentStoreCoordinator;
+    ListingsViewController *listingsViewController;
+}
+
+@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+- (NSString *)applicationDocumentsDirectory;
 
 @property (strong, nonatomic) UIWindow *window;
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1807" systemVersion="12B19" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="ActivityLog" representedClassName="ActivityLog" isAbstract="YES" syncable="YES">
+        <attribute name="createdDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="feedback" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="modifiedDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="listing" optional="YES" minCount="1" maxCount="1" deletionRule="No Action" destinationEntity="Listing" inverseName="activityLogs" inverseEntity="Listing" syncable="YES"/>
+    </entity>
+    <entity name="Inquiry" representedClassName="Inquiry" parentEntity="ActivityLog" syncable="YES"/>
+    <entity name="Listing" representedClassName="Listing" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="createdDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="modifiedDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="activityLogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ActivityLog" inverseName="listing" inverseEntity="ActivityLog" syncable="YES"/>
+    </entity>
+    <entity name="OpenHouse" representedClassName="OpenHouse" parentEntity="ActivityLog" syncable="YES">
+        <attribute name="endTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="startTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="visitors" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="Showing" representedClassName="Showing" parentEntity="ActivityLog" syncable="YES"/>
+    <elements>
+        <element name="ActivityLog" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="Inquiry" positionX="0" positionY="0" width="128" height="45"/>
+        <element name="Listing" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="OpenHouse" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="Showing" positionX="0" positionY="0" width="128" height="45"/>
+    </elements>
+</model>
