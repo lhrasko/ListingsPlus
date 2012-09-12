@@ -146,7 +146,7 @@
     label1.text = @"Visitors";
     label1.textColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
     label1.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-    label1.textAlignment = UITextAlignmentLeft;
+    label1.textAlignment = NSTextAlignmentLeft;
     label1.shadowOffset = CGSizeMake(0, -1);
     label1.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.0];
     
@@ -161,7 +161,7 @@
     label2.text = @"4";
     label2.textColor = [UIColor colorWithRed:0.0 green:0.25 blue:0.5 alpha:1.0];
     label2.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-    label2.textAlignment = UITextAlignmentRight;
+    label2.textAlignment = NSTextAlignmentRight;
     label2.shadowOffset = CGSizeMake(0, -1);
     label2.font = [UIFont fontWithName:@".HelveticaNeueUI" size:17.0];
     

@@ -22,7 +22,7 @@
 @synthesize tableView1Data;
 @synthesize tableView;
 @synthesize managedObjectContext;
-
+@synthesize fetchedResultsController;
 
 #define kDatePickerTag 100
 
@@ -49,8 +49,8 @@
     //Gets an array af all of the subviews of our actionSheet
     NSArray *subviews = [actionSheet subviews];
     
-    [[subviews objectAtIndex:1] setFrame:CGRectMake(20, 224, 280, 46)];
-    [[subviews objectAtIndex:2] setFrame:CGRectMake(20, 280, 280, 46)];
+    [[subviews objectAtIndex:1] setFrame:CGRectMake(20, 235, 280, 46)];
+    [[subviews objectAtIndex:2] setFrame:CGRectMake(20, 295, 280, 46)];
 }
 
 
@@ -383,6 +383,7 @@ int notesTag;
         destViewController.tag = notesTag;
         destViewController.activityLog = showing;
     }
+    
 }
 
 

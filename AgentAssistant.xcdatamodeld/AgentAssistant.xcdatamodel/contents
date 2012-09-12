@@ -7,7 +7,15 @@
         <attribute name="modifiedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="listing" optional="YES" minCount="1" maxCount="1" deletionRule="No Action" destinationEntity="Listing" inverseName="activityLogs" inverseEntity="Listing" syncable="YES"/>
+        <relationship name="contacts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Contact" inverseName="activityLog" inverseEntity="Contact" syncable="YES"/>
+        <relationship name="listing" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="Listing" inverseName="activityLogs" inverseEntity="Listing" syncable="YES"/>
+    </entity>
+    <entity name="Contact" representedClassName="Contact" syncable="YES">
+        <attribute name="compositeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="activityLog" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ActivityLog" inverseName="contacts" inverseEntity="ActivityLog" syncable="YES"/>
     </entity>
     <entity name="Inquiry" representedClassName="Inquiry" parentEntity="ActivityLog" syncable="YES"/>
     <entity name="Listing" representedClassName="Listing" syncable="YES">
@@ -24,7 +32,8 @@
     </entity>
     <entity name="Showing" representedClassName="Showing" parentEntity="ActivityLog" syncable="YES"/>
     <elements>
-        <element name="ActivityLog" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="ActivityLog" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="Contact" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Inquiry" positionX="0" positionY="0" width="128" height="45"/>
         <element name="Listing" positionX="0" positionY="0" width="128" height="120"/>
         <element name="OpenHouse" positionX="0" positionY="0" width="128" height="90"/>

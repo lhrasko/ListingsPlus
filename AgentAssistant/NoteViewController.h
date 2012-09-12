@@ -9,14 +9,22 @@
 #import <UIKit/UIKit.h>
 #import "DataModel.h"
 
+@class NoteViewController;
+
+@protocol NoteViewControllerDelegate <NSObject>
+- (void)NoteViewControllerDidCancel:(NoteViewController *)controller;
+- (void)NoteViewControllerDidSave:(NoteViewController *)controller tag:(int)tag text:(NSString *)text;
+@end
+
+
+
 @interface NoteViewController : UIViewController
 
+@property (nonatomic, weak) id <NoteViewControllerDelegate> delegate;
+@property (strong, nonatomic) IBOutlet UIView *viewController;
 @property (nonatomic, strong) ActivityLogModel *activityLog;
-@property (weak, nonatomic) IBOutlet UITextField *textNote;
 @property int tag;
 
+@property (weak, nonatomic) IBOutlet UITextView *textNote;
 
-- (IBAction)DoneButtonPressed:(id)sender;
-
-- (IBAction)CancelButtonPressed:(id)sender;
 @end

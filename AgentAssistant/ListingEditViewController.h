@@ -23,4 +23,5 @@
 - (IBAction)SaveButtonPressed:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *textListingName;
 
+@property (strong, nonatomic) IBOutlet UISegmentedControl *segmentedButton;
 @end

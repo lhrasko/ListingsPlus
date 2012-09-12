@@ -9,19 +9,34 @@
 #import "AppDelegate.h"
 #import "ListingsViewController.h"
 #import "Listing.h"
+#import "Contacts/ContactListTableViewController.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-    ListingsViewController *controller = (ListingsViewController *)navigationController.topViewController;
-    controller.managedObjectContext = self.managedObjectContext;
+    UITabBarController *rootViewController;
+    UINavigationController *navigationController;
+    ListingsViewController *listingsViewController;
     
-    //Listing *listingEntity = (Listing *)[NSEntityDescription insertNewObjectForEntityForName:@"Listing" inManagedObjectContext:managedObjectContext];
-    //listingEntity.name = @"#92 15233 26th Avenue";
-    //[self.managedObjectContext save:nil];
+    // Get the root window (UITabBarController)
+    rootViewController = (UITabBarController *)self.window.rootViewController;
+    
+    
+    // Get the second item of the UITabBarController
+    navigationController = [[rootViewController viewControllers] objectAtIndex:0];
+    
+    // Get the first item of the UINavigationController (ItemsTableViewController)
+    listingsViewController = [[navigationController viewControllers] objectAtIndex:0];
+    listingsViewController.managedObjectContext = self.managedObjectContext;
+    
+    
+    // Get the third item of the UITabBarController (again ItemsTableViewController)
+    //navigationController = [[rootViewController viewControllers] objectAtIndex:2];
+    
+    // Get the first item of the UINavigationController (ItemsTableViewController)
+    //itemsTableViewController = [[navigationController viewControllers] objectAtIndex:0];
+    //itemsTableViewController.managedObjectContext = self.managedObjectContext;
     
     return YES;
 }
@@ -83,7 +98,7 @@
         return persistentStoreCoordinator;
     }
     NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory]
-                                               stringByAppendingPathComponent: @"AgentAssist.sqlite"]];
+                                               stringByAppendingPathComponent: @"RealtorAssist.sqlite"]];
     NSError *error = nil;
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
                                   initWithManagedObjectModel:[self managedObjectModel]];

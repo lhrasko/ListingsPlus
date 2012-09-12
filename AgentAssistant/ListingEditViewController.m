@@ -7,6 +7,7 @@
 //
 
 #import "ListingEditViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ListingEditViewController ()
 
@@ -19,6 +20,7 @@
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 @synthesize textListingName;
+@synthesize segmentedButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,11 +38,30 @@
     if (listing == nil) {
         textListingName.text = nil;
         self.title = @"New Listing";
+        [textListingName becomeFirstResponder];
+
     } else {
         textListingName.text = listing.name;
         self.title = @"Edit Listing";
 
+        
+        // Load our image normally.
+        UIImage *image = [UIImage imageNamed:@"button_red.png"];
+    
+        // And create the stretchy version.
+        float w = image.size.width / 2, h = image.size.height / 2; UIImage *stretch = [image stretchableImageWithLeftCapWidth:w topCapHeight:h];
+        
+        // Now we'll create a button as per usual.
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame = CGRectMake(30.0f, 260.0f, 260.0f, 52.0f);
+        [button setBackgroundImage:stretch forState:UIControlStateNormal];
+        [button setTitle:@"Delete Listing" forState:UIControlStateNormal];
+        [self.view addSubview:button];
+        
     }
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning

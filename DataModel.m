@@ -21,6 +21,7 @@
     @synthesize date;
     @synthesize source;
     @synthesize note;
+    @synthesize feedback;
     @synthesize CreatedDate;
     @synthesize ModifiedDate;
 @end
@@ -42,6 +43,14 @@
 @implementation OfferModel
 @end
 
-@implementation Source
+@implementation SourceModel
 @synthesize label;
+@end
+
+
+@implementation ContactModel
+@synthesize name;
+@synthesize company;
+@synthesize phone;
+@synthesize email;
 @end

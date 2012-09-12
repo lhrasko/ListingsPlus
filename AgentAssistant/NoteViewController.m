@@ -7,6 +7,7 @@
 //
 
 #import "NoteViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface NoteViewController ()
 
@@ -17,6 +18,8 @@
 @synthesize textNote;
 @synthesize activityLog;
 @synthesize tag;
+@synthesize delegate;
+@synthesize viewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,16 +34,27 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [textNote setBorderStyle:UITextBorderStyleRoundedRect];
- 
+    [textNote.layer setBackgroundColor: [[UIColor whiteColor] CGColor]];
+    [textNote.layer setBorderColor: [[UIColor grayColor] CGColor]];
+   
+    [textNote.layer setBorderWidth: 1.0];
+    [textNote.layer setCornerRadius:5.0f];
+    [textNote.layer setShadowColor: [[UIColor darkGrayColor] CGColor]];
+    [textNote.layer setShadowOffset:CGSizeMake(1,1)];
+    [textNote.layer setMasksToBounds:YES];
+
     if (tag == 1)
     {
+        self.title = @"Note";
         textNote.text = activityLog.note;
     }
     if (tag == 2)
     {
+        self.title = @"Feedback";
         textNote.text = activityLog.feedback;
     }
+    
+    [textNote becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,24 +71,15 @@
 // ----------------
 
 
-- (void)CancelButtonPressed:(id)sender  {
-    [self.navigationController popViewControllerAnimated:YES];
-}
+- (IBAction)cancelButtonPressed:(id)sender {
+   	[self.delegate NoteViewControllerDidCancel:self];}
 
 
-- (IBAction)DoneButtonPressed:(id)sender {
+- (IBAction)doneButtonPressed:(id)sender {
     
-    if (tag ==1)
-    {
-    activityLog.note = textNote.text;
-    }
-    if (tag == 2)
-    {
-        activityLog.feedback = textNote.text;
-    }
-    
-    [self.navigationController popViewControllerAnimated:YES];
+	[self.delegate NoteViewControllerDidSave:self tag:self.tag text:textNote.text];
 }
+
 
 
 @end

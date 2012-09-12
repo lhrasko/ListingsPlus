@@ -17,6 +17,16 @@
 @end
 
 
+
+@interface ContactModel : NSObject
+@property NSString *name;
+@property NSString *company;
+@property NSString *phone;
+@property NSString *email;
+@end
+
+
+
 @interface ActivityLogModel : NSObject
     @property NSDate *date;
     @property NSString *source;
@@ -24,6 +34,7 @@
     @property NSString *feedback;
     @property NSDate *CreatedDate;
     @property NSDate *ModifiedDate;
+    @property ContactModel *contact;
 @end
 
 
@@ -46,8 +57,6 @@
 @end
 
 
-@interface Source : NSObject
+@interface SourceModel : NSObject
 @property NSString *label;
 @end
-
-

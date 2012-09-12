@@ -10,14 +10,11 @@
 
 @interface ListingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate> {
     NSFetchedResultsController *fetchedResultsController;
+    NSManagedObjectContext *managedObjectContext;
 }
 
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic,strong) NSManagedObjectContext* managedObjectContext;
-
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
-- (IBAction)AddListingButtonClick:(id)sender;
-
-- (IBAction) EditTable:(id)sender;
 
 @end

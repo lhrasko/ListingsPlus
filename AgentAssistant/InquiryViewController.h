@@ -9,20 +9,38 @@
 #import <UIKit/UIKit.h>
 #import "Listing.h"
 #import "Inquiry.h"
+#import "NoteViewController.h"
+#import "SourceTableViewController.h"
+#import "ContactsViewController.h"
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
 
-@interface InquiryViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate> {
+@class InquiryViewController;
+
+@protocol InquiryViewControllerDelegate <NSObject>
+- (void)InquiryViewControllerDidCancel:(InquiryViewController *)controller;
+- (void)InquiryViewControllerDidSave:(InquiryViewController *)controller;
+@end
+
+
+@interface InquiryViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate, NoteViewControllerDelegate, SourceTableViewControllerDelegate, ContactsViewControllerDelegate > {
     NSFetchedResultsController *fetchedResultsController;
     NSManagedObjectContext *managedObjectContext;
 }
+
+
+@property (nonatomic, weak) id <InquiryViewControllerDelegate> delegate;
+
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic,strong) NSManagedObjectContext* managedObjectContext;
 
 @property (nonatomic, strong) Listing *listing;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) Inquiry *editInquiry;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) Inquiry *inquiryEntity;
 
 @property (nonatomic, retain) NSMutableArray *tableView1Data;
+@property UITextField *actifText;
 
 -(IBAction)SaveButtonPressed:(id)sender;
 -(IBAction)CancelButtonPressed;
