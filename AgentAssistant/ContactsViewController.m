@@ -181,15 +181,37 @@ AppDelegate *appDelegate;
             UINavigationController *newNavigationController = [[UINavigationController alloc] initWithRootViewController:view];
             [self presentModalViewController:newNavigationController animated:YES];
         }
-
     }
-    
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    if (indexPath.section == 0)
+    {
+        NSMutableArray *contacts = [[activityLog.contacts allObjects] mutableCopy];
+        Contact *contact = [contacts objectAtIndex:indexPath.row];
+        
+        ABPersonViewController *personController = [[ABPersonViewController alloc] initWithNibName:@"ABPersonViewController" bundle:nil];
+
+        //ABPersonViewController *view = [[ABPersonViewController alloc] init];
+        personController.personViewDelegate = self;
+        
+        ABAddressBookRef ab = ABAddressBookCreate();
+        ABRecordRef person = ABAddressBookGetPersonWithRecordID(ab,contact.uniqueId.integerValue);
+        personController.displayedPerson = person; // Assume person is already defined.
+        personController.allowsEditing = true;
+        personController.allowsActions = true;
+        personController.modalPresentationStyle = UIModalTransitionStylePartialCurl;
+        
+        UINavigationController *newNavigationController = [[UINavigationController alloc] initWithRootViewController:personController];
+        newNavigationController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back",nil) style:UIBarButtonItemStyleDone target:self action:@selector(ReturnFromPersonView)];
+        newNavigationController.navigationBar.topItem.title = @"Edit Contact";
+        newNavigationController.navigationBar.topItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back",nil) style:UIBarButtonItemStyleDone target:self action:@selector(personViewDidClose)];
+
+
+        
+        [self presentModalViewController:newNavigationController animated:YES];
+        
+        //[self.navigationController pushViewController:personController animated:YES];
+    }
+
+  
 }
 
 
@@ -220,7 +242,10 @@ AppDelegate *appDelegate;
     return NO;
 }
 
+- (void)personViewDidClose{
+    [self dismissModalViewControllerAnimated:YES];
 
+}
 
 
 - (IBAction)doneButtonClicked:(id)sender {
