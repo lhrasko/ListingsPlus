@@ -20,12 +20,12 @@
 
 @end
 
-@implementation ListingsViewController {
-    NSMutableArray *listings;
-}
+@implementation ListingsViewController { NSMutableArray *listings; }
+
 
 @synthesize tableView;
 @synthesize fetchedResultsController;
+@synthesize managedObjectContext;
 
 bool hasLoaded = NO;
 

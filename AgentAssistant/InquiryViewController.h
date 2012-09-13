@@ -14,6 +14,8 @@
 #import "ContactsViewController.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+#import "YIPopupTextView.h"
+
 
 @class InquiryViewController;
 
@@ -23,7 +25,7 @@
 @end
 
 
-@interface InquiryViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate, NoteViewControllerDelegate, SourceTableViewControllerDelegate, ContactsViewControllerDelegate > {
+@interface InquiryViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate, NoteViewControllerDelegate, SourceTableViewControllerDelegate, ContactsViewControllerDelegate, YIPopupTextViewDelegate > {
     NSFetchedResultsController *fetchedResultsController;
     NSManagedObjectContext *managedObjectContext;
 }
@@ -34,6 +36,9 @@
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic,strong) NSManagedObjectContext* managedObjectContext;
+
+@property (strong, nonatomic) IBOutlet UITextView *textView;
+
 
 @property (nonatomic, strong) Listing *listing;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;

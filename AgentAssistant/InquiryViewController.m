@@ -31,6 +31,7 @@
 @synthesize inquiryEntity;
 @synthesize actifText;
 @synthesize fetchedResultsController;
+@synthesize textView;
 
 @synthesize managedObjectContext;
 
@@ -42,6 +43,8 @@
 #define TAG_TEXTFIELD_CONTACT_EMAIL 4
 
 #define TAG_CELL_DATE 2
+#define TAG_CELL_NOTES 3
+#define TAG_CELL_FEEDBACK 4
 #define TAG_CELL_CONTACT_SELECT  101
 #define TAG_CELL_CONTACT_ADD 102
 
@@ -196,7 +199,7 @@
     // ----------------------------;
     
     NSMutableDictionary *tableViewCellContactNameData = [NSMutableDictionary dictionary];
-    UITableViewCell *tableViewCellContactName = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    UITableViewCell *tableViewCellContactName = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
     tableViewCellContactName.textLabel.text = @"Contacts";
     tableViewCellContactName.selectionStyle = UITableViewCellSelectionStyleNone;
     tableViewCellContactName.tag = TAG_CELL_CONTACT_SELECT;
@@ -230,7 +233,7 @@
     NSMutableDictionary *tableViewCell6Data = [NSMutableDictionary dictionary];
     UITableViewCell *tableViewCell6 = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
     tableViewCell6.textLabel.text = @"Feedback";
-    tableViewCell6.tag = 4;
+    tableViewCell6.tag = TAG_CELL_FEEDBACK;
     
     tableViewCell6.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [tableViewCell6Data setObject:tableViewCell6 forKey:@"cell"];
@@ -247,7 +250,7 @@
     NSMutableDictionary *tableViewCell7Data = [NSMutableDictionary dictionary];
     UITableViewCell *tableViewCell7 = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
     tableViewCell7.textLabel.text = @"Private Notes";
-    tableViewCell7.tag = 3;
+    tableViewCell7.tag = TAG_CELL_NOTES;
     
     tableViewCell7.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [tableViewCell7Data setObject:tableViewCell7 forKey:@"cell"];
@@ -342,15 +345,26 @@
         cellToCheck.detailTextLabel.text = [formatter stringFromDate: inquiryEntity.date];
     }
     
-    if (cellToCheck.tag == 3) // note cell
+    if (cellToCheck.tag == TAG_CELL_NOTES) 
         cellToCheck.detailTextLabel.text = inquiryEntity.note;
 
-    if (cellToCheck.tag == 4) // feedback cell
+    if (cellToCheck.tag == TAG_CELL_FEEDBACK) 
         cellToCheck.detailTextLabel.text = inquiryEntity.feedback;
     
     
     if (cellToCheck.tag == TAG_CELL_CONTACT_SELECT)
     {
+        if (inquiryEntity.contacts.count == 1)
+        {
+            Contact *contact = [[[inquiryEntity.contacts allObjects] mutableCopy] objectAtIndex:0];
+            cellToCheck.detailTextLabel.text = contact.compositeName;
+        }
+        else
+        {
+            NSString *numOfContacts = [[NSNumber numberWithInt:inquiryEntity.contacts.count] stringValue];
+            cellToCheck.detailTextLabel.text = [numOfContacts stringByAppendingString:@" Contacts"];
+        }
+        
         //UITextField *textField = (UITextField *) cellToCheck.accessoryView;
         //textField.text = inquiry.contact.company;
     }
@@ -446,17 +460,31 @@
         [self showCalendarAction];
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    if (cellToCheck.tag == 3)
+    if (cellToCheck.tag == TAG_CELL_FEEDBACK)
     {
-        notesTag = 1;
-        [self performSegueWithIdentifier:@"segueNotes" sender:self];
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        notesTag = TAG_CELL_FEEDBACK;
+
+        YIPopupTextView* popupTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Enter feedback for clients here" maxCount:1000];
+        popupTextView.delegate = self;
+        popupTextView.showCloseButton = YES;
+        popupTextView.caretShiftGestureEnabled = YES;   // default = NO
+        popupTextView.text = inquiryEntity.feedback;
+        [popupTextView showInView:self.view];
     }
-    if (cellToCheck.tag == 4)
+    if (cellToCheck.tag == TAG_CELL_NOTES)
     {
-        notesTag = 2;
-        [self performSegueWithIdentifier:@"segueNotes" sender:self];
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        notesTag = TAG_CELL_NOTES;
+
+        YIPopupTextView* popupTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Enter any private notes here" maxCount:1000];
+        popupTextView.delegate = self;
+        popupTextView.showCloseButton = YES;
+        popupTextView.caretShiftGestureEnabled = YES;   // default = NO
+        popupTextView.text = inquiryEntity.note;
+        [popupTextView showInView:self.view];
+        
+        //[self performSegueWithIdentifier:@"segueNotes" sender:self];
+        //[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
     }
     
     if (cellToCheck.tag == TAG_CELL_CONTACT_SELECT)
@@ -726,6 +754,27 @@ int notesTag;
     }
    // self.phoneNumber.text = phone;
 }
+
+
+#pragma mark YIPopupTextViewDelegate
+
+- (void)popupTextView:(YIPopupTextView *)textView willDismissWithText:(NSString *)text
+{
+    NSLog(@"will dismiss");
+    if (notesTag == TAG_CELL_NOTES)
+        inquiryEntity.note = text;
+    
+    if (notesTag == TAG_CELL_FEEDBACK)
+        inquiryEntity.feedback = text;
+    
+    [tableView reloadData];
+}
+
+- (void)popupTextView:(YIPopupTextView *)textView didDismissWithText:(NSString *)text
+{
+    NSLog(@"did dismiss");
+}
+
 
 
 @end

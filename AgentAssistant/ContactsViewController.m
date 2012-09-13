@@ -69,6 +69,26 @@ AppDelegate *appDelegate;
         return activityLog.contacts.count;
 }
 
+
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == 0 && activityLog.contacts.count > 0)
+        return @"Linked People";
+    
+    if (section == 1 && activityLog.contacts.count == 0)
+        return @"Link People to this Event" ;
+    
+    
+    if (section == 1 && activityLog.contacts.count > 0)
+        return @"More Options" ;
+    
+    return nil;
+    
+}
+
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -80,7 +100,7 @@ AppDelegate *appDelegate;
         if (cell == nil) {
             cell = [UITableViewCell alloc];
         }
-        cell.textLabel.text = @"Select from Address Book";
+        cell.textLabel.text = @"Choose from Address Book";
         UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
         [button addTarget:self action:@selector(buttonTapped:event:) forControlEvents:  UIControlEventTouchUpInside];
         cell.accessoryView = button;
@@ -163,9 +183,7 @@ AppDelegate *appDelegate;
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    
+{    
     if (indexPath.section == 1)
     {
         if (indexPath.row == 0)
@@ -189,7 +207,6 @@ AppDelegate *appDelegate;
         
         ABPersonViewController *personController = [[ABPersonViewController alloc] initWithNibName:@"ABPersonViewController" bundle:nil];
 
-        //ABPersonViewController *view = [[ABPersonViewController alloc] init];
         personController.personViewDelegate = self;
         
         ABAddressBookRef ab = ABAddressBookCreate();
@@ -200,18 +217,12 @@ AppDelegate *appDelegate;
         personController.modalPresentationStyle = UIModalTransitionStylePartialCurl;
         
         UINavigationController *newNavigationController = [[UINavigationController alloc] initWithRootViewController:personController];
-        newNavigationController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back",nil) style:UIBarButtonItemStyleDone target:self action:@selector(ReturnFromPersonView)];
+        newNavigationController.navigationItem.backBarButtonItem.title = @"Cancel";
         newNavigationController.navigationBar.topItem.title = @"Edit Contact";
-        newNavigationController.navigationBar.topItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back",nil) style:UIBarButtonItemStyleDone target:self action:@selector(personViewDidClose)];
+        newNavigationController.navigationBar.topItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel",nil) style:UIBarButtonItemStyleDone target:self action:@selector(personViewDidClose)];
 
-
-        
         [self presentModalViewController:newNavigationController animated:YES];
-        
-        //[self.navigationController pushViewController:personController animated:YES];
     }
-
-  
 }
 
 
@@ -224,7 +235,7 @@ AppDelegate *appDelegate;
 
 - (BOOL)peoplePickerNavigationController: (ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
     
-    // a new contact was picked
+    // a contact was picked
     
     Contact *contactEntity = (Contact *)[NSEntityDescription insertNewObjectForEntityForName:@"Contact" inManagedObjectContext:appDelegate.managedObjectContext];
     contactEntity.activityLog = activityLog;
@@ -242,15 +253,163 @@ AppDelegate *appDelegate;
     return NO;
 }
 
+
+#define CFRELEASE_AND_NIL(x) CFRelease(x); x=nil;
+
+- (void)newPersonViewController:(ABNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)person
+{
+    if (person != nil)
+    {
+        // a new contact was added
+        Contact *contactEntity = (Contact *)[NSEntityDescription insertNewObjectForEntityForName:@"Contact" inManagedObjectContext:appDelegate.managedObjectContext];
+        contactEntity.activityLog = activityLog;
+    
+        contactEntity.compositeName = (__bridge NSString *)(ABRecordCopyCompositeName(person));
+        contactEntity.firstName =  (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        contactEntity.lastName = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty); //kABUIDProperty
+        contactEntity.uniqueId = [NSNumber numberWithInteger: ABRecordGetRecordID(person)];
+    
+        // add new person to event log
+        [activityLog addContactsObject:contactEntity];
+        
+        // save new person to 'Real Estate Contacts' group in the local source
+        ABAddressBookRef addressBook = ABAddressBookCreate();
+        
+        // get local source, if not get default source
+        ABRecordRef sourceToUse = localSource();
+        if (!sourceToUse)
+            sourceToUse = ABAddressBookCopyDefaultSource(addressBook);
+        
+        ABRecordRef group = getGroup(sourceToUse);
+        
+        CFErrorRef err = nil;
+        if (person && group)
+        {
+            ABGroupAddMember(group, person, &err);
+            if (!err)
+            {
+                ABAddressBookSave(addressBook, &err);
+            }
+        }
+        if (err)
+        {
+            
+            CFRelease(err);
+        }
+        
+        CFRELEASE_AND_NIL(addressBook);
+        CFRELEASE_AND_NIL(sourceToUse);
+        CFRELEASE_AND_NIL(group);
+        
+        [tableView reloadData];
+    }
+    
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+
 - (void)personViewDidClose{
     [self dismissModalViewControllerAnimated:YES];
-
 }
 
 
 - (IBAction)doneButtonClicked:(id)sender {
     [self.delegate ContactsViewControllerDidCancel:self];
 }
+
+
+
+ABRecordRef getGroup (ABRecordRef sourceRef)
+{
+    ABAddressBookRef addressBook = ABAddressBookCreate();
+    CFArrayRef groups = ABAddressBookCopyArrayOfAllGroupsInSource(addressBook, sourceRef);
+    CFIndex groupCount = CFArrayGetCount(groups);
+    ABRecordRef groupRef = NULL;
+    for (CFIndex i = 0 ; i < groupCount; i++)
+    {
+        ABRecordRef currentGroup = CFArrayGetValueAtIndex(groups, i);
+        CFTypeRef groupName = ABRecordCopyValue(currentGroup, kABGroupNameProperty);
+                
+        CFComparisonResult	r = CFStringCompare((CFStringRef)@"Real Estate Contacts", groupName, 0);
+        CFRELEASE_AND_NIL(groupName);
+                
+        if (r == kCFCompareEqualTo)
+        {
+            groupRef = currentGroup;
+            break;
+        }
+    }
+    
+    CFErrorRef err = nil;
+	if (!groupRef)
+	{
+		groupRef = ABGroupCreateInSource(sourceRef);
+		ABRecordSetValue(groupRef, kABGroupNameProperty, @"Real Estate Contacts", &err);
+		if (!err)
+		{
+			ABAddressBookAddRecord(addressBook, groupRef, &err);
+		}
+		if (!err)
+		{
+			ABAddressBookSave(addressBook, &err);
+		}
+	}
+	if (err)
+	{
+		CFRelease(err);
+	}
+            
+    CFRELEASE_AND_NIL(addressBook);
+    CFRELEASE_AND_NIL(groups);
+            
+    return groupRef;
+}
+
+
+
+#define CFRELEASE_AND_NIL(x) CFRelease(x); x=nil;
+ABRecordRef sourceWithType (ABSourceType mySourceType)
+{
+    ABAddressBookRef addressBook = ABAddressBookCreate();
+    CFArrayRef sources = ABAddressBookCopyArrayOfAllSources(addressBook);
+    CFIndex sourceCount = CFArrayGetCount(sources);
+    ABRecordRef resultSource = NULL;
+    for (CFIndex i = 0 ; i < sourceCount; i++) {
+        ABRecordRef currentSource = CFArrayGetValueAtIndex(sources, i);
+        CFTypeRef sourceType = ABRecordCopyValue(currentSource, kABSourceTypeProperty);
+        
+        BOOL isMatch = mySourceType == [(__bridge NSNumber *)sourceType intValue];
+        CFRELEASE_AND_NIL(sourceType);
+        
+        if (isMatch) {
+            resultSource = currentSource;
+            break;
+        }
+    }
+    
+    CFRELEASE_AND_NIL(addressBook);
+    CFRELEASE_AND_NIL(sources);
+    
+    return resultSource;
+}
+         
+
+ABRecordRef localSource()
+{
+    return sourceWithType(kABSourceTypeLocal);
+}
+
+ABRecordRef exchangeSource()
+{
+    return sourceWithType(kABSourceTypeExchange);
+}
+
+ABRecordRef mobileMeSource()
+{
+    return sourceWithType(kABSourceTypeMobileMe);
+}
+
+
 
 
 @end

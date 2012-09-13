@@ -43,7 +43,7 @@ NSArray *sourcesArray;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    sourcesArray = [NSArray arrayWithObjects:@"Real Estate Agent", @"Sign Call", @"Web Inquiry", @"Existing Customer", nil];
+    sourcesArray = [NSArray arrayWithObjects:@"Real Estate Agent", @"Existing Customer", @"Sign Call", @"Online Classifieds", @"Web Site", @"Open House", @"Neighborhood Notice", @"Newspaper", @"Magazine", nil];
     checkValued = activityLog.source;
     
     self.tableView1Data = [NSMutableArray array];

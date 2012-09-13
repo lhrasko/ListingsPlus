@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AB0B90E615FC62D5009ABA2B /* ABContact.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0B90E115FC62D5009ABA2B /* ABContact.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AB0B90E715FC62D5009ABA2B /* ABContactsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0B90E315FC62D5009ABA2B /* ABContactsHelper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AB0B90E815FC62D5009ABA2B /* ABGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0B90E515FC62D5009ABA2B /* ABGroup.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AB32F49415EF0E5A00008E14 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB32F49315EF0E5A00008E14 /* UIKit.framework */; };
 		AB32F49615EF0E5A00008E14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB32F49515EF0E5A00008E14 /* Foundation.framework */; };
 		AB32F49815EF0E5A00008E14 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB32F49715EF0E5A00008E14 /* CoreGraphics.framework */; };
@@ -26,6 +23,12 @@
 		AB3840AD15F884CF00767BFB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3840AC15F884CF00767BFB /* QuartzCore.framework */; };
 		AB54B6BE15FC5D04005E015A /* ContactListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB54B6BD15FC5D04005E015A /* ContactListTableViewController.m */; };
 		AB66BF1915F51854000FBADA /* NoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB66BF1815F51854000FBADA /* NoteViewController.m */; };
+		AB6AADE21601D4DF0061DEB2 /* YIPopupTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6AADDE1601D4DF0061DEB2 /* YIPopupTextView.m */; };
+		AB6AADE31601D4DF0061DEB2 /* YIPopupDemoController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6AADE01601D4DF0061DEB2 /* YIPopupDemoController.m */; };
+		AB6AADE61601D4E80061DEB2 /* SSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6AADE41601D4E80061DEB2 /* SSTextView.m */; };
+		AB6AADEE1601D6AA0061DEB2 /* ABGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6AADE81601D6AA0061DEB2 /* ABGroup.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AB6AADEF1601D6AA0061DEB2 /* ABContactsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6AADEA1601D6AA0061DEB2 /* ABContactsHelper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AB6AADF01601D6AA0061DEB2 /* ABContact.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6AADEC1601D6AA0061DEB2 /* ABContact.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AB6C74C515F5C1BD00A9EF3D /* appIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB6C74C415F5C1BD00A9EF3D /* appIcon@2x.png */; };
 		AB7B223615F02BD100F0128D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB7B223515F02BD100F0128D /* CoreData.framework */; };
 		AB7B223A15F02ED400F0128D /* AgentAssistant.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AB7B223815F02ED400F0128D /* AgentAssistant.xcdatamodeld */; };
@@ -58,12 +61,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AB0B90E015FC62D5009ABA2B /* ABContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABContact.h; sourceTree = "<group>"; };
-		AB0B90E115FC62D5009ABA2B /* ABContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABContact.m; sourceTree = "<group>"; };
-		AB0B90E215FC62D5009ABA2B /* ABContactsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABContactsHelper.h; sourceTree = "<group>"; };
-		AB0B90E315FC62D5009ABA2B /* ABContactsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABContactsHelper.m; sourceTree = "<group>"; };
-		AB0B90E415FC62D5009ABA2B /* ABGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABGroup.h; sourceTree = "<group>"; };
-		AB0B90E515FC62D5009ABA2B /* ABGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABGroup.m; sourceTree = "<group>"; };
 		AB32F48F15EF0E5A00008E14 /* Realtor Assist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Realtor Assist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB32F49315EF0E5A00008E14 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AB32F49515EF0E5A00008E14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -91,6 +88,18 @@
 		AB54B6BD15FC5D04005E015A /* ContactListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactListTableViewController.m; path = Contacts/ContactListTableViewController.m; sourceTree = "<group>"; };
 		AB66BF1715F51854000FBADA /* NoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteViewController.h; sourceTree = "<group>"; };
 		AB66BF1815F51854000FBADA /* NoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteViewController.m; sourceTree = "<group>"; };
+		AB6AADDE1601D4DF0061DEB2 /* YIPopupTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YIPopupTextView.m; sourceTree = "<group>"; };
+		AB6AADDF1601D4DF0061DEB2 /* YIPopupTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YIPopupTextView.h; sourceTree = "<group>"; };
+		AB6AADE01601D4DF0061DEB2 /* YIPopupDemoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YIPopupDemoController.m; sourceTree = "<group>"; };
+		AB6AADE11601D4DF0061DEB2 /* YIPopupDemoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YIPopupDemoController.h; sourceTree = "<group>"; };
+		AB6AADE41601D4E80061DEB2 /* SSTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSTextView.m; sourceTree = "<group>"; };
+		AB6AADE51601D4E80061DEB2 /* SSTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSTextView.h; sourceTree = "<group>"; };
+		AB6AADE81601D6AA0061DEB2 /* ABGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ABGroup.m; path = ../ABContacts/ABGroup.m; sourceTree = "<group>"; };
+		AB6AADE91601D6AA0061DEB2 /* ABGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ABGroup.h; path = ../ABContacts/ABGroup.h; sourceTree = "<group>"; };
+		AB6AADEA1601D6AA0061DEB2 /* ABContactsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ABContactsHelper.m; path = ../ABContacts/ABContactsHelper.m; sourceTree = "<group>"; };
+		AB6AADEB1601D6AA0061DEB2 /* ABContactsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ABContactsHelper.h; path = ../ABContacts/ABContactsHelper.h; sourceTree = "<group>"; };
+		AB6AADEC1601D6AA0061DEB2 /* ABContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ABContact.m; path = ../ABContacts/ABContact.m; sourceTree = "<group>"; };
+		AB6AADED1601D6AA0061DEB2 /* ABContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ABContact.h; path = ../ABContacts/ABContact.h; sourceTree = "<group>"; };
 		AB6C74C415F5C1BD00A9EF3D /* appIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appIcon@2x.png"; sourceTree = "<group>"; };
 		AB7B223515F02BD100F0128D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AB7B223915F02ED400F0128D /* AgentAssistant.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AgentAssistant.xcdatamodel; sourceTree = "<group>"; };
@@ -157,24 +166,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AB0B90DF15FC62D5009ABA2B /* ABContacts */ = {
-			isa = PBXGroup;
-			children = (
-				AB0B90E015FC62D5009ABA2B /* ABContact.h */,
-				AB0B90E115FC62D5009ABA2B /* ABContact.m */,
-				AB0B90E215FC62D5009ABA2B /* ABContactsHelper.h */,
-				AB0B90E315FC62D5009ABA2B /* ABContactsHelper.m */,
-				AB0B90E415FC62D5009ABA2B /* ABGroup.h */,
-				AB0B90E515FC62D5009ABA2B /* ABGroup.m */,
-			);
-			name = ABContacts;
-			path = ../ABContacts;
-			sourceTree = "<group>";
-		};
 		AB32F48415EF0E5A00008E14 = {
 			isa = PBXGroup;
 			children = (
-				AB0B90DF15FC62D5009ABA2B /* ABContacts */,
+				AB6AADE71601D6270061DEB2 /* ABContacts */,
+				AB6AADDD1601D47A0061DEB2 /* YIPopupTextView */,
 				ABC1915515F88F7A00528421 /* Images */,
 				AB38409F15F882EE00767BFB /* DCRoundSwitch */,
 				AB78B78515F1717A00FBF7AF /* Model */,
@@ -278,6 +274,32 @@
 				AB54B6BD15FC5D04005E015A /* ContactListTableViewController.m */,
 			);
 			name = Contacts;
+			sourceTree = "<group>";
+		};
+		AB6AADDD1601D47A0061DEB2 /* YIPopupTextView */ = {
+			isa = PBXGroup;
+			children = (
+				AB6AADE41601D4E80061DEB2 /* SSTextView.m */,
+				AB6AADE51601D4E80061DEB2 /* SSTextView.h */,
+				AB6AADDE1601D4DF0061DEB2 /* YIPopupTextView.m */,
+				AB6AADDF1601D4DF0061DEB2 /* YIPopupTextView.h */,
+				AB6AADE01601D4DF0061DEB2 /* YIPopupDemoController.m */,
+				AB6AADE11601D4DF0061DEB2 /* YIPopupDemoController.h */,
+			);
+			name = YIPopupTextView;
+			sourceTree = "<group>";
+		};
+		AB6AADE71601D6270061DEB2 /* ABContacts */ = {
+			isa = PBXGroup;
+			children = (
+				AB6AADE81601D6AA0061DEB2 /* ABGroup.m */,
+				AB6AADE91601D6AA0061DEB2 /* ABGroup.h */,
+				AB6AADEA1601D6AA0061DEB2 /* ABContactsHelper.m */,
+				AB6AADEB1601D6AA0061DEB2 /* ABContactsHelper.h */,
+				AB6AADEC1601D6AA0061DEB2 /* ABContact.m */,
+				AB6AADED1601D6AA0061DEB2 /* ABContact.h */,
+			);
+			name = ABContacts;
 			sourceTree = "<group>";
 		};
 		AB78B78515F1717A00FBF7AF /* Model */ = {
@@ -418,13 +440,16 @@
 				AB3840AB15F882FC00767BFB /* DCRoundSwitch.m in Sources */,
 				ABC1C03615F979020084071B /* SourceTableViewController.m in Sources */,
 				AB54B6BE15FC5D04005E015A /* ContactListTableViewController.m in Sources */,
-				AB0B90E615FC62D5009ABA2B /* ABContact.m in Sources */,
-				AB0B90E715FC62D5009ABA2B /* ABContactsHelper.m in Sources */,
-				AB0B90E815FC62D5009ABA2B /* ABGroup.m in Sources */,
 				ABC5F93215FECA9A0019C927 /* RootTabBarControllerViewController.m in Sources */,
 				AB8F4ED115FFB48C001F0FA0 /* ContactsViewController.m in Sources */,
 				AB8F4ED515FFE401001F0FA0 /* ActivityLog.m in Sources */,
 				ABFF4FD516004243009ADDE3 /* Contact.m in Sources */,
+				AB6AADE21601D4DF0061DEB2 /* YIPopupTextView.m in Sources */,
+				AB6AADE31601D4DF0061DEB2 /* YIPopupDemoController.m in Sources */,
+				AB6AADE61601D4E80061DEB2 /* SSTextView.m in Sources */,
+				AB6AADEE1601D6AA0061DEB2 /* ABGroup.m in Sources */,
+				AB6AADEF1601D6AA0061DEB2 /* ABContactsHelper.m in Sources */,
+				AB6AADF01601D6AA0061DEB2 /* ABContact.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
