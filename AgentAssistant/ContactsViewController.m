@@ -276,11 +276,12 @@ AppDelegate *appDelegate;
         ABAddressBookRef addressBook = ABAddressBookCreate();
         
         // get local source, if not get default source
-        ABRecordRef sourceToUse = localSource();
+        ABRecordRef sourceToUse = sourceWithType(kABSourceTypeLocal, addressBook);
+        
         if (!sourceToUse)
             sourceToUse = ABAddressBookCopyDefaultSource(addressBook);
         
-        ABRecordRef group = getGroup(sourceToUse);
+        ABRecordRef group = getGroup(sourceToUse, addressBook);
         
         CFErrorRef err = nil;
         if (person && group)
@@ -298,8 +299,6 @@ AppDelegate *appDelegate;
         }
         
         CFRELEASE_AND_NIL(addressBook);
-        CFRELEASE_AND_NIL(sourceToUse);
-        CFRELEASE_AND_NIL(group);
         
         [tableView reloadData];
     }
@@ -319,12 +318,12 @@ AppDelegate *appDelegate;
 
 
 
-ABRecordRef getGroup (ABRecordRef sourceRef)
+ABRecordRef getGroup (ABRecordRef sourceRef, ABAddressBookRef addressBook)
 {
-    ABAddressBookRef addressBook = ABAddressBookCreate();
     CFArrayRef groups = ABAddressBookCopyArrayOfAllGroupsInSource(addressBook, sourceRef);
     CFIndex groupCount = CFArrayGetCount(groups);
     ABRecordRef groupRef = NULL;
+    
     for (CFIndex i = 0 ; i < groupCount; i++)
     {
         ABRecordRef currentGroup = CFArrayGetValueAtIndex(groups, i);
@@ -341,10 +340,11 @@ ABRecordRef getGroup (ABRecordRef sourceRef)
     }
     
     CFErrorRef err = nil;
+    ABRecordRef newGroupRef;
 	if (!groupRef)
 	{
-		groupRef = ABGroupCreateInSource(sourceRef);
-		ABRecordSetValue(groupRef, kABGroupNameProperty, @"Real Estate Contacts", &err);
+		newGroupRef = ABGroupCreateInSource(sourceRef);
+		ABRecordSetValue(newGroupRef, kABGroupNameProperty, @"Real Estate Contacts", &err);
 		if (!err)
 		{
 			ABAddressBookAddRecord(addressBook, groupRef, &err);
@@ -359,22 +359,23 @@ ABRecordRef getGroup (ABRecordRef sourceRef)
 		CFRelease(err);
 	}
             
-    CFRELEASE_AND_NIL(addressBook);
     CFRELEASE_AND_NIL(groups);
+    CFRELEASE_AND_NIL(sourceRef);
             
-    return groupRef;
+    return newGroupRef;
 }
 
 
 
 #define CFRELEASE_AND_NIL(x) CFRelease(x); x=nil;
-ABRecordRef sourceWithType (ABSourceType mySourceType)
+ABRecordRef sourceWithType (ABSourceType mySourceType, ABAddressBookRef addressBook)
 {
-    ABAddressBookRef addressBook = ABAddressBookCreate();
     CFArrayRef sources = ABAddressBookCopyArrayOfAllSources(addressBook);
     CFIndex sourceCount = CFArrayGetCount(sources);
     ABRecordRef resultSource = NULL;
-    for (CFIndex i = 0 ; i < sourceCount; i++) {
+    
+    for (CFIndex i = 0 ; i < sourceCount; i++)
+    {
         ABRecordRef currentSource = CFArrayGetValueAtIndex(sources, i);
         CFTypeRef sourceType = ABRecordCopyValue(currentSource, kABSourceTypeProperty);
         
@@ -387,28 +388,11 @@ ABRecordRef sourceWithType (ABSourceType mySourceType)
         }
     }
     
-    CFRELEASE_AND_NIL(addressBook);
     CFRELEASE_AND_NIL(sources);
     
     return resultSource;
 }
          
-
-ABRecordRef localSource()
-{
-    return sourceWithType(kABSourceTypeLocal);
-}
-
-ABRecordRef exchangeSource()
-{
-    return sourceWithType(kABSourceTypeExchange);
-}
-
-ABRecordRef mobileMeSource()
-{
-    return sourceWithType(kABSourceTypeMobileMe);
-}
-
 
 
 
