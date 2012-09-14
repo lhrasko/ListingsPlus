@@ -272,33 +272,49 @@ AppDelegate *appDelegate;
         // add new person to event log
         [activityLog addContactsObject:contactEntity];
         
+        
+        
+        
+    
+        
+        
         // save new person to 'Real Estate Contacts' group in the local source
-        ABAddressBookRef addressBook = ABAddressBookCreate();
+        ABAddressBookRef abAddressBookRef = ABAddressBookCreate();
+    
+        // have to 're-get' the person for some reason, otherwise it won't be added to the group
+        ABRecordRef abPersonRef = ABAddressBookGetPersonWithRecordID(abAddressBookRef,ABRecordGetRecordID(person));
         
         // get local source, if not get default source
-        ABRecordRef sourceToUse = sourceWithType(kABSourceTypeLocal, addressBook);
+        ABRecordRef abSourceRef = sourceWithType(kABSourceTypeLocal, abAddressBookRef);
         
-        if (!sourceToUse)
-            sourceToUse = ABAddressBookCopyDefaultSource(addressBook);
+        if (!abSourceRef)
+            abSourceRef = ABAddressBookCopyDefaultSource(abAddressBookRef);
         
-        ABRecordRef group = getGroup(sourceToUse, addressBook);
+        ABRecordRef abGroupRef = getGroup(@"Realtor Assist Contacts", abSourceRef, abAddressBookRef);
         
         CFErrorRef err = nil;
-        if (person && group)
+        if (abPersonRef && abGroupRef)
         {
-            ABGroupAddMember(group, person, &err);
-            if (!err)
-            {
-                ABAddressBookSave(addressBook, &err);
-            }
+            //-- add the person to the address book (even if the person already exists)
+            //ABAddressBookAddRecord(abAddressBookRef, p, nil);
+            
+            //-- save the address book
+            //ABAddressBookSave(abAddressBookRef, &err);
+            
+            //-- add the person to the group
+            ABGroupAddMember(abGroupRef, abPersonRef, &err);
+            
+            //-- save the address book again
+            ABAddressBookSave(abAddressBookRef, &err);
         }
         if (err)
         {
             
             CFRelease(err);
         }
-        
-        CFRELEASE_AND_NIL(addressBook);
+               
+        if ( abAddressBookRef != NULL )
+            CFRelease(abAddressBookRef);
         
         [tableView reloadData];
     }
@@ -318,7 +334,7 @@ AppDelegate *appDelegate;
 
 
 
-ABRecordRef getGroup (ABRecordRef sourceRef, ABAddressBookRef addressBook)
+ABRecordRef getGroup (NSString *groupName, ABRecordRef sourceRef, ABAddressBookRef addressBook)
 {
     CFArrayRef groups = ABAddressBookCopyArrayOfAllGroupsInSource(addressBook, sourceRef);
     CFIndex groupCount = CFArrayGetCount(groups);
@@ -327,10 +343,10 @@ ABRecordRef getGroup (ABRecordRef sourceRef, ABAddressBookRef addressBook)
     for (CFIndex i = 0 ; i < groupCount; i++)
     {
         ABRecordRef currentGroup = CFArrayGetValueAtIndex(groups, i);
-        CFTypeRef groupName = ABRecordCopyValue(currentGroup, kABGroupNameProperty);
+        CFTypeRef currentGroupName = ABRecordCopyValue(currentGroup, kABGroupNameProperty);
                 
-        CFComparisonResult	r = CFStringCompare((CFStringRef)@"Real Estate Contacts", groupName, 0);
-        CFRELEASE_AND_NIL(groupName);
+        CFComparisonResult	r = CFStringCompare((CFStringRef) groupName, currentGroupName, 0);
+        CFRELEASE_AND_NIL(currentGroupName);
                 
         if (r == kCFCompareEqualTo)
         {
@@ -340,11 +356,11 @@ ABRecordRef getGroup (ABRecordRef sourceRef, ABAddressBookRef addressBook)
     }
     
     CFErrorRef err = nil;
-    ABRecordRef newGroupRef;
 	if (!groupRef)
 	{
-		newGroupRef = ABGroupCreateInSource(sourceRef);
-		ABRecordSetValue(newGroupRef, kABGroupNameProperty, @"Real Estate Contacts", &err);
+		groupRef = ABGroupCreateInSource(sourceRef);
+        ABRecordSetValue(groupRef, kABGroupNameProperty,(__bridge CFTypeRef)(groupName), &err);
+
 		if (!err)
 		{
 			ABAddressBookAddRecord(addressBook, groupRef, &err);
@@ -359,15 +375,29 @@ ABRecordRef getGroup (ABRecordRef sourceRef, ABAddressBookRef addressBook)
 		CFRelease(err);
 	}
             
-    CFRELEASE_AND_NIL(groups);
-    CFRELEASE_AND_NIL(sourceRef);
+    //CFRELEASE_AND_NIL(groups);
+    //CFRELEASE_AND_NIL(sourceRef);
             
-    return newGroupRef;
+    return groupRef;
 }
 
 
 
-#define CFRELEASE_AND_NIL(x) CFRelease(x); x=nil;
+NSInteger createNewGroup (NSString *groupName)
+{    
+    ABAddressBookRef addressBook = ABAddressBookCreate();
+    ABRecordRef newGroup = ABGroupCreate();
+    ABRecordSetValue(newGroup, kABGroupNameProperty,(__bridge CFTypeRef)(groupName), nil);
+    ABAddressBookAddRecord(addressBook, newGroup, nil);
+    ABAddressBookSave(addressBook, nil);
+    NSInteger groupId = ABRecordGetRecordID(newGroup);
+    CFRelease(addressBook);
+    CFRelease(newGroup);
+    return groupId;
+}
+
+
+
 ABRecordRef sourceWithType (ABSourceType mySourceType, ABAddressBookRef addressBook)
 {
     CFArrayRef sources = ABAddressBookCopyArrayOfAllSources(addressBook);

@@ -249,7 +249,7 @@
     
     NSMutableDictionary *tableViewCell7Data = [NSMutableDictionary dictionary];
     UITableViewCell *tableViewCell7 = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-    tableViewCell7.textLabel.text = @"Private Notes";
+    tableViewCell7.textLabel.text = @"Notes";
     tableViewCell7.tag = TAG_CELL_NOTES;
     
     tableViewCell7.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -359,7 +359,8 @@
             Contact *contact = [[[inquiryEntity.contacts allObjects] mutableCopy] objectAtIndex:0];
             cellToCheck.detailTextLabel.text = contact.compositeName;
         }
-        else
+        
+        if (inquiryEntity.contacts.count > 1)
         {
             NSString *numOfContacts = [[NSNumber numberWithInt:inquiryEntity.contacts.count] stringValue];
             cellToCheck.detailTextLabel.text = [numOfContacts stringByAppendingString:@" Contacts"];
@@ -641,7 +642,7 @@ int notesTag;
 
 - (IBAction)cancelButtonPressed:(id)sender {
     
-    [managedObjectContext reset];
+    [managedObjectContext undo];
    	[self.delegate InquiryViewControllerDidCancel:self];
 }
 
