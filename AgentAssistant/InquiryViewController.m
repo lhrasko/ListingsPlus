@@ -114,6 +114,9 @@
                                                object:nil];
 
     
+    [[managedObjectContext undoManager] beginUndoGrouping];
+
+    
     if (inquiryEntity == nil)
     {
          self.title = @"New Inquiry";
@@ -642,7 +645,9 @@ int notesTag;
 
 - (IBAction)cancelButtonPressed:(id)sender {
     
-    [managedObjectContext undo];
+    [[managedObjectContext undoManager] endUndoGrouping];
+    [[managedObjectContext undoManager] undoNestedGroup];
+    
    	[self.delegate InquiryViewControllerDidCancel:self];
 }
 
@@ -651,6 +656,8 @@ int notesTag;
    
     inquiryEntity.modifiedDate = [NSDate date];
     [managedObjectContext save:nil];
+    //[[managedObjectContext undoManager] endUndoGrouping] ;
+
     
     [self.delegate InquiryViewControllerDidSave:self];
     

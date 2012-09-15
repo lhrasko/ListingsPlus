@@ -21,6 +21,7 @@
 @synthesize delegate;
 @synthesize activityLog;
 @synthesize tableView;
+@synthesize editButton;
 
 AppDelegate *appDelegate;
 
@@ -38,11 +39,10 @@ AppDelegate *appDelegate;
 {
     [super viewDidLoad];
 
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,7 +56,10 @@ AppDelegate *appDelegate;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    if (self.tableView.isEditing)
+        return 1;
+    else
+        return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -93,38 +96,6 @@ AppDelegate *appDelegate;
 {
     static NSString *CellIdentifier = @"Cell";
     
-    // Set up the cell...
-    if(indexPath.section == 1 && indexPath.row == 0)
-    {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [UITableViewCell alloc];
-        }
-        cell.textLabel.text = @"Choose from Address Book";
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
-        [button addTarget:self action:@selector(buttonTapped:event:) forControlEvents:  UIControlEventTouchUpInside];
-        cell.accessoryView = button;
-        cell.textLabel.textColor = [UIColor blackColor];
-
-        return cell;
-    }
-    
-    if(indexPath.section == 1 && indexPath.row == 1)
-    {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [UITableViewCell alloc];
-        }
-        cell.textLabel.text = @"Create New Contact";
-        
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
-        [button addTarget:self action:@selector(buttonTapped:event:) forControlEvents:  UIControlEventTouchUpInside];
-        //and created the event handling procedure - (void)buttonTapped:(id)sender event:(id)event { }
-        cell.accessoryView = button;
-        cell.textLabel.textColor = [UIColor blackColor];
-
-        return cell;
-    }
     
     if (indexPath.section == 0)
     {
@@ -138,17 +109,50 @@ AppDelegate *appDelegate;
         return cell;
     }
 
+    
+    if(indexPath.section == 1 && indexPath.row == 0)
+    {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [UITableViewCell alloc];
+        }
+        cell.textLabel.text = @"Create New Contact";
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
+        [button addTarget:self action:@selector(buttonTapped:event:) forControlEvents:  UIControlEventTouchUpInside];
+        //and created the event handling procedure - (void)buttonTapped:(id)sender event:(id)event { }
+        cell.accessoryView = button;
+        cell.textLabel.textColor = [UIColor blackColor];
+        
+        return cell;
+    }
+
+    
+    // Set up the cell...
+    if(indexPath.section == 1 && indexPath.row == 1)
+    {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [UITableViewCell alloc];
+        }
+        cell.textLabel.text = @"Choose from Address Book";
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
+        [button addTarget:self action:@selector(buttonTapped:event:) forControlEvents:  UIControlEventTouchUpInside];
+        cell.accessoryView = button;
+        cell.textLabel.textColor = [UIColor blackColor];
+
+        return cell;
+    }
 
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+
+-(void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
 }
-*/
+
+
+
 
 /*
 // Override to support editing the table view.
@@ -163,6 +167,32 @@ AppDelegate *appDelegate;
     }   
 }
 */
+
+
+// Override to support conditional editing of the table view.
+// This only needs to be implemented if you are going to be returning NO
+// for some items. By default, all items are editable.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return YES if you want the specified item to be editable.
+    if (indexPath.section == 0)
+        return YES;
+    else
+        return NO;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSMutableArray *contacts = [[activityLog.contacts allObjects] mutableCopy];
+        Contact *contact = [contacts objectAtIndex:indexPath.row];
+        [activityLog removeContactsObject:contact];
+        [tableView reloadData];        
+    }
+}
+
+
+
+
 
 /*
 // Override to support rearranging the table view.
@@ -186,13 +216,13 @@ AppDelegate *appDelegate;
 {    
     if (indexPath.section == 1)
     {
-        if (indexPath.row == 0)
+        if (indexPath.row == 1)
         {
             ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
             picker.peoplePickerDelegate = self;
             [self presentModalViewController:picker animated:YES];
         }
-        if (indexPath.row == 1)
+        if (indexPath.row == 0)
         {
             ABNewPersonViewController *view = [[ABNewPersonViewController alloc] init];
             view.newPersonViewDelegate = self;
@@ -279,7 +309,7 @@ AppDelegate *appDelegate;
         
         
         // save new person to 'Real Estate Contacts' group in the local source
-        ABAddressBookRef abAddressBookRef = ABAddressBookCreate();
+        ABAddressBookRef abAddressBookRef = ABAddressBookCreateWithOptions(nil, nil);
     
         // have to 're-get' the person for some reason, otherwise it won't be added to the group
         ABRecordRef abPersonRef = ABAddressBookGetPersonWithRecordID(abAddressBookRef,ABRecordGetRecordID(person));
@@ -425,5 +455,23 @@ ABRecordRef sourceWithType (ABSourceType mySourceType, ABAddressBookRef addressB
          
 
 
+
+- (IBAction)OnEditButtonPressed:(id)sender {
+ 
+    if (! tableView.isEditing)
+    {
+        [tableView setEditing:YES animated:YES];
+        
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneEditingTable)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+    }
+    else
+    {
+        [tableView setEditing:NO animated:YES];
+        editButton.title = @"Edit";
+    }
+    
+    [tableView reloadData];
+}
 
 @end

@@ -79,6 +79,10 @@
     if (coordinator != nil) {
         managedObjectContext = [[NSManagedObjectContext alloc] init];
         [managedObjectContext setPersistentStoreCoordinator: coordinator];
+        
+        //Undo Support
+        NSUndoManager *anUndoManager = [[NSUndoManager  alloc] init];
+        [managedObjectContext setUndoManager:anUndoManager];
     }
     
     return managedObjectContext;

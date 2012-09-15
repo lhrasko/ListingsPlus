@@ -483,8 +483,7 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Contacts" id="yCm-g4-Y6Q">
-                                    <barButtonItem key="leftBarButtonItem" systemItem="edit" id="slF-PY-yYx"/>
-                                    <barButtonItem key="rightBarButtonItem" systemItem="done" id="VgQ-Ui-DyA">
+                                    <barButtonItem key="leftBarButtonItem" systemItem="done" id="VgQ-Ui-DyA">
                                         <connections>
                                             <action selector="doneButtonClicked:" destination="DFz-8y-giV" id="zTr-c1-zBW"/>
                                         </connections>
