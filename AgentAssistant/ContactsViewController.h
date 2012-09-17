@@ -26,7 +26,4 @@
 @property (nonatomic, retain) ActivityLog *activityLog;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
-- (IBAction)OnEditButtonPressed:(id)sender;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
-
 @end

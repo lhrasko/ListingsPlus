@@ -8,6 +8,8 @@
 
 #import "NoteViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SSTextView.h"
+#import "YIPopupTextView.h"
 
 @interface NoteViewController ()
 
@@ -18,8 +20,14 @@
 @synthesize textNote;
 @synthesize activityLog;
 @synthesize tag;
-@synthesize delegate;
 @synthesize viewController;
+
+YIPopupTextView* popupTextView;
+
+
+#define TAG_NOTES 3
+#define TAG_FEEDBACK 4
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,28 +42,31 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [textNote.layer setBackgroundColor: [[UIColor whiteColor] CGColor]];
-    [textNote.layer setBorderColor: [[UIColor grayColor] CGColor]];
-   
-    [textNote.layer setBorderWidth: 1.0];
-    [textNote.layer setCornerRadius:5.0f];
-    [textNote.layer setShadowColor: [[UIColor darkGrayColor] CGColor]];
-    [textNote.layer setShadowOffset:CGSizeMake(1,1)];
-    [textNote.layer setMasksToBounds:YES];
-
-    if (tag == 1)
+    
+    
+    popupTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Enter feedback for clients here" maxCount:1000];
+    popupTextView.delegate = self;
+    popupTextView.caretShiftGestureEnabled = YES;   // default = NO
+    popupTextView.showCloseButton = NO;
+  
+    
+    if (tag == TAG_NOTES)
     {
         self.title = @"Note";
-        textNote.text = activityLog.note;
+        popupTextView.text = activityLog.note;
+        popupTextView.placeholder = @"Enter REALTOR\u2122 notes and comments here.";
+
     }
-    if (tag == 2)
+    if (tag == TAG_FEEDBACK)
     {
         self.title = @"Feedback";
-        textNote.text = activityLog.feedback;
+        popupTextView.text = activityLog.feedback;
+        popupTextView.placeholder = @"Enter feedback to share with clients here.";
     }
     
-    [textNote becomeFirstResponder];
+    [popupTextView showInView:self.view];
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -65,21 +76,15 @@
 
 
 
-
-// ----------------
-// Action
-// ----------------
-
-
-- (IBAction)cancelButtonPressed:(id)sender {
-   	[self.delegate NoteViewControllerDidCancel:self];}
-
-
 - (IBAction)doneButtonPressed:(id)sender {
+    if (tag == TAG_NOTES)
+        activityLog.note = popupTextView.text;
     
-	[self.delegate NoteViewControllerDidSave:self tag:self.tag text:textNote.text];
-}
+    if (tag == TAG_FEEDBACK)
+        activityLog.feedback = popupTextView.text;
 
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 
 @end

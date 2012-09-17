@@ -60,7 +60,7 @@
         
     }
     
-    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"grouptableview.png"]];
     
 }
 

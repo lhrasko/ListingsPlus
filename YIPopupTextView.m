@@ -133,10 +133,8 @@ typedef enum {
         _maxCount = maxCount;
         
         _backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 460)];
-        _backgroundView.backgroundColor = [UIColor blackColor];
-        _backgroundView.alpha = 0;
         _backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
+        _backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"grouptableview.png"]];
         _popupView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 240)];
         _popupView.autoresizingMask = UIViewAutoresizingFlexibleWidth; // height will be set at KeyboardWillShow
         [_backgroundView addSubview:_popupView];
@@ -148,7 +146,7 @@ typedef enum {
         self.frame = UIEdgeInsetsInsetRect(_popupView.frame, TEXTVIEW_INSETS);
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.font = [UIFont systemFontOfSize:TEXT_SIZE];
-        self.keyboardAppearance = UIKeyboardAppearanceAlert;
+        self.keyboardAppearance = UIKeyboardAppearanceDefault;
         self.returnKeyType = UIReturnKeyDefault;
         self.autocorrectionType = UITextAutocorrectionTypeDefault;
         self.autocapitalizationType = UITextAutocapitalizationTypeSentences;
@@ -305,7 +303,7 @@ typedef enum {
                                              selector:@selector(didReceiveTextDidEndEditingNotification:)
                                                  name:UITextViewTextDidEndEditingNotification
                                                object:nil];
-   
+    
 }
 
 - (void)stopObservingNotifications

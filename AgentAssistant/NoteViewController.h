@@ -8,23 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "DataModel.h"
+#import "YIPopupTextView.h"
 
 @class NoteViewController;
 
-@protocol NoteViewControllerDelegate <NSObject>
-- (void)NoteViewControllerDidCancel:(NoteViewController *)controller;
-- (void)NoteViewControllerDidSave:(NoteViewController *)controller tag:(int)tag text:(NSString *)text;
-@end
+@interface NoteViewController : UIViewController <YIPopupTextViewDelegate>
 
-
-
-@interface NoteViewController : UIViewController
-
-@property (nonatomic, weak) id <NoteViewControllerDelegate> delegate;
 @property (strong, nonatomic) IBOutlet UIView *viewController;
 @property (nonatomic, strong) ActivityLogModel *activityLog;
 @property int tag;
 
-@property (weak, nonatomic) IBOutlet UITextView *textNote;
+@property (weak, nonatomic) IBOutlet SSTextView *textNote;
+- (IBAction)doneButtonPressed:(id)sender;
 
 @end

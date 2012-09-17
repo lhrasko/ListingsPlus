@@ -32,6 +32,7 @@
 @synthesize actifText;
 @synthesize fetchedResultsController;
 @synthesize textView;
+@synthesize saveButton;
 
 @synthesize managedObjectContext;
 
@@ -119,7 +120,6 @@
     
     if (inquiryEntity == nil)
     {
-         self.title = @"New Inquiry";
         inquiryEntity = (Inquiry *)[NSEntityDescription insertNewObjectForEntityForName:@"Inquiry" inManagedObjectContext:managedObjectContext];
         inquiryEntity.listing = listing;
         inquiryEntity.createdDate = [NSDate date];
@@ -127,13 +127,9 @@
 
         [listing.activityLogs addObject:inquiryEntity];
         [managedObjectContext save:nil];
-
-
     }
-    else
-    {
-        self.title = @"Edit Inquiry";
-    }
+    
+    self.title = @"Inquiry";
     
  
     self.tableView1Data = [NSMutableArray array];
@@ -203,7 +199,7 @@
     
     NSMutableDictionary *tableViewCellContactNameData = [NSMutableDictionary dictionary];
     UITableViewCell *tableViewCellContactName = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-    tableViewCellContactName.textLabel.text = @"Contacts";
+    tableViewCellContactName.textLabel.text = @"People";
     tableViewCellContactName.selectionStyle = UITableViewCellSelectionStyleNone;
     tableViewCellContactName.tag = TAG_CELL_CONTACT_SELECT;
     tableViewCellContactName.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -291,26 +287,31 @@
 }
 
 
-- (IBAction)CancelButtonPressed {
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
     [self.tableView reloadData];
+    self.navigationItem.hidesBackButton = inquiryEntity.hasChanges;
 }
 
 
--(void)viewDidAppear:(BOOL)animated
-{
-}
+
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    
+    [tableView reloadData];
+}
+
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [managedObjectContext save:nil];
+    [super viewDidDisappear:animated];
 }
 
 
@@ -357,6 +358,10 @@
     
     if (cellToCheck.tag == TAG_CELL_CONTACT_SELECT)
     {
+        
+        if (inquiryEntity.contacts.count == 0)
+            cellToCheck.detailTextLabel.text = nil;
+        
         if (inquiryEntity.contacts.count == 1)
         {
             Contact *contact = [[[inquiryEntity.contacts allObjects] mutableCopy] objectAtIndex:0];
@@ -446,6 +451,9 @@
     return [[cellData objectForKey:@"indentationLevel"] integerValue];
 }
 
+
+YIPopupTextView* popupTextView;
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *sectionData = [self.tableView1Data objectAtIndex:indexPath.section];
     NSDictionary *cellData =  [[sectionData objectForKey:@"cells"] objectAtIndex:indexPath.row];
@@ -467,28 +475,26 @@
     if (cellToCheck.tag == TAG_CELL_FEEDBACK)
     {
         notesTag = TAG_CELL_FEEDBACK;
-
-        YIPopupTextView* popupTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Enter feedback for clients here" maxCount:1000];
+        popupTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Enter shared feedback and notes for clients here." maxCount:1000];
         popupTextView.delegate = self;
-        popupTextView.showCloseButton = YES;
+        popupTextView.showCloseButton = NO;
         popupTextView.caretShiftGestureEnabled = YES;   // default = NO
         popupTextView.text = inquiryEntity.feedback;
+        self.navigationItem.hidesBackButton = YES;
+        self.navigationItem.title = @"Feedback";
         [popupTextView showInView:self.view];
     }
     if (cellToCheck.tag == TAG_CELL_NOTES)
     {
         notesTag = TAG_CELL_NOTES;
-
-        YIPopupTextView* popupTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Enter any private notes here" maxCount:1000];
+        popupTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Enter private REALTOR\u2122 notes and comments here." maxCount:1000];
         popupTextView.delegate = self;
-        popupTextView.showCloseButton = YES;
+        popupTextView.showCloseButton = NO;
         popupTextView.caretShiftGestureEnabled = YES;   // default = NO
         popupTextView.text = inquiryEntity.note;
+        self.navigationItem.title = @"Notes";
+        self.navigationItem.hidesBackButton = YES;
         [popupTextView showInView:self.view];
-        
-        //[self performSegueWithIdentifier:@"segueNotes" sender:self];
-        //[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
     }
     
     if (cellToCheck.tag == TAG_CELL_CONTACT_SELECT)
@@ -510,13 +516,7 @@ int notesTag;
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"segueNotes"]) {
-        NoteViewController *noteViewController = (NoteViewController *) segue.destinationViewController;
-        noteViewController.activityLog = inquiryEntity;
-        noteViewController.tag = notesTag;
-        noteViewController.title = @"NOTES";
-        noteViewController.delegate = self;
-    }
+   
     if ([segue.identifier isEqualToString:@"segueSource"]) {
         
         SourceTableViewController *sourceViewController = (SourceTableViewController *) segue.destinationViewController;
@@ -527,7 +527,6 @@ int notesTag;
         
         ContactsViewController *contactsViewController = (ContactsViewController *) segue.destinationViewController;
         contactsViewController.activityLog = inquiryEntity;
-        contactsViewController.delegate = self;
     }
 
 
@@ -654,13 +653,21 @@ int notesTag;
 
 - (IBAction)SaveButtonPressed:(id)sender {
    
-    inquiryEntity.modifiedDate = [NSDate date];
-    [managedObjectContext save:nil];
-    //[[managedObjectContext undoManager] endUndoGrouping] ;
+    if (notesTag > 0)
+    {
+        [popupTextView dismiss];
+        notesTag = 0;
+        self.navigationItem.hidesBackButton = inquiryEntity.hasChanges;
 
-    
-    [self.delegate InquiryViewControllerDidSave:self];
-    
+    }
+    else
+    {
+        inquiryEntity.modifiedDate = [NSDate date];
+        [managedObjectContext save:nil];
+
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.delegate InquiryViewControllerDidSave:self];
+    }
 }
 
 
@@ -722,46 +729,8 @@ int notesTag;
 }
 
 
-- (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue
-{
-    return YES;
-}
 
 
-- (void)newPersonViewController:(ABNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)person
-{
-    [newPersonViewController dismissModalViewControllerAnimated:YES];
-}
-
-
-
-- (void)displayPerson:(ABRecordRef)person
-
-{
-    
-    NSString* name = (__bridge_transfer NSString*)ABRecordCopyValue(person,
-                                                                    kABPersonFirstNameProperty);
-   // self.firstName.text = name;
-    
-    NSString* phone = nil;
-    
-    ABMultiValueRef phoneNumbers = ABRecordCopyValue(person,
-                                                     
-                                                     kABPersonPhoneProperty);
-    
-    if (ABMultiValueGetCount(phoneNumbers) > 0) {
-        
-        phone = (__bridge_transfer NSString*)
-        
-        ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
-        
-    } else {
-        
-        phone = @"[None]";
-        
-    }
-   // self.phoneNumber.text = phone;
-}
 
 
 #pragma mark YIPopupTextViewDelegate
@@ -775,6 +744,7 @@ int notesTag;
     if (notesTag == TAG_CELL_FEEDBACK)
         inquiryEntity.feedback = text;
     
+    self.navigationItem.title = @"Inquiry";
     [tableView reloadData];
 }
 

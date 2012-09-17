@@ -11,6 +11,7 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "Contact.h"
 #import "AppDelegate.h"
+#import "Inquiry.h"
 
 @interface ContactsViewController ()
 
@@ -21,7 +22,6 @@
 @synthesize delegate;
 @synthesize activityLog;
 @synthesize tableView;
-@synthesize editButton;
 
 AppDelegate *appDelegate;
 
@@ -38,11 +38,8 @@ AppDelegate *appDelegate;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
+    //self.navigationItem.title = [activityLog.label stringByAppendingString:@" Contacts"];
+    self.navigationItem.title = @"People";
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,10 +53,7 @@ AppDelegate *appDelegate;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if (self.tableView.isEditing)
-        return 1;
-    else
-        return 2;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -77,14 +71,13 @@ AppDelegate *appDelegate;
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == 0 && activityLog.contacts.count > 0)
-        return @"Linked People";
+        return @"Associated";
     
     if (section == 1 && activityLog.contacts.count == 0)
-        return @"Link People to this Event" ;
-    
+        return [@"Associate People to this " stringByAppendingString:activityLog.label];
     
     if (section == 1 && activityLog.contacts.count > 0)
-        return @"More Options" ;
+        return @"Options" ;
     
     return nil;
     
@@ -110,13 +103,13 @@ AppDelegate *appDelegate;
     }
 
     
-    if(indexPath.section == 1 && indexPath.row == 0)
+    if(indexPath.section == 1 && indexPath.row == 1)
     {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [UITableViewCell alloc];
         }
-        cell.textLabel.text = @"Create New Contact";
+        cell.textLabel.text = @"Add New Person";
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
         [button addTarget:self action:@selector(buttonTapped:event:) forControlEvents:  UIControlEventTouchUpInside];
@@ -129,13 +122,13 @@ AppDelegate *appDelegate;
 
     
     // Set up the cell...
-    if(indexPath.section == 1 && indexPath.row == 1)
+    if(indexPath.section == 1 && indexPath.row == 0)
     {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [UITableViewCell alloc];
         }
-        cell.textLabel.text = @"Choose from Address Book";
+        cell.textLabel.text = @"Add from Address Book";
         UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
         [button addTarget:self action:@selector(buttonTapped:event:) forControlEvents:  UIControlEventTouchUpInside];
         cell.accessoryView = button;
@@ -150,23 +143,6 @@ AppDelegate *appDelegate;
 -(void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
 }
-
-
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
 
 
 // Override to support conditional editing of the table view.
@@ -192,37 +168,19 @@ AppDelegate *appDelegate;
 
 
 
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {    
     if (indexPath.section == 1)
     {
-        if (indexPath.row == 1)
+        if (indexPath.row == 0)
         {
             ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
             picker.peoplePickerDelegate = self;
             [self presentModalViewController:picker animated:YES];
         }
-        if (indexPath.row == 0)
+        if (indexPath.row == 1)
         {
             ABNewPersonViewController *view = [[ABNewPersonViewController alloc] init];
             view.newPersonViewDelegate = self;
@@ -246,12 +204,14 @@ AppDelegate *appDelegate;
         personController.allowsActions = true;
         personController.modalPresentationStyle = UIModalTransitionStylePartialCurl;
         
-        UINavigationController *newNavigationController = [[UINavigationController alloc] initWithRootViewController:personController];
-        newNavigationController.navigationItem.backBarButtonItem.title = @"Cancel";
-        newNavigationController.navigationBar.topItem.title = @"Edit Contact";
-        newNavigationController.navigationBar.topItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel",nil) style:UIBarButtonItemStyleDone target:self action:@selector(personViewDidClose)];
+        [self.navigationController pushViewController:personController animated:YES];
+        
+        //UINavigationController *newNavigationController = [[UINavigationController alloc] initWithRootViewController:personController];
+        //newNavigationController.navigationItem.backBarButtonItem.title = @"Cancel";
+        //newNavigationController.navigationBar.topItem.title = @"Edit Contact";
+        //newNavigationController.navigationBar.topItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel",nil) style:UIBarButtonItemStyleDone target:self action:@selector(personViewDidClose)];
 
-        [self presentModalViewController:newNavigationController animated:YES];
+        //[self presentModalViewController:newNavigationController animated:YES];
     }
 }
 
@@ -303,11 +263,6 @@ AppDelegate *appDelegate;
         [activityLog addContactsObject:contactEntity];
         
         
-        
-        
-    
-        
-        
         // save new person to 'Real Estate Contacts' group in the local source
         ABAddressBookRef abAddressBookRef = ABAddressBookCreateWithOptions(nil, nil);
     
@@ -351,6 +306,9 @@ AppDelegate *appDelegate;
     
     [self dismissModalViewControllerAnimated:YES];
 }
+
+
+BOOL viewPushed;
 
 
 - (void)personViewDidClose{
@@ -413,21 +371,6 @@ ABRecordRef getGroup (NSString *groupName, ABRecordRef sourceRef, ABAddressBookR
 
 
 
-NSInteger createNewGroup (NSString *groupName)
-{    
-    ABAddressBookRef addressBook = ABAddressBookCreate();
-    ABRecordRef newGroup = ABGroupCreate();
-    ABRecordSetValue(newGroup, kABGroupNameProperty,(__bridge CFTypeRef)(groupName), nil);
-    ABAddressBookAddRecord(addressBook, newGroup, nil);
-    ABAddressBookSave(addressBook, nil);
-    NSInteger groupId = ABRecordGetRecordID(newGroup);
-    CFRelease(addressBook);
-    CFRelease(newGroup);
-    return groupId;
-}
-
-
-
 ABRecordRef sourceWithType (ABSourceType mySourceType, ABAddressBookRef addressBook)
 {
     CFArrayRef sources = ABAddressBookCopyArrayOfAllSources(addressBook);
@@ -453,25 +396,5 @@ ABRecordRef sourceWithType (ABSourceType mySourceType, ABAddressBookRef addressB
     return resultSource;
 }
          
-
-
-
-- (IBAction)OnEditButtonPressed:(id)sender {
- 
-    if (! tableView.isEditing)
-    {
-        [tableView setEditing:YES animated:YES];
-        
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneEditingTable)];
-        self.navigationItem.rightBarButtonItem = doneButton;
-    }
-    else
-    {
-        [tableView setEditing:NO animated:YES];
-        editButton.title = @"Edit";
-    }
-    
-    [tableView reloadData];
-}
 
 @end

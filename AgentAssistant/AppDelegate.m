@@ -15,28 +15,33 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    UITabBarController *rootViewController;
-    UINavigationController *navigationController;
-    ListingsViewController *listingsViewController;
+    
+    // OPTION 1
+    
+    //UITabBarController *rootViewController;
+    //UINavigationController *navigationController;
+    //ListingsViewController *listingsViewController;
     
     // Get the root window (UITabBarController)
-    rootViewController = (UITabBarController *)self.window.rootViewController;
+    //rootViewController = (UITabBarController *)self.window.rootViewController;
     
     
     // Get the second item of the UITabBarController
-    navigationController = [[rootViewController viewControllers] objectAtIndex:0];
+    //navigationController = [[rootViewController viewControllers] objectAtIndex:0];
     
     // Get the first item of the UINavigationController (ItemsTableViewController)
-    listingsViewController = [[navigationController viewControllers] objectAtIndex:0];
-    listingsViewController.managedObjectContext = self.managedObjectContext;
+    //listingsViewController = [[navigationController viewControllers] objectAtIndex:0];
+    //listingsViewController.managedObjectContext = self.managedObjectContext;
     
+    
+    /// OPTION 2
     
     // Get the third item of the UITabBarController (again ItemsTableViewController)
-    //navigationController = [[rootViewController viewControllers] objectAtIndex:2];
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     
     // Get the first item of the UINavigationController (ItemsTableViewController)
-    //itemsTableViewController = [[navigationController viewControllers] objectAtIndex:0];
-    //itemsTableViewController.managedObjectContext = self.managedObjectContext;
+    ListingsViewController *firstViewController = (ListingsViewController *)[navigationController topViewController];
+    firstViewController.managedObjectContext = self.managedObjectContext;
     
     return YES;
 }
@@ -102,7 +107,7 @@
         return persistentStoreCoordinator;
     }
     NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory]
-                                               stringByAppendingPathComponent: @"RealtorAssist.sqlite"]];
+                                               stringByAppendingPathComponent: @"ListingAgent.sqlite"]];
     NSError *error = nil;
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
                                   initWithManagedObjectModel:[self managedObjectModel]];

@@ -25,7 +25,7 @@
 @end
 
 
-@interface InquiryViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate, NoteViewControllerDelegate, SourceTableViewControllerDelegate, ContactsViewControllerDelegate, YIPopupTextViewDelegate > {
+@interface InquiryViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate, SourceTableViewControllerDelegate, ContactsViewControllerDelegate, YIPopupTextViewDelegate > {
     NSFetchedResultsController *fetchedResultsController;
     NSManagedObjectContext *managedObjectContext;
 }
@@ -39,6 +39,7 @@
 
 @property (strong, nonatomic) IBOutlet UITextView *textView;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 
 @property (nonatomic, strong) Listing *listing;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
@@ -48,7 +49,5 @@
 @property UITextField *actifText;
 
 -(IBAction)SaveButtonPressed:(id)sender;
--(IBAction)CancelButtonPressed;
-
 
 @end
