@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "ListingsViewController.h"
 #import "Listing.h"
-#import "Contacts/ContactListTableViewController.h"
 
 @implementation AppDelegate
 

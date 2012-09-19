@@ -38,14 +38,14 @@ NSUInteger sortedEventCount;
 
 -(IBAction)ActionSheetButton {
     
-    UIActionSheet *actionsheet = [[UIActionSheet alloc]
+    UIActionSheet *actionsheetDate = [[UIActionSheet alloc]
                                   initWithTitle:@"Add New..."
                                   delegate:self
                                   cancelButtonTitle:@"Cancel"
                                   destructiveButtonTitle:nil
                                   otherButtonTitles:@"Inquiry",@"Showing",@"Open House", nil];
     
-    [actionsheet showInView:self.view];
+    [actionsheetDate showInView:self.view];
 }
 
 
@@ -91,11 +91,10 @@ NSUInteger sortedEventCount;
     {
         UILabel *message = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 100)];
         
-        message.text = @"Use the '+' button above to add an activity log to this listing.";
+        message.text = @"Use the '+' button above to add an event to this listing.";
         message.backgroundColor = [UIColor clearColor];
         message.textAlignment = NSTextAlignmentCenter;
         message.numberOfLines = 3;
-        //message.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth ;
         message.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.0];
         message.textColor = [UIColor colorWithRed:0.298039 green:0.337255 blue:0.423529 alpha:1];
         message.shadowColor = [UIColor colorWithWhite:1 alpha:1]; // or [UIColor whiteColor];
@@ -221,6 +220,25 @@ NSUInteger sortedEventCount;
 
     cell.detailTextLabel.text = [self.cellDateFormatter stringFromDate:log.date];
     
+    if ([log isKindOfClass:[OpenHouse class]])
+    {
+        OpenHouse *openHouse = (OpenHouse *) log;
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"h:mm a"];
+        
+        cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:@" - "];
+        NSString *endTime = [formatter stringFromDate:openHouse.endTime];
+        cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:endTime];
+        
+        if ([openHouse.visitors intValue] > 0)
+        {
+            cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:@", "];
+            cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:[openHouse.visitors stringValue]];
+            cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:@" Visitors"];
+        }
+            
+    }
+    
     if (log.contacts.count == 1)
     {
         Contact *contact = [[[log.contacts allObjects] mutableCopy] objectAtIndex:0];
@@ -234,7 +252,7 @@ NSUInteger sortedEventCount;
         NSString *numOfContacts = [[NSNumber numberWithInt:log.contacts.count] stringValue];
         cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:@", "];
         cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:numOfContacts];
-        cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:@" People"];
+        cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:@" Contacts"];
     }
 
     
@@ -274,20 +292,24 @@ NSUInteger sortedEventCount;
             [subview removeFromSuperview];
         }
     }
-
     
     if ([segue.identifier isEqualToString:@"segueShowing"]) {
         ShowingDetailViewController *destViewController = segue.destinationViewController;
         destViewController.managedObjectContext = self.managedObjectContext;
         destViewController.listing = listing;
+        destViewController.delegate = self;
+
         if (sender != self) {
-            destViewController.editShowing = sender;
+            destViewController.showingEntity = sender;
         }
     } else if ([segue.identifier isEqualToString:@"segueOpenHouse"]) {
         OpenHouseViewController * destViewController = segue.destinationViewController;
+        destViewController.managedObjectContext = self.managedObjectContext;
         destViewController.listing = listing;
+        destViewController.delegate = self;
+
         if (sender != self) {
-            destViewController.editOpenHouse = sender;
+            destViewController.openHouseEntity = sender;
         }
     } else if ([segue.identifier isEqualToString:@"segueInquiry"]) {
         InquiryViewController * destViewController = segue.destinationViewController;
@@ -321,6 +343,27 @@ NSUInteger sortedEventCount;
     [tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+
+- (void)ShowingDetailViewControllerDidSave:(SourceTableViewController *)controller
+{
+    if (listing.activityLogs.count != sortedEventCount)
+        self.sortEvents;
+    
+    [tableView reloadData];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)OpenHouseViewControllerDidSave:(SourceTableViewController *)controller
+{
+    if (listing.activityLogs.count != sortedEventCount)
+        self.sortEvents;
+    
+    [tableView reloadData];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 
 

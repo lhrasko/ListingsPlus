@@ -11,7 +11,6 @@
 
 @implementation OpenHouse
 
-@dynamic startTime;
 @dynamic endTime;
 @dynamic visitors;
 

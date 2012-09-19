@@ -80,7 +80,6 @@ AppDelegate *appDelegate;
         return @"Options" ;
     
     return nil;
-    
 }
 
 
@@ -105,7 +104,7 @@ AppDelegate *appDelegate;
     
     if(indexPath.section == 1 && indexPath.row == 1)
     {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [UITableViewCell alloc];
         }
@@ -124,7 +123,7 @@ AppDelegate *appDelegate;
     // Set up the cell...
     if(indexPath.section == 1 && indexPath.row == 0)
     {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [UITableViewCell alloc];
         }
@@ -136,7 +135,8 @@ AppDelegate *appDelegate;
 
         return cell;
     }
-
+    
+    return nil;
 }
 
 
@@ -162,7 +162,7 @@ AppDelegate *appDelegate;
         NSMutableArray *contacts = [[activityLog.contacts allObjects] mutableCopy];
         Contact *contact = [contacts objectAtIndex:indexPath.row];
         [activityLog removeContactsObject:contact];
-        [tableView reloadData];        
+        [self.tableView reloadData];
     }
 }
 
@@ -197,7 +197,7 @@ AppDelegate *appDelegate;
 
         personController.personViewDelegate = self;
         
-        ABAddressBookRef ab = ABAddressBookCreate();
+        ABAddressBookRef ab = ABAddressBookCreateWithOptions(nil, nil);
         ABRecordRef person = ABAddressBookGetPersonWithRecordID(ab,contact.uniqueId.integerValue);
         personController.displayedPerson = person; // Assume person is already defined.
         personController.allowsEditing = true;
@@ -205,13 +205,6 @@ AppDelegate *appDelegate;
         personController.modalPresentationStyle = UIModalTransitionStylePartialCurl;
         
         [self.navigationController pushViewController:personController animated:YES];
-        
-        //UINavigationController *newNavigationController = [[UINavigationController alloc] initWithRootViewController:personController];
-        //newNavigationController.navigationItem.backBarButtonItem.title = @"Cancel";
-        //newNavigationController.navigationBar.topItem.title = @"Edit Contact";
-        //newNavigationController.navigationBar.topItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel",nil) style:UIBarButtonItemStyleDone target:self action:@selector(personViewDidClose)];
-
-        //[self presentModalViewController:newNavigationController animated:YES];
     }
 }
 
@@ -362,9 +355,6 @@ ABRecordRef getGroup (NSString *groupName, ABRecordRef sourceRef, ABAddressBookR
 	{
 		CFRelease(err);
 	}
-            
-    //CFRELEASE_AND_NIL(groups);
-    //CFRELEASE_AND_NIL(sourceRef);
             
     return groupRef;
 }

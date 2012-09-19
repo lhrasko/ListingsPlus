@@ -58,6 +58,7 @@
     [pickerView setDatePickerMode:UIDatePickerModeDateAndTime];
     [pickerView setMinuteInterval:15];
     [pickerView setTag: kDatePickerTag];
+    [pickerView setDate:inquiryEntity.date];
     
     //Add picker to action sheet
     [actionSheet addSubview:pickerView];
@@ -534,39 +535,6 @@ int notesTag;
 
 
 
-
-// To be link with your TextField event "Editing Did Begin"
-//  memoryze the current TextField
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    self.actifText = textField;
-}
-
-// To be link with your TextField event "Editing Did End"
-//  release current TextField
-- (IBAction)textFieldDidEndEditing:(UITextField *)textField
-{
-    //if (textField.tag == TAG_TEXTFIELD_CONTACT_COMPANY)
-    //    inquiry.contact.company = textField.text;
-    //if (textField.tag == TAG_TEXTFIELD_CONTACT_EMAIL)
-    //    inquiry.contact.email = textField.text;
-    //if (textField.tag == TAG_TEXTFIELD_CONTACT_NAME)
-    //{
-    //    inquiry.contact.name = textField.text;
-    //}
-    //if (textField.tag == TAG_TEXTFIELD_CONTACT_PHONE)
-    //    inquiry.contact.phone = textField.text;
-
-    self.actifText = nil;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder]; //dismiss the keyboard
-    //do whatever else you need with the text
-    return YES;
-}
-
-
 -(void) keyboardWillShow:(NSNotification *)note
 {
     // Get the keyboard size
@@ -584,7 +552,7 @@ int notesTag;
     
     // Reduce size of the Table view
     if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown)
-        frame.size.height -= keyboardBounds.size.height - 50;
+        frame.size.height -= keyboardBounds.size.height;
     else
         frame.size.height -= keyboardBounds.size.width;
     

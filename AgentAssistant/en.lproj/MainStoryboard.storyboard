@@ -250,164 +250,74 @@
                     <connections>
                         <outlet property="addNewButton" destination="etj-aY-Cr1" id="v7L-td-3m7"/>
                         <outlet property="tableView" destination="wzo-Qp-0Ml" id="lAe-sg-18T"/>
-                        <segue destination="ZiN-MI-I3f" kind="push" identifier="segueShowing" id="yUe-ao-Yy3"/>
-                        <segue destination="GrB-i3-x85" kind="push" identifier="segueOpenHouse" id="KV6-4r-KX8"/>
                         <segue destination="Kqz-6Q-hZc" kind="push" identifier="segueInquiry" id="jLm-5d-ZCv"/>
+                        <segue destination="gC7-tJ-TsY" kind="push" identifier="segueShowing" id="6UB-ab-MRA"/>
+                        <segue destination="0S2-AD-puU" kind="push" identifier="segueOpenHouse" id="o1c-zM-8UF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6QU-nC-5UZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="153" y="114"/>
         </scene>
-        <!--Showing Detail View Controller - New Showing-->
-        <scene sceneID="WBA-y1-xVq">
+        <!--Showing Detail View Controller-->
+        <scene sceneID="bLF-vU-UBg">
             <objects>
-                <viewController id="ZiN-MI-I3f" customClass="ShowingDetailViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="jeR-t8-HSu">
-                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="JBB-aP-VGL">
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="checkmark" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ShowingCell" id="RN4-Mb-E4v">
-                                        <rect key="frame" x="0.0" y="46" width="320" height="46"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="10" y="1" width="280" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="ZiN-MI-I3f" id="Yhc-u2-alV"/>
-                                    <outlet property="delegate" destination="ZiN-MI-I3f" id="oWu-m3-GFx"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="JBB-aP-VGL" firstAttribute="top" secondItem="jeR-t8-HSu" secondAttribute="top" type="default" id="7vt-9j-pIO"/>
-                            <constraint firstItem="JBB-aP-VGL" firstAttribute="leading" secondItem="jeR-t8-HSu" secondAttribute="leading" type="default" id="FNJ-Nm-G1a"/>
-                            <constraint firstItem="JBB-aP-VGL" firstAttribute="trailing" secondItem="jeR-t8-HSu" secondAttribute="trailing" type="default" id="o8Q-pz-aY9"/>
-                            <constraint firstItem="JBB-aP-VGL" firstAttribute="bottom" secondItem="jeR-t8-HSu" secondAttribute="bottom" type="default" id="u5c-Ol-1nW"/>
-                        </constraints>
-                    </view>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" title="New Showing" id="kjq-JR-6Uh">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="qWj-gE-frD">
-                            <connections>
-                                <action selector="CancelButtonPressed" destination="ZiN-MI-I3f" id="68P-zD-pmW"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="xuM-24-Qrt">
-                            <connections>
-                                <action selector="SaveButtonPressed:" destination="ZiN-MI-I3f" id="gD3-Os-Jmt"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="tableView" destination="JBB-aP-VGL" id="s6U-LX-5gQ"/>
-                        <segue destination="2fm-6o-DLV" kind="modal" identifier="segueNotes" id="AiF-I2-sXp"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yuj-ga-i84" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="748" y="114"/>
-        </scene>
-        <!--Note View Controller - Title-->
-        <scene sceneID="FTg-kw-Tnv">
-            <objects>
-                <viewController id="2fm-6o-DLV" customClass="NoteViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="mDt-Po-uXy">
-                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </view>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Title" id="z15-1C-lyr">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="mo3-rC-tr3">
-                            <connections>
-                                <action selector="doneButtonPressed:" destination="2fm-6o-DLV" id="7UV-c2-aen"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="viewController" destination="mDt-Po-uXy" id="ixA-pC-QcA"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JGC-k5-PmH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1750" y="25"/>
-        </scene>
-        <!--Open House View Controller - New Open House-->
-        <scene sceneID="mfv-lo-7d1">
-            <objects>
-                <viewController id="GrB-i3-x85" customClass="OpenHouseViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="GH5-Yu-NIT">
+                <tableViewController id="gC7-tJ-TsY" customClass="ShowingDetailViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="8OF-et-7KP">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="MKd-Ag-WLW">
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="416" id="cIH-yg-9vk"/>
-                                </constraints>
-                                <sections/>
-                                <connections>
-                                    <outlet property="dataSource" destination="GrB-i3-x85" id="UzK-br-t1Y"/>
-                                    <outlet property="delegate" destination="GrB-i3-x85" id="w16-Z2-Sf8"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="MKd-Ag-WLW" firstAttribute="trailing" secondItem="GH5-Yu-NIT" secondAttribute="trailing" type="default" id="1dk-eH-H3a"/>
-                            <constraint firstItem="MKd-Ag-WLW" firstAttribute="leading" secondItem="GH5-Yu-NIT" secondAttribute="leading" type="default" id="bEr-Xu-Cx4"/>
-                            <constraint firstItem="MKd-Ag-WLW" firstAttribute="top" secondItem="GH5-Yu-NIT" secondAttribute="top" constant="-1" id="cG6-mn-g7r"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="New Open House" id="YJl-wh-T7Z">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Cm4-ZA-5GQ">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="ulT-ZU-IOB">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="fo1-f7-s2Z">
                             <connections>
-                                <action selector="CancelButtonPressed:" destination="GrB-i3-x85" id="9xi-f0-62h"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="9q7-N2-6n3">
-                            <connections>
-                                <action selector="SaveButtonPressed:" destination="GrB-i3-x85" id="0uA-R8-EB7"/>
+                                <action selector="SaveButtonPressed:" destination="gC7-tJ-TsY" id="FT7-c0-YYd"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="2fm-6o-DLV" kind="modal" identifier="segueNotes" id="Lyd-sf-5d7"/>
+                        <outlet property="saveButton" destination="fo1-f7-s2Z" id="EPt-3p-c2D"/>
+                        <outlet property="tableView" destination="8OF-et-7KP" id="oCp-da-dDv"/>
+                        <segue destination="h07-xg-aQw" kind="push" identifier="segueContacts" id="UPh-zl-8Yv"/>
+                        <segue destination="TuP-0r-5H5" kind="modal" identifier="segueSource" id="eNa-Qp-6ey"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Zbt-j2-1sw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oFK-NY-wKV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="748" y="732"/>
+            <point key="canvasLocation" x="745" y="74"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="6Qa-Ia-Gxc">
+        <!--Open House View Controller-->
+        <scene sceneID="5hR-13-0E5">
             <objects>
-                <navigationController toolbarHidden="NO" id="kVZ-sk-ic2" sceneMemberID="viewController">
+                <tableViewController id="0S2-AD-puU" customClass="OpenHouseViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" indicatorStyle="white" bouncesZoom="NO" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="5cu-0b-aKo">
+                        <rect key="frame" x="0.0" y="64" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <connections>
+                            <outlet property="dataSource" destination="0S2-AD-puU" id="cbH-P6-xZq"/>
+                            <outlet property="delegate" destination="0S2-AD-puU" id="W0b-YU-A5w"/>
+                        </connections>
+                    </tableView>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fqm-Ie-dci">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="vlq-G9-8yb">
-                        <rect key="frame" x="0.0" y="436" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8kr-26-kiH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                    <navigationItem key="navigationItem" id="gYl-Jv-hHD">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="kgk-2o-IFQ">
+                            <connections>
+                                <action selector="SaveButtonPressed:" destination="0S2-AD-puU" id="ea3-97-b03"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="saveButton" destination="kgk-2o-IFQ" id="gmf-dg-7vj"/>
+                        <outlet property="tableView" destination="5cu-0b-aKo" id="8sM-Wc-JYd"/>
+                        <segue destination="TuP-0r-5H5" kind="push" identifier="segueSource" id="4h9-ez-UZ6"/>
+                        <segue destination="h07-xg-aQw" kind="push" identifier="segueContacts" id="Kgk-cT-An3"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kai-f9-7GZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1804" y="-578"/>
+            <point key="canvasLocation" x="752" y="720"/>
         </scene>
         <!--Inquiry View Controller - Inquiry-->
         <scene sceneID="QU0-69-rCv">
@@ -433,7 +343,6 @@
                         <outlet property="saveButton" destination="EXd-mr-VqA" id="TX6-Vz-cOR"/>
                         <outlet property="tableView" destination="bQg-T5-kuG" id="ZDE-kE-7UN"/>
                         <segue destination="TuP-0r-5H5" kind="modal" identifier="segueSource" modalTransitionStyle="coverVertical" id="cPe-4y-ag3"/>
-                        <segue destination="2fm-6o-DLV" kind="push" identifier="segueNotes" id="ouT-OW-rc3"/>
                         <segue destination="h07-xg-aQw" kind="push" identifier="segueContacts" id="4sB-Ji-qwF"/>
                     </connections>
                 </tableViewController>
@@ -446,7 +355,7 @@
             <objects>
                 <tableViewController title="Contacts" id="h07-xg-aQw" customClass="ContactsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="z7e-EZ-olu">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -472,14 +381,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="msc-f9-rHd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1213" y="-843"/>
+            <point key="canvasLocation" x="1949" y="481"/>
         </scene>
         <!--Source Table View Controller-->
         <scene sceneID="sKP-6T-mgi">
             <objects>
                 <tableViewController id="TuP-0r-5H5" customClass="SourceTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Tgv-YG-O4t">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="hyo-7S-sYd">
@@ -500,13 +409,14 @@
                             <outlet property="delegate" destination="TuP-0r-5H5" id="4mp-GX-ImX"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="lTu-xv-6ew"/>
                     <connections>
                         <outlet property="tableView" destination="Tgv-YG-O4t" id="936-nF-ibG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HvX-zi-nHO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1730" y="-539"/>
+            <point key="canvasLocation" x="1957" y="-311"/>
         </scene>
         <!--Contact List Table View Controller - Contacts-->
         <scene sceneID="q5o-sJ-KDF">
@@ -560,12 +470,84 @@
             <point key="canvasLocation" x="-895" y="1603"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="ActivityLogViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ActivityLogViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="ActionSheetButton"/>
+                <relationship kind="outlet" name="addNewButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="ContactsViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ContactsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="InquiryViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InquiryViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="SaveButtonPressed:"/>
+                <relationship kind="outlet" name="saveButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="ListingEditViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ListingEditViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="CancelButtonPressed:"/>
+                <relationship kind="action" name="SaveButtonPressed:"/>
+                <relationship kind="outlet" name="segmentedButton" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="textListingName" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="ListingsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ListingsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="OpenHouseViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OpenHouseViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="SaveButtonPressed:"/>
+                <relationship kind="action" name="cancelButtonPressed:"/>
+                <relationship kind="action" name="stepperValueDidChanged:" candidateClass="UIStepper"/>
+                <relationship kind="action" name="textFieldDidEndEditing:" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="saveButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="ShowingDetailViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShowingDetailViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="SaveButtonPressed:"/>
+                <relationship kind="outlet" name="saveButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="SourceTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SourceTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelButtonPressed:"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="ouT-OW-rc3"/>
+        <segue reference="Kgk-cT-An3"/>
+        <segue reference="4h9-ez-UZ6"/>
     </inferredMetricsTieBreakers>
 </document>

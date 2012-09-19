@@ -13,7 +13,6 @@
 
 @interface OpenHouse : ActivityLog
 
-@property (nonatomic, retain) NSDate * startTime;
 @property (nonatomic, retain) NSDate * endTime;
 @property (nonatomic, retain) NSNumber * visitors;
 

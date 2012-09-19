@@ -345,6 +345,8 @@ typedef enum {
             break;
     }
     
+    //NSLog(@"popupviewheight = %f",popupViewHeight);
+    
     CGRect frame = _backgroundView.bounds;
     frame.size.height = popupViewHeight;
     _popupView.frame = frame;
