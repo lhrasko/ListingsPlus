@@ -1,0 +1,18 @@
+//
+//  CustomEvent.h
+//  Listing Agent
+//
+//  Created by Lubos Hrasko on 2012-09-19.
+//  Copyright (c) 2012 WhiteRockLife. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#import "ActivityLog.h"
+
+
+@interface CustomEvent : ActivityLog
+
+@property (nonatomic, retain) NSString * name;
+
+@end

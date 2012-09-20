@@ -25,7 +25,7 @@
 @property (strong, nonatomic) NSDateFormatter *sectionDateFormatter;
 @property (strong, nonatomic) NSDateFormatter *cellDateFormatter;
 
-
+-(void) showWelcomeMessage;
 -(IBAction)ActionSheetButton;
 
 @end

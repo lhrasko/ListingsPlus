@@ -207,4 +207,10 @@ int tagEdit;
 
 
 
+- (IBAction)addListingButtonPressed:(id)sender {
+    tagEdit = 0;
+    [self performSegueWithIdentifier:@"segueEditNewListing" sender:self];
+}
+
+
 @end

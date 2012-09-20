@@ -9,6 +9,7 @@
 #import "ActivityLogViewController.h"
 #import "ShowingDetailViewController.h"
 #import "OpenHouseViewController.h"
+#import "CustomEventViewController.h"
 #import "InquiryViewController.h"
 #import "Inquiry.h"
 #import "Listing.h"
@@ -43,7 +44,7 @@ NSUInteger sortedEventCount;
                                   delegate:self
                                   cancelButtonTitle:@"Cancel"
                                   destructiveButtonTitle:nil
-                                  otherButtonTitles:@"Inquiry",@"Showing",@"Open House", nil];
+                                  otherButtonTitles:@"Inquiry",@"Showing",@"Open House", @"Custom Event", nil];
     
     [actionsheetDate showInView:self.view];
 }
@@ -57,6 +58,8 @@ NSUInteger sortedEventCount;
         [self performSegueWithIdentifier:@"segueShowing" sender:self];
     } else if (buttonIndex == 2) {
         [self performSegueWithIdentifier:@"segueOpenHouse" sender:self];
+    } else if (buttonIndex == 3) {
+        [self performSegueWithIdentifier:@"segueCustomEvent" sender:self];
     }
     
 }
@@ -73,7 +76,7 @@ NSUInteger sortedEventCount;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.sortEvents;
+    [self sortEvents];
     
     self.sectionDateFormatter = [[NSDateFormatter alloc] init];
     [self.sectionDateFormatter setDateStyle:NSDateFormatterLongStyle];
@@ -86,7 +89,13 @@ NSUInteger sortedEventCount;
     
     self.navigationItem.title = listing.name;
     
-          
+    [self showWelcomeMessage];
+}
+
+
+- (void) showWelcomeMessage
+{
+    
     if (self.sections.count == 0)
     {
         UILabel *message = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 100)];
@@ -104,6 +113,7 @@ NSUInteger sortedEventCount;
         //Add picker to action sheet
         [tableView addSubview:message];
     }
+
     
 }
 
@@ -234,7 +244,9 @@ NSUInteger sortedEventCount;
         {
             cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:@", "];
             cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:[openHouse.visitors stringValue]];
-            cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:@" Visitors"];
+            cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:@" Visitor"];
+            if ([openHouse.visitors intValue] > 1)
+                cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:@"s"];
         }
             
     }
@@ -276,6 +288,9 @@ NSUInteger sortedEventCount;
     }
     if ( [log isKindOfClass:[OpenHouse class]] ) {
         [self performSegueWithIdentifier:@"segueOpenHouse" sender:log];
+    }
+    if ( [log isKindOfClass:[CustomEvent class]] ) {
+        [self performSegueWithIdentifier:@"segueCustomEvent" sender:log];
     }
 
 }
@@ -320,8 +335,48 @@ NSUInteger sortedEventCount;
         if (sender != self) {
             destViewController.inquiryEntity = sender;
         }
+    } else if ([segue.identifier isEqualToString:@"segueCustomEvent"]) {
+        CustomEventViewController * destViewController = segue.destinationViewController;
+        destViewController.managedObjectContext = self.managedObjectContext;
+        destViewController.listing = listing;
+        destViewController.delegate = self;
+        
+        if (sender != self) {
+            destViewController.customEntity = sender;
+        }
+
     }
 }
+
+
+// Override to support conditional editing of the table view.
+// This only needs to be implemented if you are going to be returning NO
+// for some items. By default, all items are editable.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return YES if you want the specified item to be editable.
+    if (indexPath.section != sections.count)
+        return YES;
+    else
+        return NO;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        NSDate *dateRepresentingThisDay = [self.sortedDays objectAtIndex:indexPath.section];
+        NSMutableArray *logsOnThisDay = [self.sections objectForKey:dateRepresentingThisDay];
+        ActivityLog *log = [logsOnThisDay objectAtIndex:indexPath.row];
+        [listing removeActivityLogsObject:log];
+
+        [managedObjectContext save:nil];
+        
+        [self sortEvents];
+        [self showWelcomeMessage];
+        [self.tableView reloadData];
+    }
+}
+
 
 
 // ------------------
@@ -338,7 +393,7 @@ NSUInteger sortedEventCount;
 - (void)InquiryViewControllerDidSave:(SourceTableViewController *)controller
 {
     if (listing.activityLogs.count != sortedEventCount)
-        self.sortEvents;
+        [self sortEvents];
 
     [tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -348,7 +403,7 @@ NSUInteger sortedEventCount;
 - (void)ShowingDetailViewControllerDidSave:(SourceTableViewController *)controller
 {
     if (listing.activityLogs.count != sortedEventCount)
-        self.sortEvents;
+        [self sortEvents];
     
     [tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -358,12 +413,21 @@ NSUInteger sortedEventCount;
 - (void)OpenHouseViewControllerDidSave:(SourceTableViewController *)controller
 {
     if (listing.activityLogs.count != sortedEventCount)
-        self.sortEvents;
+        [self sortEvents];
     
     [tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+
+- (void)CustomEventViewControllerDidSave:(CustomEventViewController *)controller
+{
+    if (listing.activityLogs.count != sortedEventCount)
+        [self sortEvents];
+    
+    [tableView reloadData];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 

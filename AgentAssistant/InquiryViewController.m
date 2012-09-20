@@ -200,7 +200,7 @@
     
     NSMutableDictionary *tableViewCellContactNameData = [NSMutableDictionary dictionary];
     UITableViewCell *tableViewCellContactName = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-    tableViewCellContactName.textLabel.text = @"People";
+    tableViewCellContactName.textLabel.text = @"Contacts";
     tableViewCellContactName.selectionStyle = UITableViewCellSelectionStyleNone;
     tableViewCellContactName.tag = TAG_CELL_CONTACT_SELECT;
     tableViewCellContactName.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

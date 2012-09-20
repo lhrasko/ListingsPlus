@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1807" systemVersion="12B19" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1810" systemVersion="12B19" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="ActivityLog" representedClassName="ActivityLog" isAbstract="YES" syncable="YES">
         <attribute name="createdDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
@@ -16,6 +16,9 @@
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="activityLog" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ActivityLog" inverseName="contacts" inverseEntity="ActivityLog" syncable="YES"/>
+    </entity>
+    <entity name="Custom" representedClassName="CustomEvent" parentEntity="ActivityLog" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Inquiry" representedClassName="Inquiry" parentEntity="ActivityLog" syncable="YES"/>
     <entity name="Listing" representedClassName="Listing" syncable="YES">
@@ -34,6 +37,7 @@
     <elements>
         <element name="ActivityLog" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Contact" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="Custom" positionX="160" positionY="192" width="128" height="60"/>
         <element name="Inquiry" positionX="0" positionY="0" width="128" height="45"/>
         <element name="Listing" positionX="0" positionY="0" width="128" height="120"/>
         <element name="OpenHouse" positionX="0" positionY="0" width="128" height="90"/>

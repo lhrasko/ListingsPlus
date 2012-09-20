@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 WhiteRockLife. All rights reserved.
 //
 
-#import "ShowingDetailViewController.h"
+#import "CustomEventViewController.h"
 #import "NoteViewController.h"
-#import "Showing.h"
+#import "CustomEvent.h"
 #import "Listing.h"
 #import "DataModel.h"
 #import <QuartzCore/QuartzCore.h>
@@ -18,17 +18,17 @@
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 
-@interface ShowingDetailViewController ()
+@interface CustomEventViewController ()
 
 @end
 
-@implementation ShowingDetailViewController {}
+@implementation CustomEventViewController {}
 
 
 @synthesize listing;
 @synthesize tableView1Data;
 @synthesize tableView;
-@synthesize showingEntity;
+@synthesize customEntity;
 @synthesize actifText;
 @synthesize fetchedResultsController;
 @synthesize textView;
@@ -46,8 +46,6 @@
 #define TAG_CELL_DATE 2
 #define TAG_CELL_NOTES 3
 #define TAG_CELL_FEEDBACK 4
-#define TAG_CELL_ADDTOCALENDAR 50
-#define TAG_CELL_CALENDAR_REMINDER 55
 #define TAG_CELL_CONTACT_SELECT  101
 #define TAG_CELL_CONTACT_ADD 102
 
@@ -60,7 +58,7 @@
     [pickerView setDatePickerMode:UIDatePickerModeDateAndTime];
     [pickerView setMinuteInterval:15];
     [pickerView setTag: kDatePickerTag];
-    [pickerView setDate:showingEntity.date];
+    [pickerView setDate:customEntity.date];
     
     //Add picker to action sheet
     [actionSheet addSubview:pickerView];
@@ -82,7 +80,7 @@
         UIDatePicker *ourDatePicker = (UIDatePicker *) [actionSheet viewWithTag:kDatePickerTag];
         NSDate *selectedDate = [ourDatePicker date];
         
-        showingEntity.date = selectedDate;
+        customEntity.date = selectedDate;
         [tableView reloadData];
     }
 }
@@ -121,28 +119,65 @@
     [[managedObjectContext undoManager] beginUndoGrouping];
     
     
-    if (showingEntity == nil)
+    if (customEntity == nil)
     {
-        showingEntity = (Showing *)[NSEntityDescription insertNewObjectForEntityForName:@"Showing" inManagedObjectContext:managedObjectContext];
-        showingEntity.listing = listing;
-        showingEntity.createdDate = [NSDate date];
-        showingEntity.date = [NSDate date];
+        customEntity = (CustomEvent *)[NSEntityDescription insertNewObjectForEntityForName:@"Custom" inManagedObjectContext:managedObjectContext];
+        customEntity.listing = listing;
+        customEntity.createdDate = [NSDate date];
+        customEntity.date = [NSDate date];
         
-        [listing.activityLogs addObject:showingEntity];
+        [listing.activityLogs addObject:customEntity];
         [managedObjectContext save:nil];
     }
     
-    self.title = @"Showing";
+    self.title = @"Custom Event";
     
     
     self.tableView1Data = [NSMutableArray array];
+    
+    
+    // ----------------------------;
+    // Table View Section -> Custom Name
+    // ----------------------------;
+    
+    NSMutableDictionary *tableViewSectionLabelData = [NSMutableDictionary dictionary];
+    [tableViewSectionLabelData setObject:@"Custom" forKey:@"headerText"];
+    [tableViewSectionLabelData setObject:@"" forKey:@"footerText"];
+    [tableViewSectionLabelData setObject:[NSMutableArray array] forKey:@"cells"];
+    [self.tableView1Data addObject:tableViewSectionLabelData];
+    
+    // ----------------------------;
+    // Cell -> Label;
+    // ----------------------------;
+    
+    
+    NSMutableDictionary *tableViewCellLabelData = [NSMutableDictionary dictionary];
+    UITableViewCell *tableViewCellLabel = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
+    tableViewCellLabel.textLabel.text = @"Name";
+    tableViewCellLabel.selectionStyle = UITableViewCellSelectionStyleNone;
+    tableViewCellLabel.tag = 0;
+    
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0,10,200,35)];
+    textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    textField.placeholder = @"Enter event name";
+    [textField addTarget:self action:@selector(textFieldEditingEnded:) forControlEvents:UIControlEventEditingDidEnd];
+    tableViewCellLabel.accessoryView = textField;
+      
+    [tableViewCellLabelData setObject:tableViewCellLabel forKey:@"cell"];
+    [tableViewCellLabelData setObject:[NSNumber numberWithInteger:UITableViewCellEditingStyleDelete] forKey:@"editingStyle"];
+    [tableViewCellLabelData setObject:[NSNumber numberWithInteger:0] forKey:@"indentationLevel"];
+    
+    [tableViewCellLabelData setObject:[NSNumber numberWithFloat:44] forKey:@"height"];
+    [tableViewCellLabelData setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
+    [[tableViewSectionLabelData objectForKey:@"cells"] addObject:tableViewCellLabelData];
+    
     
     // ----------------------------;
     // Table View Section -> Source
     // ----------------------------;
     
     NSMutableDictionary *tableViewSectionSourceData = [NSMutableDictionary dictionary];
-    [tableViewSectionSourceData setObject:@"Showing" forKey:@"headerText"];
+    [tableViewSectionSourceData setObject:@"Other" forKey:@"headerText"];
     [tableViewSectionSourceData setObject:@"" forKey:@"footerText"];
     [tableViewSectionSourceData setObject:[NSMutableArray array] forKey:@"cells"];
     [self.tableView1Data addObject:tableViewSectionSourceData];
@@ -166,7 +201,6 @@
     [tableViewCellDateTimeData setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
     [[tableViewSectionSourceData objectForKey:@"cells"] addObject:tableViewCellDateTimeData];
     
-
     
     // ----------------------------;
     // Cell -> Source;
@@ -214,69 +248,20 @@
     [tableViewCellContactNameData setObject:[NSNumber numberWithFloat:44] forKey:@"height"];
     [tableViewCellContactNameData setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
     [[tableViewSectionSourceData objectForKey:@"cells"] addObject:tableViewCellContactNameData];
-
     
-    // ----------------------------;
-    // Table View Section -> Scheduling;
-    // ----------------------------;
     
-    NSMutableDictionary *tableViewCalendarSectionData = [NSMutableDictionary dictionary];
-    [tableViewCalendarSectionData setObject:@"Scheduling" forKey:@"headerText"];
-    [tableViewCalendarSectionData setObject:@"" forKey:@"footerText"];
-    [tableViewCalendarSectionData setObject:[NSMutableArray array] forKey:@"cells"];
-    [self.tableView1Data addObject:tableViewCalendarSectionData];
-
     
-
-    // ----------------------------;
-    // Cell -> Add to Calendar;
-    // ----------------------------;
-    
-    NSMutableDictionary *tableViewCellAddToCalendarData = [NSMutableDictionary dictionary];
-    UITableViewCell *tableViewCellAddToCalendar = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    tableViewCellAddToCalendar.textLabel.text = @"Add to Calendar";
-    tableViewCellAddToCalendar.tag = TAG_CELL_ADDTOCALENDAR;
-    
-    UISwitch *switchCalendar = [[UISwitch alloc] initWithFrame:CGRectMake(0,10,70,20)];
-    switchCalendar.on = YES;
-    tableViewCellAddToCalendar.accessoryView = switchCalendar;
-    
-    [tableViewCellAddToCalendarData setObject:tableViewCellAddToCalendar forKey:@"cell"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithInteger:UITableViewCellEditingStyleDelete] forKey:@"editingStyle"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithInteger:0] forKey:@"indentationLevel"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithFloat:44] forKey:@"height"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
-    [[tableViewCalendarSectionData objectForKey:@"cells"] addObject:tableViewCellAddToCalendarData];
-    
-    // ----------------------------;
-    // Cell -> Reminder;
-    // ----------------------------;
-    
-    NSMutableDictionary *tableViewCellCalendarReminderData = [NSMutableDictionary dictionary];
-    UITableViewCell *tableViewCellReminder = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    tableViewCellReminder.textLabel.text = @"Reminder";
-    tableViewCellReminder.tag = TAG_CELL_CALENDAR_REMINDER;
-    
-    UISwitch *switchReminder = [[UISwitch alloc] initWithFrame:CGRectMake(0,10,70,20)];
-    switchReminder.on = YES;
-    tableViewCellReminder.accessoryView = switchReminder;
-    
-    [tableViewCellCalendarReminderData setObject:tableViewCellReminder forKey:@"cell"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithInteger:UITableViewCellEditingStyleDelete] forKey:@"editingStyle"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithInteger:0] forKey:@"indentationLevel"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithFloat:44] forKey:@"height"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
-    [[tableViewCalendarSectionData objectForKey:@"cells"] addObject:tableViewCellCalendarReminderData];
-
     // ----------------------------;
     // Table View Section -> Additional Info;
     // ----------------------------;
     
-    NSMutableDictionary *tableViewAddtnlSectionData = [NSMutableDictionary dictionary];
-    [tableViewAddtnlSectionData setObject:@"Comments" forKey:@"headerText"];
-    [tableViewAddtnlSectionData setObject:@"" forKey:@"footerText"];
-    [tableViewAddtnlSectionData setObject:[NSMutableArray array] forKey:@"cells"];
-    [self.tableView1Data addObject:tableViewAddtnlSectionData];
+    NSMutableDictionary *tableViewSection3Data = [NSMutableDictionary dictionary];
+    [tableViewSection3Data setObject:@"Additional Details" forKey:@"headerText"];
+    [tableViewSection3Data setObject:@"" forKey:@"footerText"];
+    [tableViewSection3Data setObject:[NSMutableArray array] forKey:@"cells"];
+    [self.tableView1Data addObject:tableViewSection3Data];
+    
+    
     
     // ----------------------------;
     // Cell -> Feedback;
@@ -293,8 +278,7 @@
     [tableViewCell6Data setObject:[NSNumber numberWithInteger:0] forKey:@"indentationLevel"];
     [tableViewCell6Data setObject:[NSNumber numberWithFloat:44] forKey:@"height"];
     [tableViewCell6Data setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
-    [[tableViewAddtnlSectionData objectForKey:@"cells"] addObject:tableViewCell6Data];
-    
+    [[tableViewSection3Data objectForKey:@"cells"] addObject:tableViewCell6Data];
     
     // ----------------------------;
     // Cell -> Notes;
@@ -311,7 +295,7 @@
     [tableViewCell7Data setObject:[NSNumber numberWithInteger:0] forKey:@"indentationLevel"];
     [tableViewCell7Data setObject:[NSNumber numberWithFloat:44] forKey:@"height"];
     [tableViewCell7Data setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
-    [[tableViewAddtnlSectionData objectForKey:@"cells"] addObject:tableViewCell7Data];
+    [[tableViewSection3Data objectForKey:@"cells"] addObject:tableViewCell7Data];
     
 }
 
@@ -346,7 +330,7 @@
 {
     [super viewWillAppear:YES];
     [self.tableView reloadData];
-    self.navigationItem.hidesBackButton = showingEntity.hasChanges;
+    self.navigationItem.hidesBackButton = customEntity.hasChanges;
 }
 
 
@@ -391,45 +375,50 @@
     
     UITableViewCell *cellToCheck = [cellData objectForKey:@"cell"];
     
+    if (cellToCheck.tag == 0)
+    {
+        UITextField *textField = (UITextField *) cellToCheck.accessoryView;
+        textField.text = customEntity.name;
+    }
     
     if (cellToCheck.tag == 1) // source cells
     {
-        cellToCheck.detailTextLabel.text = showingEntity.source;
+        cellToCheck.detailTextLabel.text = customEntity.source;
     }
     if (cellToCheck.tag == TAG_CELL_DATE) // date cell
     {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"EEE, MMM d h:mm a"];
-        cellToCheck.detailTextLabel.text = [formatter stringFromDate: showingEntity.date];
+        cellToCheck.detailTextLabel.text = [formatter stringFromDate: customEntity.date];
     }
     
     if (cellToCheck.tag == TAG_CELL_NOTES)
-        cellToCheck.detailTextLabel.text = showingEntity.note;
+        cellToCheck.detailTextLabel.text = customEntity.note;
     
     if (cellToCheck.tag == TAG_CELL_FEEDBACK)
-        cellToCheck.detailTextLabel.text = showingEntity.feedback;
+        cellToCheck.detailTextLabel.text = customEntity.feedback;
     
     
     if (cellToCheck.tag == TAG_CELL_CONTACT_SELECT)
     {
         
-        if (showingEntity.contacts.count == 0)
+        if (customEntity.contacts.count == 0)
             cellToCheck.detailTextLabel.text = nil;
         
-        if (showingEntity.contacts.count == 1)
+        if (customEntity.contacts.count == 1)
         {
-            Contact *contact = [[[showingEntity.contacts allObjects] mutableCopy] objectAtIndex:0];
+            Contact *contact = [[[customEntity.contacts allObjects] mutableCopy] objectAtIndex:0];
             cellToCheck.detailTextLabel.text = contact.compositeName;
         }
         
-        if (showingEntity.contacts.count > 1)
+        if (customEntity.contacts.count > 1)
         {
-            NSString *numOfContacts = [[NSNumber numberWithInt:showingEntity.contacts.count] stringValue];
+            NSString *numOfContacts = [[NSNumber numberWithInt:customEntity.contacts.count] stringValue];
             cellToCheck.detailTextLabel.text = [numOfContacts stringByAppendingString:@" Contacts"];
         }
         
         //UITextField *textField = (UITextField *) cellToCheck.accessoryView;
-        //textField.text = showing.contact.company;
+        //textField.text = Other.contact.company;
     }
     
     return cellToCheck;
@@ -514,6 +503,12 @@ YIPopupTextView* popupTextView;
     
     UITableViewCell *cellToCheck = [cellData objectForKey:@"cell"];
     
+    if (cellToCheck.tag == 0)
+    {
+        cellToCheck.editing = YES;
+        
+    }
+    
     // checkmark formating to select only the currently selected on
     if (cellToCheck.tag == 1)
     {
@@ -533,7 +528,7 @@ YIPopupTextView* popupTextView;
         popupTextView.delegate = self;
         popupTextView.showCloseButton = NO;
         popupTextView.caretShiftGestureEnabled = YES;   // default = NO
-        popupTextView.text = showingEntity.feedback;
+        popupTextView.text = customEntity.feedback;
         self.navigationItem.hidesBackButton = YES;
         self.navigationItem.title = @"Feedback";
         [popupTextView showInView:self.view];
@@ -545,7 +540,7 @@ YIPopupTextView* popupTextView;
         popupTextView.delegate = self;
         popupTextView.showCloseButton = NO;
         popupTextView.caretShiftGestureEnabled = YES;   // default = NO
-        popupTextView.text = showingEntity.note;
+        popupTextView.text = customEntity.note;
         self.navigationItem.title = @"Notes";
         self.navigationItem.hidesBackButton = YES;
         [popupTextView showInView:self.view];
@@ -574,19 +569,17 @@ int notesTag;
     if ([segue.identifier isEqualToString:@"segueSource"]) {
         
         SourceTableViewController *sourceViewController = (SourceTableViewController *) segue.destinationViewController;
-        sourceViewController.activityLog = showingEntity;
+        sourceViewController.activityLog = customEntity;
         sourceViewController.delegate = self;
     }
     if ([segue.identifier isEqualToString:@"segueContacts"]) {
         
         ContactsViewController *contactsViewController = (ContactsViewController *) segue.destinationViewController;
-        contactsViewController.activityLog = showingEntity;
+        contactsViewController.activityLog = customEntity;
     }
     
     
 }
-
-
 
 
 
@@ -670,7 +663,7 @@ int notesTag;
     [[managedObjectContext undoManager] endUndoGrouping];
     [[managedObjectContext undoManager] undoNestedGroup];
     
-   	[self.delegate ShowingDetailViewControllerDidCancel:self];
+   	[self.delegate CustomEventViewControllerDidCancel:self];
 }
 
 
@@ -680,19 +673,24 @@ int notesTag;
     {
         [popupTextView dismiss];
         notesTag = 0;
-        self.navigationItem.hidesBackButton = showingEntity.hasChanges;
+        self.navigationItem.hidesBackButton = customEntity.hasChanges;
         
     }
     else
     {
-        showingEntity.modifiedDate = [NSDate date];
+        customEntity.modifiedDate = [NSDate date];
+        
         [managedObjectContext save:nil];
         
         [self.navigationController popViewControllerAnimated:YES];
-        [self.delegate ShowingDetailViewControllerDidSave:self];
+        [self.delegate CustomEventViewControllerDidSave:self];
     }
 }
 
+- (BOOL)textFieldEditingEnded:(UITextField *)textField {
+    customEntity.name = textField.text;
+    return YES;
+}
 
 
 // ------------------
@@ -708,22 +706,16 @@ int notesTag;
 
 - (void)SourceTableViewControllerDidSave:(SourceTableViewController *)controller source:(NSString *)source
 {
-    showingEntity.source = source;
+    customEntity.source = source;
     [tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
--(void)NoteViewControllerDidCancel:(NoteViewController *)controller
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 -(void)ContactsViewControllerDidCancel:(ContactsViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 
 
@@ -746,18 +738,20 @@ int notesTag;
 
 - (void)popupTextView:(YIPopupTextView *)textView willDismissWithText:(NSString *)text
 {
+    NSLog(@"will dismiss");
     if (notesTag == TAG_CELL_NOTES)
-        showingEntity.note = text;
+        customEntity.note = text;
     
     if (notesTag == TAG_CELL_FEEDBACK)
-        showingEntity.feedback = text;
+        customEntity.feedback = text;
     
-    self.navigationItem.title = @"Showing";
+    self.navigationItem.title = @"Other";
     [tableView reloadData];
 }
 
 - (void)popupTextView:(YIPopupTextView *)textView didDismissWithText:(NSString *)text
 {
+    NSLog(@"did dismiss");
 }
 
 

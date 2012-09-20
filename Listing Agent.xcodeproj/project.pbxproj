@@ -25,11 +25,12 @@
 		AB3840AB15F882FC00767BFB /* DCRoundSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3840A615F882FC00767BFB /* DCRoundSwitch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AB3840AD15F884CF00767BFB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3840AC15F884CF00767BFB /* QuartzCore.framework */; };
 		AB632BAB1605AF570089BA4F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB632BAA1605AF570089BA4F /* Default-568h@2x.png */; };
-		AB66BF1915F51854000FBADA /* NoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB66BF1815F51854000FBADA /* NoteViewController.m */; };
 		AB6AADE21601D4DF0061DEB2 /* YIPopupTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6AADDE1601D4DF0061DEB2 /* YIPopupTextView.m */; };
 		AB6AADE31601D4DF0061DEB2 /* YIPopupDemoController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6AADE01601D4DF0061DEB2 /* YIPopupDemoController.m */; };
 		AB6AADE61601D4E80061DEB2 /* SSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6AADE41601D4E80061DEB2 /* SSTextView.m */; };
 		AB6C74C515F5C1BD00A9EF3D /* appIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB6C74C415F5C1BD00A9EF3D /* appIcon@2x.png */; };
+		AB75E535160ACABE0036C646 /* CustomEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = AB75E534160ACABE0036C646 /* CustomEvent.m */; };
+		AB75E537160ACCA40036C646 /* CustomEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB75E536160ACCA40036C646 /* CustomEventViewController.m */; };
 		AB7B223615F02BD100F0128D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB7B223515F02BD100F0128D /* CoreData.framework */; };
 		AB7B223A15F02ED400F0128D /* AgentAssistant.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AB7B223815F02ED400F0128D /* AgentAssistant.xcdatamodeld */; };
 		AB7B223E15F0831500F0128D /* ShowingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7B223D15F0831500F0128D /* ShowingDetailViewController.m */; };
@@ -64,6 +65,7 @@
 		8A1699B91608DC3B00C73D30 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		AB166D1E1605ABCF0004623F /* grouptableview@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grouptableview@2x.png"; path = "../grouptableview@2x.png"; sourceTree = "<group>"; };
 		AB166D1F1605ABCF0004623F /* grouptableview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = grouptableview.png; path = ../grouptableview.png; sourceTree = "<group>"; };
+		AB2A5D34160A4F9400EB4608 /* CustomEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomEventViewController.h; sourceTree = "<group>"; };
 		AB32F48F15EF0E5A00008E14 /* Listing Agent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Listing Agent.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB32F49315EF0E5A00008E14 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AB32F49515EF0E5A00008E14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -88,8 +90,6 @@
 		AB3840A715F882FC00767BFB /* DCRoundSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCRoundSwitch.h; path = DCRoundSwitch/DCRoundSwitch.h; sourceTree = "<group>"; };
 		AB3840AC15F884CF00767BFB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AB632BAA1605AF570089BA4F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		AB66BF1715F51854000FBADA /* NoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteViewController.h; sourceTree = "<group>"; };
-		AB66BF1815F51854000FBADA /* NoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteViewController.m; sourceTree = "<group>"; };
 		AB6AADDE1601D4DF0061DEB2 /* YIPopupTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YIPopupTextView.m; sourceTree = "<group>"; };
 		AB6AADDF1601D4DF0061DEB2 /* YIPopupTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YIPopupTextView.h; sourceTree = "<group>"; };
 		AB6AADE01601D4DF0061DEB2 /* YIPopupDemoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YIPopupDemoController.m; sourceTree = "<group>"; };
@@ -97,6 +97,9 @@
 		AB6AADE41601D4E80061DEB2 /* SSTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSTextView.m; sourceTree = "<group>"; };
 		AB6AADE51601D4E80061DEB2 /* SSTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSTextView.h; sourceTree = "<group>"; };
 		AB6C74C415F5C1BD00A9EF3D /* appIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appIcon@2x.png"; sourceTree = "<group>"; };
+		AB75E533160ACABE0036C646 /* CustomEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomEvent.h; sourceTree = "<group>"; };
+		AB75E534160ACABE0036C646 /* CustomEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomEvent.m; sourceTree = "<group>"; };
+		AB75E536160ACCA40036C646 /* CustomEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomEventViewController.m; sourceTree = "<group>"; };
 		AB7B223515F02BD100F0128D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AB7B223915F02ED400F0128D /* AgentAssistant.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AgentAssistant.xcdatamodel; sourceTree = "<group>"; };
 		AB7B223C15F0831500F0128D /* ShowingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowingDetailViewController.h; sourceTree = "<group>"; };
@@ -170,10 +173,35 @@
 			name = Controls;
 			sourceTree = "<group>";
 		};
+		AB2A5D32160A4F0F00EB4608 /* EventViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				AB7B223C15F0831500F0128D /* ShowingDetailViewController.h */,
+				AB7B223D15F0831500F0128D /* ShowingDetailViewController.m */,
+				AB80C03C15F44125002A0D5F /* OpenHouseViewController.h */,
+				AB80C03D15F44125002A0D5F /* OpenHouseViewController.m */,
+				AB80C03F15F453ED002A0D5F /* InquiryViewController.h */,
+				AB80C04015F453ED002A0D5F /* InquiryViewController.m */,
+				AB2A5D34160A4F9400EB4608 /* CustomEventViewController.h */,
+				AB75E536160ACCA40036C646 /* CustomEventViewController.m */,
+			);
+			name = EventViewControllers;
+			sourceTree = "<group>";
+		};
+		AB2A5D33160A4F3E00EB4608 /* SharedViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				AB8F4ECF15FFB48C001F0FA0 /* ContactsViewController.h */,
+				AB8F4ED015FFB48C001F0FA0 /* ContactsViewController.m */,
+				ABC1C03415F979020084071B /* SourceTableViewController.h */,
+				ABC1C03515F979020084071B /* SourceTableViewController.m */,
+			);
+			name = SharedViewControllers;
+			sourceTree = "<group>";
+		};
 		AB32F48415EF0E5A00008E14 = {
 			isa = PBXGroup;
 			children = (
-				8A1699B91608DC3B00C73D30 /* AudioToolbox.framework */,
 				AB632BAA1605AF570089BA4F /* Default-568h@2x.png */,
 				AB6AADDD1601D47A0061DEB2 /* YIPopupTextView */,
 				ABC1915515F88F7A00528421 /* Images */,
@@ -198,6 +226,7 @@
 		AB32F49215EF0E5A00008E14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8A1699B91608DC3B00C73D30 /* AudioToolbox.framework */,
 				ABC9D23715FB56890070A5F3 /* AddressBook.framework */,
 				ABC9D23515FB55BC0070A5F3 /* AddressBookUI.framework */,
 				AB3840AC15F884CF00767BFB /* QuartzCore.framework */,
@@ -212,6 +241,8 @@
 		AB32F49915EF0E5A00008E14 /* AgentAssistant */ = {
 			isa = PBXGroup;
 			children = (
+				AB2A5D33160A4F3E00EB4608 /* SharedViewControllers */,
+				AB2A5D32160A4F0F00EB4608 /* EventViewControllers */,
 				8A1699B41608D4D800C73D30 /* Controls */,
 				AB7B224215F0A5E200F0128D /* default.png */,
 				AB32F4A215EF0E5A00008E14 /* AppDelegate.h */,
@@ -224,24 +255,12 @@
 				AB32F4B115EF167A00008E14 /* ActivityLogViewController.m */,
 				ABA9E98015F71B12008FFF87 /* ListingEditViewController.h */,
 				ABA9E98115F71B12008FFF87 /* ListingEditViewController.m */,
-				AB7B223C15F0831500F0128D /* ShowingDetailViewController.h */,
-				AB7B223D15F0831500F0128D /* ShowingDetailViewController.m */,
-				AB80C03C15F44125002A0D5F /* OpenHouseViewController.h */,
-				AB80C03D15F44125002A0D5F /* OpenHouseViewController.m */,
-				AB80C03F15F453ED002A0D5F /* InquiryViewController.h */,
-				AB80C04015F453ED002A0D5F /* InquiryViewController.m */,
-				AB66BF1715F51854000FBADA /* NoteViewController.h */,
-				AB66BF1815F51854000FBADA /* NoteViewController.m */,
 				ABB37AF515F7CD510088F931 /* AddNewTableViewCell.h */,
 				ABB37AF615F7CD510088F931 /* AddNewTableViewCell.m */,
 				ABF0820215F85BB100F92FC7 /* EditTableViewCell.h */,
 				ABF0820315F85BB100F92FC7 /* EditTableViewCell.m */,
-				ABC1C03415F979020084071B /* SourceTableViewController.h */,
-				ABC1C03515F979020084071B /* SourceTableViewController.m */,
 				ABC5F93015FECA990019C927 /* RootTabBarControllerViewController.h */,
 				ABC5F93115FECA9A0019C927 /* RootTabBarControllerViewController.m */,
-				AB8F4ECF15FFB48C001F0FA0 /* ContactsViewController.h */,
-				AB8F4ED015FFB48C001F0FA0 /* ContactsViewController.m */,
 			);
 			path = AgentAssistant;
 			sourceTree = "<group>";
@@ -297,6 +316,8 @@
 		AB7B223B15F02EDA00F0128D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				AB75E533160ACABE0036C646 /* CustomEvent.h */,
+				AB75E534160ACABE0036C646 /* CustomEvent.m */,
 				AB166D1E1605ABCF0004623F /* grouptableview@2x.png */,
 				AB166D1F1605ABCF0004623F /* grouptableview.png */,
 				ABF081F915F84F2100F92FC7 /* button_green.png */,
@@ -413,7 +434,6 @@
 				AB7B223E15F0831500F0128D /* ShowingDetailViewController.m in Sources */,
 				AB80C03E15F44125002A0D5F /* OpenHouseViewController.m in Sources */,
 				AB80C04115F453ED002A0D5F /* InquiryViewController.m in Sources */,
-				AB66BF1915F51854000FBADA /* NoteViewController.m in Sources */,
 				ABC9457F15F6C878006A6A9C /* Inquiry.m in Sources */,
 				ABC9458215F6C8CA006A6A9C /* Showing.m in Sources */,
 				ABC9458B15F6C952006A6A9C /* OpenHouse.m in Sources */,
@@ -434,6 +454,8 @@
 				AB6AADE21601D4DF0061DEB2 /* YIPopupTextView.m in Sources */,
 				AB6AADE31601D4DF0061DEB2 /* YIPopupDemoController.m in Sources */,
 				AB6AADE61601D4E80061DEB2 /* SSTextView.m in Sources */,
+				AB75E535160ACABE0036C646 /* CustomEvent.m in Sources */,
+				AB75E537160ACCA40036C646 /* CustomEventViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
