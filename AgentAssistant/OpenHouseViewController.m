@@ -10,7 +10,6 @@
 #import "NoteViewController.h"
 #import "OpenHouse.h"
 #import "Listing.h"
-#import "DataModel.h"
 #import <QuartzCore/QuartzCore.h>
 #import "DCRoundSwitch.h"
 #import "SourceTableViewController.h"
@@ -18,6 +17,8 @@
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import <AudioToolbox/AudioToolbox.h>
+#import <EventKit/EventKit.h>
+#import <EventKitUI/EventKitUI.h>
 
 @interface OpenHouseViewController ()
 
@@ -52,7 +53,6 @@
 #define TAG_CELL_VISITOR_COUNT 20
 #define TAG_CELL_NOTES 3
 #define TAG_CELL_FEEDBACK 4
-#define TAG_CELL_ADDTOCALENDAR 50
 #define TAG_CELL_CALENDAR_REMINDER 55
 #define TAG_CELL_CONTACT_SELECT  101
 #define TAG_CELL_CONTACT_ADD 102
@@ -68,7 +68,7 @@ int ActionSheetType;
     //Configure picker...
     if (ActionSheetType == kDatePickerTag)
     {
-        [pickerView setDatePickerMode:UIDatePickerModeDate];
+        [pickerView setDatePickerMode:UIDatePickerModeDateAndTime];
         [pickerView setDate:openHouseEntity.date];
         [pickerView setTag:kDatePickerTag];
     }
@@ -112,12 +112,23 @@ int ActionSheetType;
         if (ActionSheetType == kDatePickerTag)
         {
             NSDateComponents *startDateComps = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:selectedDate];
+            NSDateComponents *endDateComps = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:selectedDate];
+
             NSDateComponents *startTimeComps = [[NSCalendar currentCalendar] components:(NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:openHouseEntity.date];
+            NSDateComponents *endTimeComps = [[NSCalendar currentCalendar] components:(NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:openHouseEntity.endTime];
+
             [startDateComps setHour:startTimeComps.hour];
             [startDateComps setMinute:startTimeComps.minute];
+            [endDateComps setHour:endTimeComps.hour];
+            [endDateComps setMinute:endTimeComps.minute];
        
             NSDate *startTimeDate = [[NSCalendar currentCalendar] dateFromComponents:startDateComps];
+            NSDate *endTimeDate = [[NSCalendar currentCalendar] dateFromComponents:endDateComps];
+            
             openHouseEntity.date = startTimeDate;
+            openHouseEntity.endTime = endTimeDate;
+
+        
         }
         else
         {
@@ -182,7 +193,7 @@ int ActionSheetType;
     
     [[managedObjectContext undoManager] beginUndoGrouping];
     
-    
+        
     if (openHouseEntity == nil)
     {
         openHouseEntity = (OpenHouse *)[NSEntityDescription insertNewObjectForEntityForName:@"OpenHouse" inManagedObjectContext:managedObjectContext];
@@ -199,14 +210,26 @@ int ActionSheetType;
         NSDate *startTime = [[NSCalendar currentCalendar] dateFromComponents:startComps];
         openHouseEntity.date = startTime;
         
-        NSDateComponents *endComps = [[NSCalendar currentCalendar] components:(NSHourCalendarUnit | NSMinuteCalendarUnit ) fromDate:openHouseEntity.date];
+        NSDateComponents *endComps = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit ) fromDate:todaysDate];
         [endComps setHour:16];
         [endComps setMinute:0];
         NSDate *endTime = [[NSCalendar currentCalendar] dateFromComponents:endComps];
         openHouseEntity.endTime = endTime;
         
         
-        [listing.activityLogs addObject:openHouseEntity];
+        [listing addActivityLogsObject:openHouseEntity];
+    }
+    else
+    {
+        // make sure calendar event still exists
+        EKEventStore *store = [[EKEventStore alloc] init];
+        if (openHouseEntity.calendarEventIdentifier != nil)
+        {
+            EKEvent *event = [store eventWithIdentifier:openHouseEntity.calendarEventIdentifier];
+            if (event == nil)
+                openHouseEntity.calendarEventIdentifier = nil;
+        }
+        
     }
 
     
@@ -279,48 +302,6 @@ int ActionSheetType;
     [tableViewCellEndTimeData setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
     [[tableViewSectionSourceData objectForKey:@"cells"] addObject:tableViewCellEndTimeData];
     
-    
-    // ----------------------------;
-    // Cell -> Add to Calendar;
-    // ----------------------------;
-    
-    NSMutableDictionary *tableViewCellAddToCalendarData = [NSMutableDictionary dictionary];
-    UITableViewCell *tableViewCellAddToCalendar = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    tableViewCellAddToCalendar.textLabel.text = @"Add to Calendar";
-    tableViewCellAddToCalendar.tag = TAG_CELL_ADDTOCALENDAR;
-    
-    UISwitch *switchCalendar = [[UISwitch alloc] initWithFrame:CGRectMake(0,10,70,20)];
-    switchCalendar.on = YES;
-    tableViewCellAddToCalendar.accessoryView = switchCalendar;
-    
-    [tableViewCellAddToCalendarData setObject:tableViewCellAddToCalendar forKey:@"cell"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithInteger:UITableViewCellEditingStyleDelete] forKey:@"editingStyle"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithInteger:0] forKey:@"indentationLevel"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithFloat:44] forKey:@"height"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
-    [[tableViewSectionSourceData objectForKey:@"cells"] addObject:tableViewCellAddToCalendarData];
-    
-    
-    // ----------------------------;
-    // Cell -> Reminder;
-    // ----------------------------;
-    
-    NSMutableDictionary *tableViewCellCalendarReminderData = [NSMutableDictionary dictionary];
-    UITableViewCell *tableViewCellReminder = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    tableViewCellReminder.textLabel.text = @"Reminder";
-    tableViewCellReminder.tag = TAG_CELL_CALENDAR_REMINDER;
-    
-    UISwitch *switchReminder = [[UISwitch alloc] initWithFrame:CGRectMake(0,10,70,20)];
-    switchReminder.on = YES;
-    tableViewCellReminder.accessoryView = switchReminder;
-    
-    [tableViewCellCalendarReminderData setObject:tableViewCellReminder forKey:@"cell"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithInteger:UITableViewCellEditingStyleDelete] forKey:@"editingStyle"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithInteger:0] forKey:@"indentationLevel"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithFloat:44] forKey:@"height"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
-    [[tableViewSectionSourceData objectForKey:@"cells"] addObject:tableViewCellCalendarReminderData];
-
     
     
     // ----------------------------;
@@ -556,8 +537,6 @@ int ActionSheetType;
             cellToCheck.detailTextLabel.text = [numOfContacts stringByAppendingString:@" Contacts"];
         }
         
-        //UITextField *textField = (UITextField *) cellToCheck.accessoryView;
-        //textField.text = inquiry.contact.company;
     }
     
     return cellToCheck;
@@ -841,6 +820,32 @@ int notesTag;
     }
 }
 
+- (IBAction)deleteButtonPressed:(id)sender {
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirm Delete"
+                                                    message:@"Are you sure you want to delete this open house?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Delete", nil];
+    [alert show];
+}
+
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Delete"])
+    {
+        [listing removeActivityLogsObject:openHouseEntity];
+        [managedObjectContext save:nil];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.delegate OpenHouseViewControllerDidSave:self];
+    }
+    
+}
+
 
 
 
@@ -958,6 +963,72 @@ int notesTag;
 - (void)popupTextView:(YIPopupTextView *)textView didDismissWithText:(NSString *)text
 {
 }
+
+
+- (IBAction)actionButtonPressed:(id)sender {
+
+    
+    EKEventStore *store = [[EKEventStore alloc] init];
+    EKEvent *event;
+    
+    
+    if (openHouseEntity.calendarEventIdentifier != nil)
+        event = [store eventWithIdentifier:openHouseEntity.calendarEventIdentifier];
+    else
+    {
+        event = [EKEvent eventWithEventStore:store];
+        event.startDate = openHouseEntity.date;
+        event.endDate   = openHouseEntity.endTime;
+        event.title = openHouseEntity.label;
+        event.location = listing.name;
+        event.availability = EKEventAvailabilityBusy;
+        
+        EKAlarm *alarm = [EKAlarm alarmWithRelativeOffset:-3600];
+        event.alarms = [NSArray arrayWithObject:alarm];
+        
+        if (openHouseEntity.note != nil)
+            event.notes = [openHouseEntity.note stringByAppendingString:@"\nEntry created by ListingAgent."];
+        else
+            event.notes = @"Entry created by ListingAgent.";
+    }
+    
+    
+    void (^presentEventEditor)(void) = ^{
+        EKEventEditViewController *controller = [[EKEventEditViewController alloc] init];
+        controller.eventStore = store;
+        controller.event = event;
+        controller.editViewDelegate = self;
+        
+        [self presentViewController:controller animated:YES completion:nil];
+    };
+    
+    EKAuthorizationStatus authStatus = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
+    
+    if (authStatus == EKAuthorizationStatusAuthorized) {
+        presentEventEditor();
+    } else if (authStatus == EKAuthorizationStatusNotDetermined) {
+        [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+            if (granted) presentEventEditor();
+        }];
+    }
+
+}
+
+
+
+- (void)eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action
+{
+    if (action == EKEventEditViewActionSaved)
+        openHouseEntity.calendarEventIdentifier = controller.event.eventIdentifier;
+    
+    if (action == EKEventEditViewActionDeleted)
+        openHouseEntity.calendarEventIdentifier = nil;
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [tableView reloadData];
+    
+}
+
 
 
 

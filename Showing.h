@@ -1,8 +1,8 @@
 //
 //  Showing.h
-//  Agent Assist
+//  Listing Agent
 //
-//  Created by Lubos Hrasko on 2012-09-04.
+//  Created by Lubos Hrasko on 2012-09-20.
 //  Copyright (c) 2012 WhiteRockLife. All rights reserved.
 //
 
@@ -13,5 +13,6 @@
 
 @interface Showing : ActivityLog
 
+@property (nonatomic, retain) NSString * calendarEventIdentifier;
 
 @end

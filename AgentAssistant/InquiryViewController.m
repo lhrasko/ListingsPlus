@@ -10,9 +10,7 @@
 #import "NoteViewController.h"
 #import "Showing.h"
 #import "Listing.h"
-#import "DataModel.h"
 #import <QuartzCore/QuartzCore.h>
-#import "DCRoundSwitch.h"
 #import "SourceTableViewController.h"
 #import "Contact.h"
 #import <AddressBook/AddressBook.h>
@@ -126,7 +124,7 @@
         inquiryEntity.createdDate = [NSDate date];
         inquiryEntity.date = [NSDate date];
 
-        [listing.activityLogs addObject:inquiryEntity];
+        [listing addActivityLogsObject:inquiryEntity];
         [managedObjectContext save:nil];
     }
     
@@ -483,7 +481,7 @@ YIPopupTextView* popupTextView;
         popupTextView.text = inquiryEntity.feedback;
         self.navigationItem.hidesBackButton = YES;
         self.navigationItem.title = @"Feedback";
-        [popupTextView showInView:self.view];
+        [popupTextView showInView:self.view.superview];
     }
     if (cellToCheck.tag == TAG_CELL_NOTES)
     {
@@ -495,7 +493,7 @@ YIPopupTextView* popupTextView;
         popupTextView.text = inquiryEntity.note;
         self.navigationItem.title = @"Notes";
         self.navigationItem.hidesBackButton = YES;
-        [popupTextView showInView:self.view];
+        [popupTextView showInView:self.view.superview];
     }
     
     if (cellToCheck.tag == TAG_CELL_CONTACT_SELECT)
@@ -638,6 +636,30 @@ int notesTag;
     }
 }
 
+- (IBAction)deleteButtonPressed:(id)sender {
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirm Delete"
+                                                    message:@"Are you sure you want to delete this inquiry?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Delete", nil];
+    [alert show];
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Delete"])
+    {
+        [listing removeActivityLogsObject:inquiryEntity];
+        [managedObjectContext save:nil];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.delegate InquiryViewControllerDidSave:self];
+    }
+    
+}
 
 
 // ------------------

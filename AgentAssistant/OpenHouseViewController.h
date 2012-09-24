@@ -15,6 +15,7 @@
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import "YIPopupTextView.h"
+#import <EventKitUI/EventKitUI.h>
 
 
 @class OpenHouseViewController;
@@ -25,7 +26,7 @@
 @end
 
 
-@interface OpenHouseViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate, SourceTableViewControllerDelegate, ContactsViewControllerDelegate, YIPopupTextViewDelegate> {
+@interface OpenHouseViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate, SourceTableViewControllerDelegate, ContactsViewControllerDelegate, YIPopupTextViewDelegate, EKEventEditViewDelegate, UIAlertViewDelegate> {
     NSFetchedResultsController *fetchedResultsController;
     NSManagedObjectContext *managedObjectContext;
 }
@@ -44,9 +45,11 @@
 @property (nonatomic, strong) Listing *listing;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) OpenHouse *openHouseEntity;
+- (IBAction)actionButtonPressed:(id)sender;
 
 @property (nonatomic, retain) NSMutableArray *tableView1Data;
 
 -(IBAction)SaveButtonPressed:(id)sender;
+- (IBAction)deleteButtonPressed:(id)sender;
 
 @end

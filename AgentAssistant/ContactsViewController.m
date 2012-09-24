@@ -108,7 +108,7 @@ AppDelegate *appDelegate;
         if (cell == nil) {
             cell = [UITableViewCell alloc];
         }
-        cell.textLabel.text = @"Add New Person";
+        cell.textLabel.text = @"Add New Contact";
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
         [button addTarget:self action:@selector(buttonTapped:event:) forControlEvents:  UIControlEventTouchUpInside];
@@ -184,6 +184,7 @@ AppDelegate *appDelegate;
         {
             ABNewPersonViewController *view = [[ABNewPersonViewController alloc] init];
             view.newPersonViewDelegate = self;
+            
             UINavigationController *newNavigationController = [[UINavigationController alloc] initWithRootViewController:view];
             [self presentModalViewController:newNavigationController animated:YES];
         }
@@ -268,19 +269,13 @@ AppDelegate *appDelegate;
         if (!abSourceRef)
             abSourceRef = ABAddressBookCopyDefaultSource(abAddressBookRef);
         
-        ABRecordRef abGroupRef = getGroup(@"Realtor Assist Contacts", abSourceRef, abAddressBookRef);
+        ABRecordRef abGroupRef = getGroup(@"Real Estate Contacts", abSourceRef, abAddressBookRef);
         
         CFErrorRef err = nil;
         if (abPersonRef && abGroupRef)
         {
-            //-- add the person to the address book (even if the person already exists)
-            //ABAddressBookAddRecord(abAddressBookRef, p, nil);
-            
-            //-- save the address book
-            //ABAddressBookSave(abAddressBookRef, &err);
-            
             //-- add the person to the group
-            ABGroupAddMember(abGroupRef, abPersonRef, &err);
+            bool addedSuccesfully = ABGroupAddMember(abGroupRef, abPersonRef, &err);
             
             //-- save the address book again
             ABAddressBookSave(abAddressBookRef, &err);

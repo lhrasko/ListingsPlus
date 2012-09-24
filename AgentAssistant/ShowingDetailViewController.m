@@ -10,13 +10,15 @@
 #import "NoteViewController.h"
 #import "Showing.h"
 #import "Listing.h"
-#import "DataModel.h"
 #import <QuartzCore/QuartzCore.h>
 #import "DCRoundSwitch.h"
 #import "SourceTableViewController.h"
 #import "Contact.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+#import <EventKit/EventKit.h>
+#import <EventKitUI/EventKitUI.h>
+#import "MBProgressHUD.h"
 
 @interface ShowingDetailViewController ()
 
@@ -36,7 +38,6 @@
 
 @synthesize managedObjectContext;
 
-
 #define kDatePickerTag 100
 #define TAG_TEXTFIELD_CONTACT_NAME  1
 #define TAG_TEXTFIELD_CONTACT_COMPANY 2
@@ -46,7 +47,6 @@
 #define TAG_CELL_DATE 2
 #define TAG_CELL_NOTES 3
 #define TAG_CELL_FEEDBACK 4
-#define TAG_CELL_ADDTOCALENDAR 50
 #define TAG_CELL_CALENDAR_REMINDER 55
 #define TAG_CELL_CONTACT_SELECT  101
 #define TAG_CELL_CONTACT_ADD 102
@@ -121,6 +121,7 @@
     [[managedObjectContext undoManager] beginUndoGrouping];
     
     
+    
     if (showingEntity == nil)
     {
         showingEntity = (Showing *)[NSEntityDescription insertNewObjectForEntityForName:@"Showing" inManagedObjectContext:managedObjectContext];
@@ -128,12 +129,25 @@
         showingEntity.createdDate = [NSDate date];
         showingEntity.date = [NSDate date];
         
-        [listing.activityLogs addObject:showingEntity];
+        [listing addActivityLogsObject:showingEntity];
+        
         [managedObjectContext save:nil];
     }
+    else
+    {
+        // make sure calendar event still exists
+        EKEventStore *store = [[EKEventStore alloc] init];
+        if (showingEntity.calendarEventIdentifier != nil)
+        {
+            EKEvent *event = [store eventWithIdentifier:showingEntity.calendarEventIdentifier];
+            if (event == nil)
+                showingEntity.calendarEventIdentifier = nil;
+        }
+    }
+
     
-    self.title = @"Showing";
-    
+    self.title = showingEntity.label;
+
     
     self.tableView1Data = [NSMutableArray array];
     
@@ -216,57 +230,6 @@
     [[tableViewSectionSourceData objectForKey:@"cells"] addObject:tableViewCellContactNameData];
 
     
-    // ----------------------------;
-    // Table View Section -> Scheduling;
-    // ----------------------------;
-    
-    NSMutableDictionary *tableViewCalendarSectionData = [NSMutableDictionary dictionary];
-    [tableViewCalendarSectionData setObject:@"Scheduling" forKey:@"headerText"];
-    [tableViewCalendarSectionData setObject:@"" forKey:@"footerText"];
-    [tableViewCalendarSectionData setObject:[NSMutableArray array] forKey:@"cells"];
-    [self.tableView1Data addObject:tableViewCalendarSectionData];
-
-    
-
-    // ----------------------------;
-    // Cell -> Add to Calendar;
-    // ----------------------------;
-    
-    NSMutableDictionary *tableViewCellAddToCalendarData = [NSMutableDictionary dictionary];
-    UITableViewCell *tableViewCellAddToCalendar = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    tableViewCellAddToCalendar.textLabel.text = @"Add to Calendar";
-    tableViewCellAddToCalendar.tag = TAG_CELL_ADDTOCALENDAR;
-    
-    UISwitch *switchCalendar = [[UISwitch alloc] initWithFrame:CGRectMake(0,10,70,20)];
-    switchCalendar.on = YES;
-    tableViewCellAddToCalendar.accessoryView = switchCalendar;
-    
-    [tableViewCellAddToCalendarData setObject:tableViewCellAddToCalendar forKey:@"cell"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithInteger:UITableViewCellEditingStyleDelete] forKey:@"editingStyle"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithInteger:0] forKey:@"indentationLevel"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithFloat:44] forKey:@"height"];
-    [tableViewCellAddToCalendarData setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
-    [[tableViewCalendarSectionData objectForKey:@"cells"] addObject:tableViewCellAddToCalendarData];
-    
-    // ----------------------------;
-    // Cell -> Reminder;
-    // ----------------------------;
-    
-    NSMutableDictionary *tableViewCellCalendarReminderData = [NSMutableDictionary dictionary];
-    UITableViewCell *tableViewCellReminder = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    tableViewCellReminder.textLabel.text = @"Reminder";
-    tableViewCellReminder.tag = TAG_CELL_CALENDAR_REMINDER;
-    
-    UISwitch *switchReminder = [[UISwitch alloc] initWithFrame:CGRectMake(0,10,70,20)];
-    switchReminder.on = YES;
-    tableViewCellReminder.accessoryView = switchReminder;
-    
-    [tableViewCellCalendarReminderData setObject:tableViewCellReminder forKey:@"cell"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithInteger:UITableViewCellEditingStyleDelete] forKey:@"editingStyle"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithInteger:0] forKey:@"indentationLevel"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithFloat:44] forKey:@"height"];
-    [tableViewCellCalendarReminderData setObject:[NSNumber numberWithBool:YES] forKey:@"showReorderControl"];
-    [[tableViewCalendarSectionData objectForKey:@"cells"] addObject:tableViewCellCalendarReminderData];
 
     // ----------------------------;
     // Table View Section -> Additional Info;
@@ -346,6 +309,7 @@
 {
     [super viewWillAppear:YES];
     [self.tableView reloadData];
+    
     self.navigationItem.hidesBackButton = showingEntity.hasChanges;
 }
 
@@ -428,9 +392,8 @@
             cellToCheck.detailTextLabel.text = [numOfContacts stringByAppendingString:@" Contacts"];
         }
         
-        //UITextField *textField = (UITextField *) cellToCheck.accessoryView;
-        //textField.text = showing.contact.company;
     }
+    
     
     return cellToCheck;
 }
@@ -536,7 +499,7 @@ YIPopupTextView* popupTextView;
         popupTextView.text = showingEntity.feedback;
         self.navigationItem.hidesBackButton = YES;
         self.navigationItem.title = @"Feedback";
-        [popupTextView showInView:self.view];
+        [popupTextView showInView:self.view.superview];
     }
     if (cellToCheck.tag == TAG_CELL_NOTES)
     {
@@ -548,7 +511,7 @@ YIPopupTextView* popupTextView;
         popupTextView.text = showingEntity.note;
         self.navigationItem.title = @"Notes";
         self.navigationItem.hidesBackButton = YES;
-        [popupTextView showInView:self.view];
+        [popupTextView showInView:self.view.superview];
     }
     
     if (cellToCheck.tag == TAG_CELL_CONTACT_SELECT)
@@ -557,7 +520,7 @@ YIPopupTextView* popupTextView;
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     
-    if (cellToCheck.tag == 100)
+       if (cellToCheck.tag == 100)
     {
         UITextField *textField = (UITextField *)cellToCheck.accessoryView;
         [textField becomeFirstResponder];
@@ -566,7 +529,6 @@ YIPopupTextView* popupTextView;
 }
 
 int notesTag;
-
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -693,6 +655,54 @@ int notesTag;
     }
 }
 
+- (IBAction)addToCalendarButtonPressed:(id)sender {
+    
+    EKEventStore *store = [[EKEventStore alloc] init];
+    EKEvent *event;
+    
+    
+    if (showingEntity.calendarEventIdentifier != nil)
+        event = [store eventWithIdentifier:showingEntity.calendarEventIdentifier];
+    else
+    {
+        event = [EKEvent eventWithEventStore:store];
+        event.startDate = showingEntity.date;
+        event.endDate   = [showingEntity.date dateByAddingTimeInterval:1800];
+        event.title = showingEntity.label;
+        event.location = listing.name;
+        event.availability = EKEventAvailabilityBusy;
+        
+        EKAlarm *alarm = [EKAlarm alarmWithRelativeOffset:-3600];
+        event.alarms = [NSArray arrayWithObject:alarm];
+        
+        if (showingEntity.note != nil)
+            event.notes = [showingEntity.note stringByAppendingString:@"\nEntry created by ListingAgent."];
+        else
+            event.notes = @"Entry created by ListingAgent.";
+    }
+    
+    
+    void (^presentEventEditor)(void) = ^{
+        EKEventEditViewController *controller = [[EKEventEditViewController alloc] init];
+        controller.eventStore = store;
+        controller.event = event;
+        controller.editViewDelegate = self;
+            
+        [self presentViewController:controller animated:YES completion:nil];
+    };
+        
+    EKAuthorizationStatus authStatus = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
+        
+    if (authStatus == EKAuthorizationStatusAuthorized) {
+        presentEventEditor();
+    } else if (authStatus == EKAuthorizationStatusNotDetermined) {
+        [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+            if (granted) presentEventEditor();
+        }];
+    }
+        
+}
+
 
 
 // ------------------
@@ -761,5 +771,42 @@ int notesTag;
 }
 
 
+- (void)eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action
+{
+    if (action == EKEventEditViewActionSaved)
+        showingEntity.calendarEventIdentifier = controller.event.eventIdentifier;
+    
+    if (action == EKEventEditViewActionDeleted)
+        showingEntity.calendarEventIdentifier = nil;
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [tableView reloadData];
+}
+
+
+- (IBAction)deleteButtonPressed:(id)sender {
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirm Delete"
+                                                    message:@"Are you sure you want to delete this showing?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Delete", nil];
+    [alert show];
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Delete"])
+    {
+        [listing removeActivityLogsObject:showingEntity];
+        [managedObjectContext save:nil];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.delegate ShowingDetailViewControllerDidSave:self];
+    }
+    
+}
 
 @end

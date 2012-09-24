@@ -15,6 +15,8 @@
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import "YIPopupTextView.h"
+#import <EventKitUI/EventKitUI.h>
+#import "MBProgressHUD.h"
 
 
 @class ShowingDetailViewController;
@@ -25,14 +27,14 @@
 @end
 
 
-@interface ShowingDetailViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate, SourceTableViewControllerDelegate, ContactsViewControllerDelegate, YIPopupTextViewDelegate > {
+@interface ShowingDetailViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate, SourceTableViewControllerDelegate, ContactsViewControllerDelegate, YIPopupTextViewDelegate, EKEventEditViewDelegate > {
     NSFetchedResultsController *fetchedResultsController;
     NSManagedObjectContext *managedObjectContext;
+    MBProgressHUD *HUD;
 }
 
 
 @property (nonatomic, weak) id <ShowingDetailViewControllerDelegate> delegate;
-
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic,strong) NSManagedObjectContext* managedObjectContext;
@@ -49,5 +51,8 @@
 @property UITextField *actifText;
 
 -(IBAction)SaveButtonPressed:(id)sender;
+- (IBAction)addToCalendarButtonPressed:(id)sender;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *addToCalendarButton;
+- (IBAction)deleteButtonPressed:(id)sender;
 
 @end

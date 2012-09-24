@@ -27,5 +27,6 @@
 
 -(void) showWelcomeMessage;
 -(IBAction)ActionSheetButton;
+- (IBAction)sendMessageButtonPressed:(id)sender;
 
 @end

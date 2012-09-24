@@ -16,6 +16,7 @@
 #import "OpenHouse.h"
 #import "Showing.h"
 #import "Contact.h"
+#import <MessageUI/MessageUI.h>
 
 @interface ActivityLogViewController ()
 
@@ -48,6 +49,154 @@ NSUInteger sortedEventCount;
     
     [actionsheetDate showInView:self.view];
 }
+
+- (IBAction)sendMessageButtonPressed:(id)sender {
+    
+    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+    picker.mailComposeDelegate = self;
+    
+    NSMutableString *subject = [[NSMutableString alloc] initWithString: @"Listing Activity Report for "];
+    [subject appendString:listing.name];
+    
+    [picker setSubject:subject];
+    
+    
+    // Set up the recipients.
+    for (Contact *contact in listing.contacts) {
+        NSArray *toRecipients = [NSArray arrayWithObjects:contact.compositeName,nil];
+        [picker setToRecipients:toRecipients];
+    }
+    
+    
+    NSMutableString *emailBody = [[NSMutableString alloc] initWithString: @"Attached is the latest update detailing the activity on your listing: <br/>"];
+    NSMutableDictionary *events = [self sortEventsWeek];
+
+    NSArray *allKeys = [events allKeys];
+    NSArray *ascSortedEvents = [allKeys sortedArrayUsingSelector:@selector(compare:)];
+    NSArray *sortedEvents = [[ascSortedEvents reverseObjectEnumerator] allObjects];
+
+    
+    [emailBody appendString:@"<h4>STATISTICS</h4>"];
+    
+    [emailBody appendString:@"<table border='1' style='margin-top: 10px; margin-bottom: 10px;'><tr style='font-size:xx-small'><th>Week</th><th align='center'>Inquries</th><th align='center'>Showings</th><th align='center'>Open Houses</th><th align='center'>Open House Visitors</th><tr>"];
+
+    
+    for (NSDate *weekKey in sortedEvents)
+    {
+        
+        NSMutableDictionary *labelsForWeek = [events objectForKey:weekKey];
+
+        [emailBody appendString:@"<tr><td align='center'>"];
+        
+        
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        [df setDateStyle:NSDateFormatterShortStyle];
+        [df setTimeStyle:NSDateFormatterNoStyle];
+
+        [emailBody appendString:[df stringFromDate:weekKey]];
+        [emailBody appendString:@"</td><td align='center'>"];
+        
+        NSNumber *showings = [labelsForWeek objectForKey:@"Showing"];
+        NSNumber *inquiries = [labelsForWeek objectForKey:@"Inquiry"];
+        NSNumber *openhouse = [labelsForWeek objectForKey:@"Open House"];
+        NSNumber *openhousevisitors = [labelsForWeek objectForKey:@"OpenHouseVisitors"];
+        
+        if (inquiries != nil)
+            [emailBody appendString:[inquiries stringValue]];
+        else
+            [emailBody appendString:@"0"];
+        [emailBody appendString:@"</td><td align='center'>"];
+        
+        if (showings != nil)
+            [emailBody appendString:[showings stringValue]];
+        else
+            [emailBody appendString:@"0"];
+        [emailBody appendString:@"</td><td align='center'>"];
+
+        if (openhouse != nil)
+            [emailBody appendString:[openhouse stringValue]];
+        else
+            [emailBody appendString:@"0"];
+        [emailBody appendString:@"</td><td align='center'>"];
+
+        if (openhousevisitors != nil)
+            [emailBody appendString:[openhousevisitors stringValue]];
+        else
+            [emailBody appendString:@"0"];
+
+                
+        [emailBody appendString:@"</td></tr>"];
+                
+              
+
+    }
+    
+    [emailBody appendString:@"</table>"];
+    
+    
+    [emailBody appendString:@"<h4>FEEDBACK</h4>"];
+
+    
+    for (NSDate *weekKey in sortedEvents)
+    {
+        
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        [df setDateStyle:NSDateFormatterShortStyle];
+        [df setTimeStyle:NSDateFormatterNoStyle];
+        
+        NSMutableDictionary *labelsForWeek = [events objectForKey:weekKey];
+    
+        bool weeklyFeedbackShownFlag = NO;
+        for (ActivityLog *log in [labelsForWeek objectForKey:@"logs"] ) {
+        
+            if (log.feedback.length > 0)
+            {
+                if (!weeklyFeedbackShownFlag)
+                {
+                    
+                    [emailBody appendString:@"<span>Week of "];
+                    [emailBody appendString:[df stringFromDate:weekKey]];
+                    [emailBody appendString:@"</span><br/>"];
+                    [emailBody appendString:@"<ul>"];
+                    weeklyFeedbackShownFlag = YES;
+                }
+            
+                [emailBody appendString:@"<li>"];
+                [emailBody appendString:log.feedback];
+                [emailBody appendString:@"</li>"];
+            }
+        }
+    
+        if (weeklyFeedbackShownFlag)
+            [emailBody appendString:@"</ul>"];
+    }
+    
+
+    
+
+    
+    // Attach an image to the email.
+    //NSString *path = [[NSBundle mainBundle] pathForResource:@"ipodnano" ofType:@"png"];
+    //NSData *myData = [NSData dataWithContentsOfFile:path];
+    //[picker addAttachmentData:myData mimeType:@"image/png" fileName:@"ipodnano"];
+    
+    // Fill out the email body text.
+    [picker setMessageBody:emailBody isHTML:YES];
+    
+    // Present the mail composition interface.
+    [self presentModalViewController:picker animated:YES];
+}
+
+
+
+// The mail compose view controller delegate method
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+    
+
 
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -156,7 +305,8 @@ NSUInteger sortedEventCount;
         
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:TRUE];
         [logsOnThisDay sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    }    
+    }
+        
 }
 
 
@@ -182,6 +332,92 @@ NSUInteger sortedEventCount;
 
 
 
+- (NSMutableDictionary*)sortEventsWeek
+{
+    
+    // break up the weeks into sections
+    NSMutableDictionary *weeks  = [NSMutableDictionary dictionary];
+    
+    for (ActivityLog *log in listing.activityLogs)
+    {
+        // Reduce event start date to date components (year, month, day)
+        NSDate *weekRepresentingThisLog = [self dateAtBeginningOfWeekForDate:log.date];
+        
+        // If we don't yet have an array to hold the events for this day, create one
+        NSMutableDictionary *logsDuringThisWeek = [weeks objectForKey:weekRepresentingThisLog];
+        if (logsDuringThisWeek == nil) {
+            logsDuringThisWeek = [NSMutableDictionary dictionary];
+            
+            // Use the reduced date as dictionary key to later retrieve the event list this day
+            [weeks setObject:logsDuringThisWeek forKey:weekRepresentingThisLog];
+        }
+        NSMutableArray *weeksLogs = [logsDuringThisWeek objectForKey:@"logs"];
+        if (weeksLogs == nil) {
+            weeksLogs = [NSMutableArray array];
+            [logsDuringThisWeek setObject:weeksLogs forKey:@"logs"];
+        }
+        [weeksLogs addObject:log];
+        
+        NSString *key = log.label;
+        NSNumber *labelsDuringThisWeek = [logsDuringThisWeek objectForKey:key];
+        if (labelsDuringThisWeek == nil)
+        {
+            labelsDuringThisWeek = [[NSNumber alloc] initWithInt:1];
+            [logsDuringThisWeek setObject:labelsDuringThisWeek forKey:key];
+        }
+        else
+        {
+            int value = [labelsDuringThisWeek intValue];
+            labelsDuringThisWeek = [NSNumber numberWithInt:value + 1];
+            [logsDuringThisWeek setObject:labelsDuringThisWeek forKey:key];
+        }
+        
+        
+        if ([log isKindOfClass:[OpenHouse class]])
+        {
+            NSNumber *openHouseVisitorsDuringThisWeek = [logsDuringThisWeek objectForKey:@"OpenHouseVisitors"];
+            NSNumber *visitors = ((OpenHouse*)log).visitors;
+            if (openHouseVisitorsDuringThisWeek == nil)
+            {
+                openHouseVisitorsDuringThisWeek = visitors;
+                [logsDuringThisWeek setObject:openHouseVisitorsDuringThisWeek forKey:@"OpenHouseVisitors"];
+            }
+            else
+            {
+                int value = [openHouseVisitorsDuringThisWeek intValue];
+                openHouseVisitorsDuringThisWeek = [NSNumber numberWithInt:value + [visitors integerValue]];
+                [logsDuringThisWeek setObject:openHouseVisitorsDuringThisWeek forKey:@"OpenHouseVisitors"];
+            }
+        }
+    }
+    
+    return weeks;
+}
+
+
+
+- (NSDate *)dateAtBeginningOfWeekForDate:(NSDate *)inputDate
+{
+    // Use the user's current calendar and time zone
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
+    [calendar setTimeZone:timeZone];
+    
+    // Selectively convert the date components (year, month, day) of the input date
+    NSDateComponents *dateComps = [calendar components:NSYearCalendarUnit | NSWeekCalendarUnit fromDate:inputDate];
+    
+    // Set the time components manually
+    [dateComps setHour:0];
+    [dateComps setMinute:0];
+    [dateComps setSecond:0];
+    
+    // Convert back
+    NSDate *beginningOfWeek = [calendar dateFromComponents:dateComps];
+    return beginningOfWeek;
+}
+
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -198,6 +434,7 @@ NSUInteger sortedEventCount;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    [self showWelcomeMessage];
     return [self.sections count];
 }
 
@@ -230,6 +467,16 @@ NSUInteger sortedEventCount;
 
     cell.detailTextLabel.text = [self.cellDateFormatter stringFromDate:log.date];
     
+    if ([log isKindOfClass:[Inquiry class]])
+        cell.imageView.image = [UIImage imageNamed:@"Inquiry.png"];
+
+    if ([log isKindOfClass:[Showing class]])
+        cell.imageView.image = [UIImage imageNamed:@"Showing.png"];
+
+    if ([log isKindOfClass:[CustomEvent class]])
+        cell.imageView.image = [UIImage imageNamed:@"Other.png"];
+
+    
     if ([log isKindOfClass:[OpenHouse class]])
     {
         OpenHouse *openHouse = (OpenHouse *) log;
@@ -237,6 +484,8 @@ NSUInteger sortedEventCount;
         [formatter setDateFormat:@"h:mm a"];
         
         cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:@" - "];
+        cell.imageView.image = [UIImage imageNamed:@"OpenHouse.png"];
+
         NSString *endTime = [formatter stringFromDate:openHouse.endTime];
         cell.detailTextLabel.text = [cell.detailTextLabel.text stringByAppendingString:endTime];
         
@@ -372,7 +621,6 @@ NSUInteger sortedEventCount;
         [managedObjectContext save:nil];
         
         [self sortEvents];
-        [self showWelcomeMessage];
         [self.tableView reloadData];
     }
 }

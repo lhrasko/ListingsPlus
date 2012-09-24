@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="12B19" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dB8-6G-liQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="12C54" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dB8-6G-liQ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1926"/>
     </dependencies>
@@ -28,7 +28,7 @@
             <objects>
                 <viewController title="Listings" wantsFullScreenLayout="YES" id="2" customClass="ListingsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="f0I-p4-451">
@@ -117,11 +117,17 @@
         <!--Navigation Controller - Listings-->
         <scene sceneID="eHQ-rA-QH1">
             <objects>
-                <navigationController wantsFullScreenLayout="YES" definesPresentationContext="YES" id="dB8-6G-liQ" sceneMemberID="viewController">
+                <navigationController wantsFullScreenLayout="YES" definesPresentationContext="YES" toolbarHidden="NO" id="dB8-6G-liQ" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Listings" id="blm-cG-ZX0"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xY8-3q-W9d">
+                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="bbn-fD-sN1">
+                        <rect key="frame" x="0.0" y="436" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="2" kind="relationship" relationship="rootViewController" id="RA6-CM-SiE"/>
                     </connections>
@@ -135,7 +141,7 @@
             <objects>
                 <viewController id="gQU-Q2-riK" customClass="ListingEditViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YZ1-fY-kEe">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Listing Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kli-RE-3S7">
@@ -184,14 +190,9 @@
             <objects>
                 <viewController wantsFullScreenLayout="YES" id="Vaj-iq-SV9" customClass="ActivityLogViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OzO-bO-JeK">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hR-m4-IjT">
-                                <items>
-                                    <barButtonItem title="Item" id="AHT-6q-yLu"/>
-                                </items>
-                            </toolbar>
                             <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="wzo-Qp-0Ml">
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
@@ -223,27 +224,23 @@
                                     <outlet property="delegate" destination="Vaj-iq-SV9" id="Gw6-Nr-3y3"/>
                                 </connections>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2oe-uW-gF3">
-                                <items>
-                                    <barButtonItem systemItem="flexibleSpace" id="64K-hj-WJT"/>
-                                    <barButtonItem systemItem="action" id="7K0-SN-9qt"/>
-                                </items>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="wzo-Qp-0Ml" firstAttribute="leading" secondItem="OzO-bO-JeK" secondAttribute="leading" type="default" id="4Ba-zS-Xyo"/>
-                            <constraint firstItem="2oe-uW-gF3" firstAttribute="bottom" secondItem="OzO-bO-JeK" secondAttribute="bottom" type="default" id="8Cf-B2-wtD"/>
-                            <constraint firstItem="3hR-m4-IjT" firstAttribute="leading" secondItem="OzO-bO-JeK" secondAttribute="leading" type="default" id="BHU-SK-kYF"/>
-                            <constraint firstItem="3hR-m4-IjT" firstAttribute="top" secondItem="OzO-bO-JeK" secondAttribute="top" constant="64" id="E46-q7-yxN"/>
-                            <constraint firstItem="3hR-m4-IjT" firstAttribute="trailing" secondItem="OzO-bO-JeK" secondAttribute="trailing" type="default" id="Fh3-8X-IUP"/>
+                            <constraint firstItem="wzo-Qp-0Ml" firstAttribute="bottom" secondItem="OzO-bO-JeK" secondAttribute="bottom" type="default" id="Wzh-Sk-qYy"/>
                             <constraint firstItem="wzo-Qp-0Ml" firstAttribute="trailing" secondItem="OzO-bO-JeK" secondAttribute="trailing" type="default" id="YJw-Mk-jAa"/>
-                            <constraint firstItem="2oe-uW-gF3" firstAttribute="leading" secondItem="OzO-bO-JeK" secondAttribute="leading" type="default" id="Z4r-4Y-cq3"/>
-                            <constraint firstItem="2oe-uW-gF3" firstAttribute="top" secondItem="wzo-Qp-0Ml" secondAttribute="bottom" type="default" id="c5V-Cv-aUj"/>
-                            <constraint firstItem="2oe-uW-gF3" firstAttribute="trailing" secondItem="OzO-bO-JeK" secondAttribute="trailing" type="default" id="sTM-Qw-v5r"/>
                             <constraint firstItem="wzo-Qp-0Ml" firstAttribute="top" secondItem="OzO-bO-JeK" secondAttribute="top" type="default" id="wJf-HV-YXP"/>
                         </constraints>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="aGr-Ad-qjo"/>
+                        <barButtonItem style="plain" systemItem="action" id="7K0-SN-9qt">
+                            <connections>
+                                <action selector="sendMessageButtonPressed:" destination="Vaj-iq-SV9" id="qqa-L6-jbB"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Activity Log" id="n56-AL-1ya">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="etj-aY-Cr1">
                             <connections>
@@ -251,6 +248,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addNewButton" destination="etj-aY-Cr1" id="v7L-td-3m7"/>
                         <outlet property="tableView" destination="wzo-Qp-0Ml" id="lAe-sg-18T"/>
@@ -264,24 +262,40 @@
             </objects>
             <point key="canvasLocation" x="153" y="114"/>
         </scene>
-        <!--Showing Detail View Controller-->
+        <!--Showing Detail View Controller - Showing-->
         <scene sceneID="bLF-vU-UBg">
             <objects>
-                <tableViewController id="gC7-tJ-TsY" customClass="ShowingDetailViewController" sceneMemberID="viewController">
+                <tableViewController title="Showing" id="gC7-tJ-TsY" customClass="ShowingDetailViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="8OF-et-7KP">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </tableView>
-                    <navigationItem key="navigationItem" id="ulT-ZU-IOB">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="fo1-f7-s2Z">
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="trash" id="h8L-RZ-uVN">
                             <connections>
-                                <action selector="SaveButtonPressed:" destination="gC7-tJ-TsY" id="FT7-c0-YYd"/>
+                                <action selector="deleteButtonPressed:" destination="gC7-tJ-TsY" id="jcW-6U-cvg"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="GF2-qK-Z1g"/>
+                        <barButtonItem image="Calendar.png" style="plain" id="vrI-aR-x3J">
+                            <connections>
+                                <action selector="addToCalendarButtonPressed:" destination="gC7-tJ-TsY" id="bPS-iB-PAt"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="Gki-HR-DNB"/>
+                        <barButtonItem style="plain" systemItem="action" id="6oQ-w2-eYu"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="Z5e-6q-EQo">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="JLc-nG-f03">
+                            <connections>
+                                <action selector="SaveButtonPressed:" destination="gC7-tJ-TsY" id="tg8-PY-61v"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="saveButton" destination="fo1-f7-s2Z" id="EPt-3p-c2D"/>
+                        <outlet property="addToCalendarButton" destination="vrI-aR-x3J" id="V1l-RO-bPS"/>
                         <outlet property="tableView" destination="8OF-et-7KP" id="oCp-da-dDv"/>
                         <segue destination="h07-xg-aQw" kind="push" identifier="segueContacts" id="UPh-zl-8Yv"/>
                         <segue destination="TuP-0r-5H5" kind="modal" identifier="segueSource" id="eNa-Qp-6ey"/>
@@ -304,7 +318,21 @@
                             <outlet property="delegate" destination="0S2-AD-puU" id="W0b-YU-A5w"/>
                         </connections>
                     </tableView>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="trash" id="fGr-5M-FQ9">
+                            <connections>
+                                <action selector="deleteButtonPressed:" destination="0S2-AD-puU" id="ldF-Xf-PTi"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Rvq-sZ-zuo"/>
+                        <barButtonItem image="Calendar.png" style="plain" id="DiE-6s-gmy">
+                            <connections>
+                                <action selector="actionButtonPressed:" destination="0S2-AD-puU" id="lYB-nL-I7Y"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="3pC-Aj-mgy"/>
+                        <barButtonItem style="plain" systemItem="action" id="h1g-ng-xZA"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="gYl-Jv-hHD">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="kgk-2o-IFQ">
                             <connections>
@@ -329,7 +357,7 @@
             <objects>
                 <tableViewController id="o9e-e6-Qjt" customClass="CustomEventViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="0ZJ-1l-kbZ">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -348,6 +376,21 @@
                             <outlet property="delegate" destination="o9e-e6-Qjt" id="yBK-iz-jPE"/>
                         </connections>
                     </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="trash" id="bNk-IJ-PCu">
+                            <connections>
+                                <action selector="deleteButtonPressed:" destination="o9e-e6-Qjt" id="fxm-sj-xW7"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="w0h-Fx-AKv"/>
+                        <barButtonItem image="Calendar.png" style="plain" id="xqx-f9-Ifr">
+                            <connections>
+                                <action selector="actionButtonPressed:" destination="o9e-e6-Qjt" id="ki0-Ci-dzB"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="inP-QN-U0d"/>
+                        <barButtonItem style="plain" systemItem="action" id="dNc-WF-74R"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="9FM-x2-t1W">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="AbL-dg-YQf">
                             <connections>
@@ -355,6 +398,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="saveButton" destination="AbL-dg-YQf" id="uHF-Au-oUe"/>
                         <outlet property="tableView" destination="0ZJ-1l-kbZ" id="JsR-y8-Yqh"/>
@@ -371,7 +415,7 @@
             <objects>
                 <tableViewController title="Inquiry" id="Kqz-6Q-hZc" customClass="InquiryViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="bQg-T5-kuG">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
@@ -379,6 +423,13 @@
                             <outlet property="delegate" destination="Kqz-6Q-hZc" id="MoC-Ch-1ZO"/>
                         </connections>
                     </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="trash" id="soh-Kx-VFT">
+                            <connections>
+                                <action selector="deleteButtonPressed:" destination="Kqz-6Q-hZc" id="Fb9-dP-WNK"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="Ykp-rY-kHa">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="EXd-mr-VqA" userLabel="Bar Button Item - Item">
                             <connections>
@@ -386,6 +437,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="saveButton" destination="EXd-mr-VqA" id="TX6-Vz-cOR"/>
                         <outlet property="tableView" destination="bQg-T5-kuG" id="ZDE-kE-7UN"/>
@@ -402,7 +454,7 @@
             <objects>
                 <tableViewController title="Contacts" id="h07-xg-aQw" customClass="ContactsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="z7e-EZ-olu">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -517,97 +569,16 @@
             <point key="canvasLocation" x="-895" y="1603"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="ActivityLogViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ActivityLogViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="ActionSheetButton"/>
-                <relationship kind="outlet" name="addNewButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="ContactsViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ContactsViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="doneButtonClicked:"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="CustomEventViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CustomEventViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="SaveButtonPressed:"/>
-                <relationship kind="action" name="cancelButtonPressed:"/>
-                <relationship kind="outlet" name="saveButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
-            </relationships>
-        </class>
-        <class className="InquiryViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InquiryViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="SaveButtonPressed:"/>
-                <relationship kind="action" name="cancelButtonPressed:"/>
-                <relationship kind="outlet" name="saveButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
-            </relationships>
-        </class>
-        <class className="ListingEditViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ListingEditViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="CancelButtonPressed:"/>
-                <relationship kind="action" name="SaveButtonPressed:"/>
-                <relationship kind="outlet" name="segmentedButton" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="textListingName" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="ListingsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ListingsViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="addListingButtonPressed:"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="OpenHouseViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OpenHouseViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="SaveButtonPressed:"/>
-                <relationship kind="action" name="cancelButtonPressed:"/>
-                <relationship kind="action" name="stepperValueDidChanged:" candidateClass="UIStepper"/>
-                <relationship kind="outlet" name="saveButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
-            </relationships>
-        </class>
-        <class className="ShowingDetailViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShowingDetailViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="SaveButtonPressed:"/>
-                <relationship kind="action" name="cancelButtonPressed:"/>
-                <relationship kind="outlet" name="saveButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
-            </relationships>
-        </class>
-        <class className="SourceTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SourceTableViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancelButtonPressed:"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-    </classes>
+    <resources>
+        <image name="Calendar.png" width="24" height="24"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="vdG-AJ-pAd"/>
         <segue reference="wEg-zp-gM5"/>
+        <segue reference="vdG-AJ-pAd"/>
     </inferredMetricsTieBreakers>
 </document>

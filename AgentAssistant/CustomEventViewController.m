@@ -10,13 +10,14 @@
 #import "NoteViewController.h"
 #import "CustomEvent.h"
 #import "Listing.h"
-#import "DataModel.h"
 #import <QuartzCore/QuartzCore.h>
 #import "DCRoundSwitch.h"
 #import "SourceTableViewController.h"
 #import "Contact.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+#import <EventKit/EventKit.h>
+#import <EventKitUI/EventKitUI.h>
 
 @interface CustomEventViewController ()
 
@@ -33,6 +34,7 @@
 @synthesize fetchedResultsController;
 @synthesize textView;
 @synthesize saveButton;
+@synthesize textBoxToolbar;
 
 @synthesize managedObjectContext;
 
@@ -126,7 +128,7 @@
         customEntity.createdDate = [NSDate date];
         customEntity.date = [NSDate date];
         
-        [listing.activityLogs addObject:customEntity];
+        [listing addActivityLogsObject:customEntity];
         [managedObjectContext save:nil];
     }
     
@@ -134,6 +136,11 @@
     
     
     self.tableView1Data = [NSMutableArray array];
+    
+    CGRect frame = self.textBoxToolbar.frame;
+    frame.origin.y = self.view.frame.size.height + 50;
+    self.textBoxToolbar.frame = frame;
+
     
     
     // ----------------------------;
@@ -160,6 +167,16 @@
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0,10,200,35)];
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     textField.placeholder = @"Enter event name";
+    
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, 320, 44)];
+    toolBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Hide" style:UIBarButtonItemStyleDone target:self action:@selector(hideKeyboardButtonPressed:)];
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [toolBar setItems:[NSArray arrayWithObjects:space, doneButton, nil]];
+
+    textField.inputAccessoryView = toolBar;
+
     [textField addTarget:self action:@selector(textFieldEditingEnded:) forControlEvents:UIControlEventEditingDidEnd];
     tableViewCellLabel.accessoryView = textField;
       
@@ -531,7 +548,7 @@ YIPopupTextView* popupTextView;
         popupTextView.text = customEntity.feedback;
         self.navigationItem.hidesBackButton = YES;
         self.navigationItem.title = @"Feedback";
-        [popupTextView showInView:self.view];
+        [popupTextView showInView:self.view.superview];
     }
     if (cellToCheck.tag == TAG_CELL_NOTES)
     {
@@ -543,7 +560,7 @@ YIPopupTextView* popupTextView;
         popupTextView.text = customEntity.note;
         self.navigationItem.title = @"Notes";
         self.navigationItem.hidesBackButton = YES;
-        [popupTextView showInView:self.view];
+        [popupTextView showInView:self.view.superview];
     }
     
     if (cellToCheck.tag == TAG_CELL_CONTACT_SELECT)
@@ -585,60 +602,55 @@ int notesTag;
 
 -(void) keyboardWillShow:(NSNotification *)note
 {
+    //[UIView beginAnimations:nil context:NULL];
+    //[UIView setAnimationDuration:0.3];
+    
+    //CGRect frame = self.textBoxToolbar.frame;
+    //frame.origin.y = self.view.frame.size.height - 215.0;
+    //self.textBoxToolbar.frame = frame;
+    
+    //[UIView commitAnimations];
+    
     // Get the keyboard size
-    CGRect keyboardBounds;
-    [[note.userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] getValue: &keyboardBounds];
+    //CGRect keyboardBounds;
+    //[[note.userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] getValue: &keyboardBounds];
     
     // Detect orientation
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    CGRect frame = tableView.frame;
+    //UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    //CGRect frame = tableView.frame;
     
     // Start animation
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationDuration:0.3f];
+    //[UIView beginAnimations:nil context:NULL];
+    //[UIView setAnimationBeginsFromCurrentState:YES];
+    //[UIView setAnimationDuration:0.3f];
     
     // Reduce size of the Table view
-    if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown)
-        frame.size.height -= keyboardBounds.size.height;
-    else
-        frame.size.height -= keyboardBounds.size.width;
+    //if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown)
+    //    frame.size.height -= keyboardBounds.size.height;
+    //else
+    //    frame.size.height -= keyboardBounds.size.width;
     
     // Apply new size of table view
-    self.tableView.frame = frame;
+    //self.tableView.frame = frame;
     
     // Scroll the table view to see the TextField just above the keyboard
-    if (self.actifText)
-    {
-        CGRect textFieldRect = [self.tableView convertRect:self.actifText.bounds fromView:self.actifText];
-        [self.tableView scrollRectToVisible:textFieldRect animated:NO];
-    }
+    //if (self.actifText)
+    //{
+    //    CGRect textFieldRect = [self.tableView convertRect:self.actifText.bounds fromView:self.actifText];
+    //    [self.tableView scrollRectToVisible:textFieldRect animated:NO];
+    //}
     
-    [UIView commitAnimations];
+    //[UIView commitAnimations];
 }
 
 -(void) keyboardWillHide:(NSNotification *)note
 {
-    // Get the keyboard size
-    CGRect keyboardBounds;
-    [[note.userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] getValue: &keyboardBounds];
-    
-    // Detect orientation
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    CGRect frame = self.tableView.frame;
-    
     [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationDuration:0.3f];
+    [UIView setAnimationDuration:0.3];
     
-    // Reduce size of the Table view
-    if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown)
-        frame.size.height += keyboardBounds.size.height;
-    else
-        frame.size.height += keyboardBounds.size.width;
-    
-    // Apply new size of table view
-    self.tableView.frame = frame;
+    CGRect frame = self.textBoxToolbar.frame;
+    frame.origin.y = self.view.frame.size.height;
+    self.textBoxToolbar.frame = frame;
     
     [UIView commitAnimations];
 }
@@ -667,6 +679,74 @@ int notesTag;
 }
 
 
+- (IBAction)actionButtonPressed:(id)sender {
+    
+    EKEventStore *store = [[EKEventStore alloc] init];
+    EKEvent *event;
+    
+    
+    if (customEntity.calendarEventIdentifier != nil)
+        event = [store eventWithIdentifier:customEntity.calendarEventIdentifier];
+    else
+    {
+        event = [EKEvent eventWithEventStore:store];
+        event.startDate = customEntity.date;
+        event.endDate   = [customEntity.date dateByAddingTimeInterval:1800];
+        event.title = customEntity.label;
+        event.location = listing.name;
+        event.availability = EKEventAvailabilityBusy;
+        
+        EKAlarm *alarm = [EKAlarm alarmWithRelativeOffset:-3600];
+        event.alarms = [NSArray arrayWithObject:alarm];
+        
+        if (customEntity.note != nil)
+            event.notes = [customEntity.note stringByAppendingString:@"\nEntry created by ListingAgent."];
+        else
+            event.notes = @"Entry created by ListingAgent.";
+    }
+    
+    
+    void (^presentEventEditor)(void) = ^{
+        EKEventEditViewController *controller = [[EKEventEditViewController alloc] init];
+        controller.eventStore = store;
+        controller.event = event;
+        controller.editViewDelegate = self;
+        
+        [self presentViewController:controller animated:YES completion:nil];
+    };
+    
+    EKAuthorizationStatus authStatus = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
+    
+    if (authStatus == EKAuthorizationStatusAuthorized) {
+        presentEventEditor();
+    } else if (authStatus == EKAuthorizationStatusNotDetermined) {
+        [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+            if (granted) presentEventEditor();
+        }];
+    }
+    
+}
+
+- (IBAction)hideKeyboardButtonPressed:(id)sender {
+    [self.view endEditing:YES];
+}
+
+
+
+- (void)eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action
+{
+    if (action == EKEventEditViewActionSaved)
+        customEntity.calendarEventIdentifier = controller.event.eventIdentifier;
+    
+    if (action == EKEventEditViewActionDeleted)
+        customEntity.calendarEventIdentifier = nil;
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [tableView reloadData];
+    
+}
+
+
 - (IBAction)SaveButtonPressed:(id)sender {
     
     if (notesTag > 0)
@@ -690,6 +770,31 @@ int notesTag;
 - (BOOL)textFieldEditingEnded:(UITextField *)textField {
     customEntity.name = textField.text;
     return YES;
+}
+
+- (IBAction)deleteButtonPressed:(id)sender {
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirm Delete"
+                                                    message:@"Are you sure you want to delete this custom event?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Delete", nil];
+    [alert show];
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Delete"])
+    {
+        [listing removeActivityLogsObject:customEntity];
+        [managedObjectContext save:nil];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.delegate CustomEventViewControllerDidSave:self];
+    }
+    
 }
 
 
