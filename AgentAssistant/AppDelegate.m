@@ -42,6 +42,9 @@
     ListingsViewController *firstViewController = (ListingsViewController *)[navigationController topViewController];
     firstViewController.managedObjectContext = self.managedObjectContext;
     
+    [[UINavigationBar appearance] setTintColor:[UIColor darkGrayColor]];
+
+    
     return YES;
 }
 

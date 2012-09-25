@@ -21,7 +21,6 @@
 @class OpenHouseViewController;
 
 @protocol OpenHouseViewControllerDelegate <NSObject>
-- (void)OpenHouseViewControllerDidCancel:(OpenHouseViewController *)controller;
 - (void)OpenHouseViewControllerDidSave:(OpenHouseViewController *)controller;
 @end
 

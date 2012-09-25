@@ -190,9 +190,13 @@ int ActionSheetType;
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
+    self.navigationItem.hidesBackButton = YES;
+    self.navigationItem.prompt = listing.name;
+
+    UIEdgeInsets inset = UIEdgeInsetsMake(20, 0, 0, 0);
+    self.tableView.contentInset = inset;
     
-    [[managedObjectContext undoManager] beginUndoGrouping];
-    
+
         
     if (openHouseEntity == nil)
     {
@@ -243,7 +247,7 @@ int ActionSheetType;
     // ----------------------------;
     
     NSMutableDictionary *tableViewSectionSourceData = [NSMutableDictionary dictionary];
-    [tableViewSectionSourceData setObject:@"Scheduling" forKey:@"headerText"];
+    [tableViewSectionSourceData setObject:@"" forKey:@"headerText"];
     [tableViewSectionSourceData setObject:@"" forKey:@"footerText"];
     [tableViewSectionSourceData setObject:[NSMutableArray array] forKey:@"cells"];
     [self.tableView1Data addObject:tableViewSectionSourceData];
@@ -309,7 +313,7 @@ int ActionSheetType;
     // ----------------------------;
     
     NSMutableDictionary *tableViewPeopleSourceData = [NSMutableDictionary dictionary];
-    [tableViewPeopleSourceData setObject:@"Visitors" forKey:@"headerText"];
+    [tableViewPeopleSourceData setObject:@"" forKey:@"headerText"];
     [tableViewPeopleSourceData setObject:@"" forKey:@"footerText"];
     [tableViewPeopleSourceData setObject:[NSMutableArray array] forKey:@"cells"];
     [self.tableView1Data addObject:tableViewPeopleSourceData];
@@ -366,7 +370,7 @@ int ActionSheetType;
     // ----------------------------;
     
     NSMutableDictionary *tableViewSection3Data = [NSMutableDictionary dictionary];
-    [tableViewSection3Data setObject:@"Comments" forKey:@"headerText"];
+    [tableViewSection3Data setObject:@"" forKey:@"headerText"];
     [tableViewSection3Data setObject:@"" forKey:@"footerText"];
     [tableViewSection3Data setObject:[NSMutableArray array] forKey:@"cells"];
     [self.tableView1Data addObject:tableViewSection3Data];
@@ -440,7 +444,7 @@ int ActionSheetType;
 {
     [super viewWillAppear:YES];
     [self.tableView reloadData];
-    self.navigationItem.hidesBackButton = openHouseEntity.hasChanges;
+    //self.navigationItem.hidesBackButton = openHouseEntity.hasChanges;
 }
 
 
@@ -654,8 +658,7 @@ YIPopupTextView* popupTextView;
         popupTextView.showCloseButton = NO;
         popupTextView.caretShiftGestureEnabled = YES;   // default = NO
         popupTextView.text = openHouseEntity.feedback;
-        self.navigationItem.hidesBackButton = YES;
-        self.navigationItem.title = @"Feedback";
+        self.navigationItem.title = [openHouseEntity.label stringByAppendingString:@" Feedback"];
         [popupTextView showInView:[self.view superview]];
     }
     if (cellToCheck.tag == TAG_CELL_NOTES)
@@ -666,8 +669,7 @@ YIPopupTextView* popupTextView;
         popupTextView.showCloseButton = NO;
         popupTextView.caretShiftGestureEnabled = YES;   // default = NO
         popupTextView.text = openHouseEntity.note;
-        self.navigationItem.title = @"Notes";
-        self.navigationItem.hidesBackButton = YES;
+        self.navigationItem.title = [openHouseEntity.label stringByAppendingString:@" Notes"];
         [popupTextView showInView:[self.view superview]];
     }
     
@@ -792,14 +794,6 @@ int notesTag;
     [asheet setFrame:CGRectMake(0, 117, 320, 383)];
 }
 
-- (IBAction)cancelButtonPressed:(id)sender {
-    
-    [[managedObjectContext undoManager] endUndoGrouping];
-    [[managedObjectContext undoManager] undoNestedGroup];
-    
-   	[self.delegate OpenHouseViewControllerDidCancel:self];
-}
-
 
 - (IBAction)SaveButtonPressed:(id)sender {
     
@@ -807,7 +801,7 @@ int notesTag;
     {
         [popupTextView dismiss];
         notesTag = 0;
-        self.navigationItem.hidesBackButton = openHouseEntity.hasChanges;
+        //self.navigationItem.hidesBackButton = openHouseEntity.hasChanges;
         
     }
     else
@@ -913,6 +907,12 @@ int notesTag;
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+-(void)ContactsViewControllerDidSave:(ContactsViewController *)controller source:(NSString *)source
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 - (void)NoteViewControllerDidSave:(SourceTableViewController *)controller tag:(int)tag text:(NSString *)text
 {

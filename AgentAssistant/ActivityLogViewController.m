@@ -184,7 +184,7 @@ NSUInteger sortedEventCount;
     [picker setMessageBody:emailBody isHTML:YES];
     
     // Present the mail composition interface.
-    [self presentModalViewController:picker animated:YES];
+    [self presentViewController:picker animated:YES completion:nil];
 }
 
 
@@ -193,7 +193,7 @@ NSUInteger sortedEventCount;
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
     
 
@@ -225,7 +225,7 @@ NSUInteger sortedEventCount;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self sortEvents];
+    //[self sortEvents];
     
     self.sectionDateFormatter = [[NSDateFormatter alloc] init];
     [self.sectionDateFormatter setDateStyle:NSDateFormatterLongStyle];
@@ -235,10 +235,8 @@ NSUInteger sortedEventCount;
     [self.cellDateFormatter setDateStyle:NSDateFormatterNoStyle];
     [self.cellDateFormatter setTimeStyle:NSDateFormatterShortStyle];
     
-    
-    self.navigationItem.title = listing.name;
-    
-    [self showWelcomeMessage];
+    self.navigationItem.prompt = listing.name;
+
 }
 
 
@@ -306,7 +304,9 @@ NSUInteger sortedEventCount;
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:TRUE];
         [logsOnThisDay sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     }
-        
+    
+    [self showWelcomeMessage];
+    
 }
 
 
@@ -428,13 +428,13 @@ NSUInteger sortedEventCount;
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [self sortEvents];
     [self.tableView reloadData];
 }
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    [self showWelcomeMessage];
     return [self.sections count];
 }
 
@@ -640,40 +640,40 @@ NSUInteger sortedEventCount;
 
 - (void)InquiryViewControllerDidSave:(SourceTableViewController *)controller
 {
-    if (listing.activityLogs.count != sortedEventCount)
-        [self sortEvents];
+    //if (listing.activityLogs.count != sortedEventCount)
+    //    [self sortEvents];
 
-    [tableView reloadData];
+    //[tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 - (void)ShowingDetailViewControllerDidSave:(SourceTableViewController *)controller
 {
-    if (listing.activityLogs.count != sortedEventCount)
-        [self sortEvents];
+    //if (listing.activityLogs.count != sortedEventCount)
+    //    [self sortEvents];
     
-    [tableView reloadData];
+    //[tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 - (void)OpenHouseViewControllerDidSave:(SourceTableViewController *)controller
 {
-    if (listing.activityLogs.count != sortedEventCount)
-        [self sortEvents];
+    //if (listing.activityLogs.count != sortedEventCount)
+    //    [self sortEvents];
     
-    [tableView reloadData];
+    //[tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 - (void)CustomEventViewControllerDidSave:(CustomEventViewController *)controller
 {
-    if (listing.activityLogs.count != sortedEventCount)
-        [self sortEvents];
+    //if (listing.activityLogs.count != sortedEventCount)
+    //    [self sortEvents];
     
-    [tableView reloadData];
+    //[tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

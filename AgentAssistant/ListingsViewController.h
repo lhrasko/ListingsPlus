@@ -17,5 +17,6 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic,strong) NSManagedObjectContext* managedObjectContext;
 - (IBAction)addListingButtonPressed:(id)sender;
+@property (weak, nonatomic) IBOutlet UIImageView *imageLogo;
 
 @end

@@ -11,7 +11,7 @@
 #import "ActivityLog.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
-
+#import "Listing.h"
 
 @class ContactsViewController;
 
@@ -20,10 +20,12 @@
 - (void)ContactsViewControllerDidSave:(ContactsViewController *)controller source:(NSString *)source;
 @end
 
-@interface ContactsViewController : UITableViewController <ABPeoplePickerNavigationControllerDelegate, ABNewPersonViewControllerDelegate>
+@interface ContactsViewController : UITableViewController <ABPeoplePickerNavigationControllerDelegate, ABPersonViewControllerDelegate, ABNewPersonViewControllerDelegate>
 
 @property (nonatomic, weak) id <ContactsViewControllerDelegate> delegate;
 @property (nonatomic, retain) ActivityLog *activityLog;
+@property (nonatomic, retain) Listing *listing;
+
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @end

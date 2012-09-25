@@ -8,7 +8,7 @@
 
 #import "ListingsViewController.h"
 #import "ActivityLogViewController.h"
-#import "ListingEditViewController.h"
+#import "ListingViewController.h"
 #import "Listing.h"
 #import "Showing.h"
 #import "Inquiry.h"
@@ -26,8 +26,9 @@
 @synthesize tableView;
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
+@synthesize  imageLogo;
 
-bool hasLoaded = NO;
+bool isFirstLoad = YES;
 
 - (void)viewDidLoad
 {
@@ -45,22 +46,55 @@ bool hasLoaded = NO;
 AppDelegate *appDelegate;
 
 
--(void)viewDidAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
     
-    // fix settings button
-    //settingBarButton.title = @"\u2699"; UIFont *f1 = [UIFont fontWithName:@"Helvetica" size:24.0]; NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:f1, UITextAttributeFont, nil]; [settingBarButton setTitleTextAttributes:dict forState:UIControlStateNormal];
-
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription
                                    entityForName:@"Listing" inManagedObjectContext:appDelegate.managedObjectContext];
     [fetchRequest setEntity:entity];
-
+    
     listings = [[appDelegate.managedObjectContext executeFetchRequest:fetchRequest error:nil] mutableCopy];
-    hasLoaded = YES;
-    [self.tableView reloadData];
+    
+    if (listings.count == 0)
+    {
+        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(85,30,150, 150)];
+        imgView.tag = 997;
+        imgView.alpha = 0.2;
+        UIImage* image = [UIImage imageNamed:@"default_128x128_note.png"];
+        [imgView setImage:image];
+        [self.view addSubview:imgView];
+        
+        UIEdgeInsets inset = UIEdgeInsetsMake(180, 0, 0, 0);
+        self.tableView.contentInset = inset;
+    }
+    else
+    {
+        UIView *v = [self.view viewWithTag:997];
+        v.hidden = YES;
+        [self.view bringSubviewToFront:v];
+        [v removeFromSuperview];
+        
+        UIEdgeInsets inset = UIEdgeInsetsMake(10, 0, 0, 0);
+        self.tableView.contentInset = inset;
+    }
+
+    if (isFirstLoad == NO)
+        [self.tableView reloadData];
+    else
+        isFirstLoad = NO;
+    
+}
+
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    
+    // fix settings button
+    //settingBarButton.title = @"\u2699"; UIFont *f1 = [UIFont fontWithName:@"Helvetica" size:24.0]; NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:f1, UITextAttributeFont, nil]; [settingBarButton setTitleTextAttributes:dict forState:UIControlStateNormal];
+           
 }
 
 
@@ -78,15 +112,10 @@ AppDelegate *appDelegate;
 // Customize the number of rows in the table view - FOR ADD NEW ROW
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
    
-    if (hasLoaded)
-    {
     if (section == 1)
         return 1;
     
     return listings.count;
-    }
-    else
-        return 0;
 }
 
 
@@ -146,10 +175,8 @@ AppDelegate *appDelegate;
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (hasLoaded)
-        return 2;
-    else
-        return 0;
+
+    return 2;
 }
 
 
@@ -161,7 +188,7 @@ AppDelegate *appDelegate;
     else
     {
         tagEdit = 0;
-        [self performSegueWithIdentifier:@"segueEditNewListing" sender:self];
+        [self performSegueWithIdentifier:@"segueListing" sender:self];
     }
 }
 
@@ -171,7 +198,7 @@ int accessoryButtonRow;
 {
     tagEdit = 1;
     accessoryButtonRow = indexPath.row;
-    [self performSegueWithIdentifier:@"segueEditNewListing" sender:self];
+    [self performSegueWithIdentifier:@"segueListing" sender:self];
 }
 
 
@@ -185,8 +212,8 @@ int accessoryButtonRow;
         destViewController.listing = listing;
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    if ([segue.identifier isEqualToString:@"segueEditNewListing"]) {
-        ListingEditViewController *destViewController = segue.destinationViewController;
+    if ([segue.identifier isEqualToString:@"segueListing"]) {
+        ListingViewController *destViewController = segue.destinationViewController;
         destViewController.managedObjectContext = appDelegate.managedObjectContext;
         
         if (tagEdit == 1)
@@ -209,7 +236,7 @@ int tagEdit;
 
 - (IBAction)addListingButtonPressed:(id)sender {
     tagEdit = 0;
-    [self performSegueWithIdentifier:@"segueEditNewListing" sender:self];
+    [self performSegueWithIdentifier:@"segueListing" sender:self];
 }
 
 

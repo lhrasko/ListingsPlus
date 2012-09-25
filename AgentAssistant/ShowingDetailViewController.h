@@ -22,7 +22,6 @@
 @class ShowingDetailViewController;
 
 @protocol ShowingDetailViewControllerDelegate <NSObject>
-- (void)ShowingDetailViewControllerDidCancel:(ShowingDetailViewController *)controller;
 - (void)ShowingDetailViewControllerDidSave:(ShowingDetailViewController *)controller;
 @end
 

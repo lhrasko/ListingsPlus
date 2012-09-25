@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DataModel.h"
+#import "ActivityLog.h"
 
 @class SourceTableViewController;
 
@@ -22,7 +22,7 @@
 
 @property (nonatomic, weak) id <SourceTableViewControllerDelegate> delegate;
 
-@property (nonatomic, retain) ActivityLogModel *activityLog;
+@property (nonatomic, retain) ActivityLog *activityLog;
 
 @property (nonatomic, retain) NSMutableArray *tableView1Data;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;

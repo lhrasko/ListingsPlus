@@ -9,8 +9,21 @@
 #import <UIKit/UIKit.h>
 #import "listing.h"
 #import "InquiryViewController.h"
+#import "ShowingDetailViewController.h"
+#import "OpenHouseViewController.h"
+#import "CustomEventViewController.h"
+#import <MessageUI/MessageUI.h>
 
-@interface ActivityLogViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UIActionSheetDelegate, InquiryViewControllerDelegate> {
+@interface ActivityLogViewController : UIViewController <
+        UITableViewDelegate,
+        UITableViewDataSource,
+        NSFetchedResultsControllerDelegate,
+        UIActionSheetDelegate,
+        InquiryViewControllerDelegate,
+        ShowingDetailViewControllerDelegate,
+        OpenHouseViewControllerDelegate,
+        CustomEventViewControllerDelegate,
+        MFMailComposeViewControllerDelegate > {
 }
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;

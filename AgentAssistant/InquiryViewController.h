@@ -20,7 +20,6 @@
 @class InquiryViewController;
 
 @protocol InquiryViewControllerDelegate <NSObject>
-- (void)InquiryViewControllerDidCancel:(InquiryViewController *)controller;
 - (void)InquiryViewControllerDidSave:(InquiryViewController *)controller;
 @end
 

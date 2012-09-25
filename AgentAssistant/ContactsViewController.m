@@ -12,6 +12,7 @@
 #import "Contact.h"
 #import "AppDelegate.h"
 #import "Inquiry.h"
+#import "Listing.h"
 
 @interface ContactsViewController ()
 
@@ -21,6 +22,7 @@
 
 @synthesize delegate;
 @synthesize activityLog;
+@synthesize listing;
 @synthesize tableView;
 
 AppDelegate *appDelegate;
@@ -38,8 +40,8 @@ AppDelegate *appDelegate;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //self.navigationItem.title = [activityLog.label stringByAppendingString:@" Contacts"];
-    self.navigationItem.title = @"People";
+    self.navigationItem.title = @"Contacts";
+    self.navigationItem.prompt = activityLog.listing.name;
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,7 +50,7 @@ AppDelegate *appDelegate;
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -63,21 +65,38 @@ AppDelegate *appDelegate;
     if (section == 1)
         return 2;
     else
-        return activityLog.contacts.count;
+        if (activityLog != nil)
+            return activityLog.contacts.count;
+        else
+            return listing.contacts.count;
 }
 
 
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0 && activityLog.contacts.count > 0)
-        return @"Associated";
+    if (activityLog != nil)
+    {
+        if (section == 0 && activityLog.contacts.count > 0)
+            return @"Added Contacts";
     
-    if (section == 1 && activityLog.contacts.count == 0)
-        return [@"Associate People to this " stringByAppendingString:activityLog.label];
-    
-    if (section == 1 && activityLog.contacts.count > 0)
-        return @"Options" ;
+        if (section == 1 && activityLog.contacts.count == 0)
+            return @"Add Contacts";
+        
+        if (section == 1 && activityLog.contacts.count > 0)
+            return @"Add More" ;
+    }
+    else
+    {
+        if (section == 0 && listing.contacts.count > 0)
+            return @"Added Contacts";
+        
+        if (section == 1 && listing.contacts.count == 0)
+            return @"Add Contacts";
+        
+        if (section == 1 && listing.contacts.count > 0)
+            return @"Add More" ;
+    }
     
     return nil;
 }
@@ -88,11 +107,16 @@ AppDelegate *appDelegate;
 {
     static NSString *CellIdentifier = @"Cell";
     
-    
     if (indexPath.section == 0)
     {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
-        NSMutableArray *contacts = [[activityLog.contacts allObjects] mutableCopy];
+        
+        NSMutableArray *contacts;
+        if (activityLog != nil)
+            contacts = [[activityLog.contacts allObjects] mutableCopy];
+        else
+            contacts = [[listing.contacts allObjects] mutableCopy];
+        
         Contact *contact = [contacts objectAtIndex:indexPath.row];
         
         cell.textLabel.text = contact.compositeName;
@@ -159,16 +183,25 @@ AppDelegate *appDelegate;
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSMutableArray *contacts = [[activityLog.contacts allObjects] mutableCopy];
-        Contact *contact = [contacts objectAtIndex:indexPath.row];
-        [activityLog removeContactsObject:contact];
+        
+        if (activityLog != nil)
+        {
+            NSMutableArray *contacts = [[activityLog.contacts allObjects] mutableCopy];
+            Contact *contact = [contacts objectAtIndex:indexPath.row];
+            [activityLog removeContactsObject:contact];
+        }
+        else
+        {
+            NSMutableArray *contacts = [[listing.contacts allObjects] mutableCopy];
+            Contact *contact = [contacts objectAtIndex:indexPath.row];
+            [listing removeContactsObject:contact];
+        }
+        
         [self.tableView reloadData];
     }
 }
 
 
-
-#pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {    
@@ -178,7 +211,7 @@ AppDelegate *appDelegate;
         {
             ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
             picker.peoplePickerDelegate = self;
-            [self presentModalViewController:picker animated:YES];
+            [self presentViewController:picker animated:YES completion:nil];
         }
         if (indexPath.row == 1)
         {
@@ -186,12 +219,17 @@ AppDelegate *appDelegate;
             view.newPersonViewDelegate = self;
             
             UINavigationController *newNavigationController = [[UINavigationController alloc] initWithRootViewController:view];
-            [self presentModalViewController:newNavigationController animated:YES];
+            [self presentViewController:newNavigationController animated:YES completion:nil];
         }
     }
     if (indexPath.section == 0)
     {
-        NSMutableArray *contacts = [[activityLog.contacts allObjects] mutableCopy];
+        NSMutableArray *contacts;
+        if (activityLog != nil)
+            contacts = [[activityLog.contacts allObjects] mutableCopy];
+        else
+            contacts = [[listing.contacts allObjects] mutableCopy];
+
         Contact *contact = [contacts objectAtIndex:indexPath.row];
         
         ABPersonViewController *personController = [[ABPersonViewController alloc] initWithNibName:@"ABPersonViewController" bundle:nil];
@@ -211,31 +249,44 @@ AppDelegate *appDelegate;
 
 
 
-- (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker
-{
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-
-- (BOOL)peoplePickerNavigationController: (ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
+- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
     
     // a contact was picked
     
     Contact *contactEntity = (Contact *)[NSEntityDescription insertNewObjectForEntityForName:@"Contact" inManagedObjectContext:appDelegate.managedObjectContext];
-    contactEntity.activityLog = activityLog;
     
     contactEntity.compositeName = (__bridge NSString *)(ABRecordCopyCompositeName(person));
     contactEntity.firstName =  (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
     contactEntity.lastName = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty); //kABUIDProperty
     contactEntity.uniqueId = [NSNumber numberWithInteger: ABRecordGetRecordID(person)];
-
-    [activityLog addContactsObject:contactEntity];
+    
+    if (activityLog != nil)
+    {
+        contactEntity.activityLog = activityLog;
+        [activityLog addContactsObject:contactEntity];
+    }
+    else
+        [listing addContactsObject:contactEntity];
     
     [tableView reloadData];
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     
     return NO;
 }
+
+
+
+- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
+    return NO;
+}
+
+
+
+- (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 
 #define CFRELEASE_AND_NIL(x) CFRelease(x); x=nil;
@@ -275,7 +326,7 @@ AppDelegate *appDelegate;
         if (abPersonRef && abGroupRef)
         {
             //-- add the person to the group
-            bool addedSuccesfully = ABGroupAddMember(abGroupRef, abPersonRef, &err);
+            ABGroupAddMember(abGroupRef, abPersonRef, &err);
             
             //-- save the address book again
             ABAddressBookSave(abAddressBookRef, &err);
@@ -292,15 +343,20 @@ AppDelegate *appDelegate;
         [tableView reloadData];
     }
     
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 BOOL viewPushed;
 
+ - (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue
+{
+    return YES;
+}
+
 
 - (void)personViewDidClose{
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

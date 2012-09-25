@@ -21,6 +21,8 @@
 		AB32F4A715EF0E5B00008E14 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB32F4A515EF0E5B00008E14 /* MainStoryboard.storyboard */; };
 		AB32F4AA15EF0E5B00008E14 /* ListingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB32F4A915EF0E5B00008E14 /* ListingsViewController.m */; };
 		AB32F4B215EF167A00008E14 /* ActivityLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB32F4B115EF167A00008E14 /* ActivityLogViewController.m */; };
+		AB37181F16114B7D008B9078 /* libQuickDialog.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB37181E16114B61008B9078 /* libQuickDialog.a */; };
+		AB37182416114F5E008B9078 /* ListingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37182316114F5E008B9078 /* ListingViewController.m */; };
 		AB3840A815F882FC00767BFB /* DCRoundSwitchToggleLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3840A015F882FC00767BFB /* DCRoundSwitchToggleLayer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AB3840A915F882FC00767BFB /* DCRoundSwitchOutlineLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3840A215F882FC00767BFB /* DCRoundSwitchOutlineLayer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AB3840AA15F882FC00767BFB /* DCRoundSwitchKnobLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3840A415F882FC00767BFB /* DCRoundSwitchKnobLayer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -45,12 +47,15 @@
 		AB80C04115F453ED002A0D5F /* InquiryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB80C04015F453ED002A0D5F /* InquiryViewController.m */; };
 		AB8F4ED115FFB48C001F0FA0 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB8F4ED015FFB48C001F0FA0 /* ContactsViewController.m */; };
 		AB8F4ED515FFE401001F0FA0 /* ActivityLog.m in Sources */ = {isa = PBXBuildFile; fileRef = AB8F4ED415FFE401001F0FA0 /* ActivityLog.m */; };
+		ABA2D141161191B0002C1F7C /* Google-Plus-8-icon_128x128.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA2D140161191B0002C1F7C /* Google-Plus-8-icon_128x128.png */; };
+		ABA2D145161194C9002C1F7C /* default_128x128_note.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA2D144161194C9002C1F7C /* default_128x128_note.png */; };
 		ABA6F91E160EC12800FC3F29 /* Showing.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA6F919160EC12800FC3F29 /* Showing.png */; };
 		ABA6F91F160EC12800FC3F29 /* Inquiry.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA6F91A160EC12800FC3F29 /* Inquiry.png */; };
 		ABA6F921160EC12800FC3F29 /* OpenHouse.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA6F91C160EC12800FC3F29 /* OpenHouse.png */; };
 		ABA6F922160EC12800FC3F29 /* Other.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA6F91D160EC12800FC3F29 /* Other.png */; };
 		ABA75E70160D6121001FA1E5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA75E6F160D6121001FA1E5 /* MessageUI.framework */; };
-		ABA9E98215F71B12008FFF87 /* ListingEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA9E98115F71B12008FFF87 /* ListingEditViewController.m */; };
+		ABB054D716113B0F006359C6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB054D616113B0F006359C6 /* MapKit.framework */; };
+		ABB054D916113B29006359C6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABB054D816113B29006359C6 /* CoreLocation.framework */; };
 		ABB37AF715F7CD510088F931 /* AddNewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB37AF615F7CD510088F931 /* AddNewTableViewCell.m */; };
 		ABB8A3BE15F70D9700506C9E /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB8A3BD15F70D9700506C9E /* DataModel.m */; };
 		ABC0CEB3160BB6FA005DA6A7 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABC0CEB1160BB6FA005DA6A7 /* EventKit.framework */; };
@@ -70,6 +75,30 @@
 		ABF0820415F85BB100F92FC7 /* EditTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF0820315F85BB100F92FC7 /* EditTableViewCell.m */; };
 		ABFF4FD516004243009ADDE3 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFF4FD416004243009ADDE3 /* Contact.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AB37181B16114B61008B9078 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AB37181216114B61008B9078 /* QuickDialog.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D80B0E3313E052DF00FA85CA;
+			remoteInfo = QuickDialogExample;
+		};
+		AB37181D16114B61008B9078 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AB37181216114B61008B9078 /* QuickDialog.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2C542393145ADEBD0026A152;
+			remoteInfo = QuickDialog;
+		};
+		AB37182016114B83008B9078 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AB37181216114B61008B9078 /* QuickDialog.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C542392145ADEBD0026A152;
+			remoteInfo = QuickDialog;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		8A1699B91608DC3B00C73D30 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -92,6 +121,9 @@
 		AB32F4A815EF0E5B00008E14 /* ListingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListingsViewController.h; sourceTree = "<group>"; };
 		AB32F4A915EF0E5B00008E14 /* ListingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListingsViewController.m; sourceTree = "<group>"; };
 		AB32F4B115EF167A00008E14 /* ActivityLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityLogViewController.m; sourceTree = "<group>"; };
+		AB37181216114B61008B9078 /* QuickDialog.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QuickDialog.xcodeproj; path = QuickDialog/QuickDialog.xcodeproj; sourceTree = "<group>"; };
+		AB37182216114F5E008B9078 /* ListingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListingViewController.h; sourceTree = "<group>"; };
+		AB37182316114F5E008B9078 /* ListingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListingViewController.m; sourceTree = "<group>"; };
 		AB3840A015F882FC00767BFB /* DCRoundSwitchToggleLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCRoundSwitchToggleLayer.m; path = DCRoundSwitch/DCRoundSwitchToggleLayer.m; sourceTree = "<group>"; };
 		AB3840A115F882FC00767BFB /* DCRoundSwitchToggleLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCRoundSwitchToggleLayer.h; path = DCRoundSwitch/DCRoundSwitchToggleLayer.h; sourceTree = "<group>"; };
 		AB3840A215F882FC00767BFB /* DCRoundSwitchOutlineLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCRoundSwitchOutlineLayer.m; path = DCRoundSwitch/DCRoundSwitchOutlineLayer.m; sourceTree = "<group>"; };
@@ -132,14 +164,17 @@
 		AB8F4ED015FFB48C001F0FA0 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
 		AB8F4ED315FFE401001F0FA0 /* ActivityLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLog.h; sourceTree = "<group>"; };
 		AB8F4ED415FFE401001F0FA0 /* ActivityLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityLog.m; sourceTree = "<group>"; };
+		ABA2D140161191B0002C1F7C /* Google-Plus-8-icon_128x128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Google-Plus-8-icon_128x128.png"; sourceTree = "<group>"; };
+		ABA2D144161194C9002C1F7C /* default_128x128_note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_128x128_note.png; sourceTree = "<group>"; };
 		ABA6F919160EC12800FC3F29 /* Showing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Showing.png; sourceTree = "<group>"; };
 		ABA6F91A160EC12800FC3F29 /* Inquiry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Inquiry.png; sourceTree = "<group>"; };
 		ABA6F91C160EC12800FC3F29 /* OpenHouse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OpenHouse.png; sourceTree = "<group>"; };
 		ABA6F91D160EC12800FC3F29 /* Other.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Other.png; sourceTree = "<group>"; };
 		ABA75E6F160D6121001FA1E5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		ABA9E98015F71B12008FFF87 /* ListingEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListingEditViewController.h; sourceTree = "<group>"; };
-		ABA9E98115F71B12008FFF87 /* ListingEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListingEditViewController.m; sourceTree = "<group>"; };
 		ABA9E98415F7BEC0008FFF87 /* ActivityLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogViewController.h; sourceTree = "<group>"; };
+		ABB054C4161138C6006359C6 /* libQuickDialog-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "libQuickDialog-Prefix.pch"; path = "../../../../../Downloads/escoz-QuickDialog-35a98ad/libQuickDialog/libQuickDialog-Prefix.pch"; sourceTree = "<group>"; };
+		ABB054D616113B0F006359C6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		ABB054D816113B29006359C6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		ABB37AF515F7CD510088F931 /* AddNewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewTableViewCell.h; sourceTree = "<group>"; };
 		ABB37AF615F7CD510088F931 /* AddNewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNewTableViewCell.m; sourceTree = "<group>"; };
 		ABB8A3BC15F70D9700506C9E /* DataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
@@ -174,6 +209,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB37181F16114B7D008B9078 /* libQuickDialog.a in Frameworks */,
+				ABB054D916113B29006359C6 /* CoreLocation.framework in Frameworks */,
+				ABB054D716113B0F006359C6 /* MapKit.framework in Frameworks */,
 				ABA75E70160D6121001FA1E5 /* MessageUI.framework in Frameworks */,
 				ABC0CEB3160BB6FA005DA6A7 /* EventKit.framework in Frameworks */,
 				ABC0CEB4160BB6FA005DA6A7 /* EventKitUI.framework in Frameworks */,
@@ -229,6 +267,8 @@
 		AB32F48415EF0E5A00008E14 = {
 			isa = PBXGroup;
 			children = (
+				AB37181116114B37008B9078 /* QuickDialog */,
+				ABB054C4161138C6006359C6 /* libQuickDialog-Prefix.pch */,
 				AB629EEE160C17DE00C360FC /* DataModel */,
 				AB632BAA1605AF570089BA4F /* Default-568h@2x.png */,
 				AB6AADDD1601D47A0061DEB2 /* YIPopupTextView */,
@@ -254,6 +294,9 @@
 		AB32F49215EF0E5A00008E14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AB37181216114B61008B9078 /* QuickDialog.xcodeproj */,
+				ABB054D816113B29006359C6 /* CoreLocation.framework */,
+				ABB054D616113B0F006359C6 /* MapKit.framework */,
 				ABA75E6F160D6121001FA1E5 /* MessageUI.framework */,
 				ABC0CEB1160BB6FA005DA6A7 /* EventKit.framework */,
 				ABC0CEB2160BB6FA005DA6A7 /* EventKitUI.framework */,
@@ -284,14 +327,14 @@
 				AB32F49A15EF0E5A00008E14 /* Supporting Files */,
 				ABA9E98415F7BEC0008FFF87 /* ActivityLogViewController.h */,
 				AB32F4B115EF167A00008E14 /* ActivityLogViewController.m */,
-				ABA9E98015F71B12008FFF87 /* ListingEditViewController.h */,
-				ABA9E98115F71B12008FFF87 /* ListingEditViewController.m */,
 				ABB37AF515F7CD510088F931 /* AddNewTableViewCell.h */,
 				ABB37AF615F7CD510088F931 /* AddNewTableViewCell.m */,
 				ABF0820215F85BB100F92FC7 /* EditTableViewCell.h */,
 				ABF0820315F85BB100F92FC7 /* EditTableViewCell.m */,
 				ABC5F93015FECA990019C927 /* RootTabBarControllerViewController.h */,
 				ABC5F93115FECA9A0019C927 /* RootTabBarControllerViewController.m */,
+				AB37182216114F5E008B9078 /* ListingViewController.h */,
+				AB37182316114F5E008B9078 /* ListingViewController.m */,
 			);
 			path = AgentAssistant;
 			sourceTree = "<group>";
@@ -305,6 +348,22 @@
 				AB32F4A115EF0E5A00008E14 /* Listing Agent-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AB37181116114B37008B9078 /* QuickDialog */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = QuickDialog;
+			sourceTree = "<group>";
+		};
+		AB37181316114B61008B9078 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AB37181C16114B61008B9078 /* QuickDialogExample.app */,
+				AB37181E16114B61008B9078 /* libQuickDialog.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		AB38409F15F882EE00767BFB /* DCRoundSwitch */ = {
@@ -370,6 +429,8 @@
 			isa = PBXGroup;
 			children = (
 				AB166D1E1605ABCF0004623F /* grouptableview@2x.png */,
+				ABA2D144161194C9002C1F7C /* default_128x128_note.png */,
+				ABA2D140161191B0002C1F7C /* Google-Plus-8-icon_128x128.png */,
 				AB122B00160FF0A500F6E554 /* Stats.png */,
 				AB122AFD160FEEE200F6E554 /* Calendar.png */,
 				ABA6F919160EC12800FC3F29 /* Showing.png */,
@@ -409,6 +470,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				AB37182116114B83008B9078 /* PBXTargetDependency */,
 			);
 			name = "Listing Agent";
 			productName = AgentAssistant;
@@ -434,12 +496,35 @@
 			mainGroup = AB32F48415EF0E5A00008E14;
 			productRefGroup = AB32F49015EF0E5A00008E14 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = AB37181316114B61008B9078 /* Products */;
+					ProjectRef = AB37181216114B61008B9078 /* QuickDialog.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				AB32F48E15EF0E5A00008E14 /* Listing Agent */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		AB37181C16114B61008B9078 /* QuickDialogExample.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = QuickDialogExample.app;
+			remoteRef = AB37181B16114B61008B9078 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AB37181E16114B61008B9078 /* libQuickDialog.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQuickDialog.a;
+			remoteRef = AB37181D16114B61008B9078 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AB32F48D15EF0E5A00008E14 /* Resources */ = {
@@ -466,6 +551,8 @@
 				ABA6F922160EC12800FC3F29 /* Other.png in Resources */,
 				AB122AFE160FEEE200F6E554 /* Calendar.png in Resources */,
 				AB122B01160FF0A500F6E554 /* Stats.png in Resources */,
+				ABA2D141161191B0002C1F7C /* Google-Plus-8-icon_128x128.png in Resources */,
+				ABA2D145161194C9002C1F7C /* default_128x128_note.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,7 +574,6 @@
 				ABC9457F15F6C878006A6A9C /* Inquiry.m in Sources */,
 				ABC9458B15F6C952006A6A9C /* OpenHouse.m in Sources */,
 				ABB8A3BE15F70D9700506C9E /* DataModel.m in Sources */,
-				ABA9E98215F71B12008FFF87 /* ListingEditViewController.m in Sources */,
 				ABB37AF715F7CD510088F931 /* AddNewTableViewCell.m in Sources */,
 				ABF0820415F85BB100F92FC7 /* EditTableViewCell.m in Sources */,
 				AB3840A815F882FC00767BFB /* DCRoundSwitchToggleLayer.m in Sources */,
@@ -507,10 +593,19 @@
 				AB629EF1160C184700C360FC /* Showing.m in Sources */,
 				AB629EFD160C1ABD00C360FC /* Listing.m in Sources */,
 				AB629F00160C279100C360FC /* MBProgressHUD.m in Sources */,
+				AB37182416114F5E008B9078 /* ListingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AB37182116114B83008B9078 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = QuickDialog;
+			targetProxy = AB37182016114B83008B9078 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		AB32F49C15EF0E5A00008E14 /* InfoPlist.strings */ = {
@@ -582,11 +677,16 @@
 		AB32F4AE15EF0E5B00008E14 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "\"${PROJECT_DIR}/QuickDialog\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AgentAssistant/Listing Agent-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/QuickDialog\"/**";
 				INFOPLIST_FILE = "AgentAssistant/Listing Agent-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_NAME = "Listing Agent";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/QuickDialog\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -594,11 +694,16 @@
 		AB32F4AF15EF0E5B00008E14 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AgentAssistant/Listing Agent-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/QuickDialog\"/**";
 				INFOPLIST_FILE = "AgentAssistant/Listing Agent-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_NAME = "Listing Agent";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/QuickDialog\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -118,10 +118,13 @@
                                                object:nil];
     
     
-    [[managedObjectContext undoManager] beginUndoGrouping];
+    self.navigationItem.hidesBackButton = YES;
+    self.navigationItem.prompt = listing.name;
     
+    UIEdgeInsets inset = UIEdgeInsetsMake(20, 0, 0, 0);
+    self.tableView.contentInset = inset;
     
-    
+
     if (showingEntity == nil)
     {
         showingEntity = (Showing *)[NSEntityDescription insertNewObjectForEntityForName:@"Showing" inManagedObjectContext:managedObjectContext];
@@ -156,7 +159,7 @@
     // ----------------------------;
     
     NSMutableDictionary *tableViewSectionSourceData = [NSMutableDictionary dictionary];
-    [tableViewSectionSourceData setObject:@"Showing" forKey:@"headerText"];
+    [tableViewSectionSourceData setObject:@"" forKey:@"headerText"];
     [tableViewSectionSourceData setObject:@"" forKey:@"footerText"];
     [tableViewSectionSourceData setObject:[NSMutableArray array] forKey:@"cells"];
     [self.tableView1Data addObject:tableViewSectionSourceData];
@@ -236,7 +239,7 @@
     // ----------------------------;
     
     NSMutableDictionary *tableViewAddtnlSectionData = [NSMutableDictionary dictionary];
-    [tableViewAddtnlSectionData setObject:@"Comments" forKey:@"headerText"];
+    [tableViewAddtnlSectionData setObject:@"" forKey:@"headerText"];
     [tableViewAddtnlSectionData setObject:@"" forKey:@"footerText"];
     [tableViewAddtnlSectionData setObject:[NSMutableArray array] forKey:@"cells"];
     [self.tableView1Data addObject:tableViewAddtnlSectionData];
@@ -310,7 +313,7 @@
     [super viewWillAppear:YES];
     [self.tableView reloadData];
     
-    self.navigationItem.hidesBackButton = showingEntity.hasChanges;
+    //self.navigationItem.hidesBackButton = showingEntity.hasChanges;
 }
 
 
@@ -497,8 +500,7 @@ YIPopupTextView* popupTextView;
         popupTextView.showCloseButton = NO;
         popupTextView.caretShiftGestureEnabled = YES;   // default = NO
         popupTextView.text = showingEntity.feedback;
-        self.navigationItem.hidesBackButton = YES;
-        self.navigationItem.title = @"Feedback";
+        self.navigationItem.title = [showingEntity.label stringByAppendingString:@" Feedback"];
         [popupTextView showInView:self.view.superview];
     }
     if (cellToCheck.tag == TAG_CELL_NOTES)
@@ -509,8 +511,7 @@ YIPopupTextView* popupTextView;
         popupTextView.showCloseButton = NO;
         popupTextView.caretShiftGestureEnabled = YES;   // default = NO
         popupTextView.text = showingEntity.note;
-        self.navigationItem.title = @"Notes";
-        self.navigationItem.hidesBackButton = YES;
+        self.navigationItem.title = [showingEntity.label stringByAppendingString:@" Notes"];
         [popupTextView showInView:self.view.superview];
     }
     
@@ -627,14 +628,6 @@ int notesTag;
 }
 
 
-- (IBAction)cancelButtonPressed:(id)sender {
-    
-    [[managedObjectContext undoManager] endUndoGrouping];
-    [[managedObjectContext undoManager] undoNestedGroup];
-    
-   	[self.delegate ShowingDetailViewControllerDidCancel:self];
-}
-
 
 - (IBAction)SaveButtonPressed:(id)sender {
     
@@ -642,7 +635,7 @@ int notesTag;
     {
         [popupTextView dismiss];
         notesTag = 0;
-        self.navigationItem.hidesBackButton = showingEntity.hasChanges;
+        //self.navigationItem.hidesBackButton = showingEntity.hasChanges;
         
     }
     else
@@ -734,6 +727,10 @@ int notesTag;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(void)ContactsViewControllerDidSave:(ContactsViewController *)controller source:(NSString *)source
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 
