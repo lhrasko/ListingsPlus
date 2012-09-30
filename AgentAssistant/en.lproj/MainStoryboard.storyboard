@@ -15,11 +15,11 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="f0I-p4-451">
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ListingCell" id="jls-Of-5Tu">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ListingCell" id="jls-Of-5Tu">
                                         <rect key="frame" x="0.0" y="46" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="10" y="1" width="267" height="43"/>
+                                            <rect key="frame" x="10" y="1" width="280" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -49,29 +49,37 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Listings" id="zXO-Xz-6eE"/>
-                    <navigationItem key="navigationItem" title="Listing Agent" id="84Y-rC-fdG">
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="5o4-Xh-MR5"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="vmi-mg-Z1r"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Listings+" id="84Y-rC-fdG">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="mSO-3G-DKa">
+                            <color key="tintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                             <connections>
                                 <action selector="addListingButtonPressed:" destination="2" id="WWb-sI-IyQ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="f0I-p4-451" id="ZtO-5R-0ie"/>
                         <segue destination="Vaj-iq-SV9" kind="push" identifier="segueActivityLog" id="mAd-zj-OpD"/>
-                        <segue destination="2kf-Rm-pa6" kind="push" identifier="segueListing" id="GAA-dt-ND3"/>
+                        <segue destination="2kf-Rm-pa6" kind="push" identifier="segueListing" id="7VP-nA-bE4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-308" y="114"/>
         </scene>
-        <!--Navigation Controller - Listings-->
+        <!--Navigation Controller - Controller-->
         <scene sceneID="eHQ-rA-QH1">
             <objects>
-                <navigationController autoresizesArchivedViewToFullSize="NO" toolbarHidden="NO" id="dB8-6G-liQ" sceneMemberID="viewController">
+                <navigationController autoresizesArchivedViewToFullSize="NO" title="Controller" toolbarHidden="NO" id="dB8-6G-liQ" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Listings" id="blm-cG-ZX0"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="blackOpaque"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xY8-3q-W9d">
                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -88,19 +96,16 @@
             </objects>
             <point key="canvasLocation" x="-831" y="120"/>
         </scene>
-        <!--Activity Log View Controller - Events-->
+        <!--Activity Log View Controller - Activity-->
         <scene sceneID="NpS-NW-dSk">
             <objects>
                 <viewController id="Vaj-iq-SV9" customClass="ActivityLogViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OzO-bO-JeK">
-                        <rect key="frame" x="0.0" y="94" width="320" height="342"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="wzo-Qp-0Ml">
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="372" id="Waq-0Q-97N"/>
-                                </constraints>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ActivityCell" textLabel="wRF-C9-0QJ" detailTextLabel="NyY-uK-Akp" style="IBUITableViewCellStyleSubtitle" id="wVD-sL-2e6">
                                         <rect key="frame" x="0.0" y="46" width="320" height="46"/>
@@ -134,11 +139,23 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="wzo-Qp-0Ml" firstAttribute="leading" secondItem="OzO-bO-JeK" secondAttribute="leading" type="default" id="4Ba-zS-Xyo"/>
+                            <constraint firstItem="wzo-Qp-0Ml" firstAttribute="top" secondItem="OzO-bO-JeK" secondAttribute="top" type="default" id="GXS-5E-b0m"/>
                             <constraint firstItem="wzo-Qp-0Ml" firstAttribute="trailing" secondItem="OzO-bO-JeK" secondAttribute="trailing" type="default" id="YJw-Mk-jAa"/>
-                            <constraint firstItem="wzo-Qp-0Ml" firstAttribute="top" secondItem="OzO-bO-JeK" secondAttribute="top" type="default" id="wJf-HV-YXP"/>
+                            <constraint firstItem="wzo-Qp-0Ml" firstAttribute="bottom" secondItem="OzO-bO-JeK" secondAttribute="bottom" type="default" id="zce-SF-H4y"/>
                         </constraints>
                     </view>
                     <toolbarItems>
+                        <barButtonItem image="glyphicons_151_edit.png" style="plain" id="gYb-g6-2Zs">
+                            <connections>
+                                <action selector="settingsButtonPressed:" destination="Vaj-iq-SV9" id="ZQN-Ic-kPW"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="SQv-GN-dZq"/>
+                        <barButtonItem style="plain" systemItem="trash" id="yFy-1H-dd4">
+                            <connections>
+                                <action selector="deleteButtonPressed:" destination="Vaj-iq-SV9" id="DF0-5x-jN9"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="aGr-Ad-qjo"/>
                         <barButtonItem style="plain" systemItem="action" id="7K0-SN-9qt">
                             <connections>
@@ -146,20 +163,24 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Events" prompt="123 Maple Street" id="n56-AL-1ya">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="etj-aY-Cr1">
+                    <navigationItem key="navigationItem" title="Activity" id="n56-AL-1ya">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="etj-aY-Cr1">
+                            <color key="tintColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                             <connections>
                                 <action selector="ActionSheetButton" destination="Vaj-iq-SV9" id="pui-9Y-8OD"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="addNewButton" destination="etj-aY-Cr1" id="v7L-td-3m7"/>
+                        <outlet property="settingButton" destination="gYb-g6-2Zs" id="oyO-ob-QxD"/>
                         <outlet property="tableView" destination="wzo-Qp-0Ml" id="lAe-sg-18T"/>
                         <segue destination="Kqz-6Q-hZc" kind="push" identifier="segueInquiry" id="jLm-5d-ZCv"/>
                         <segue destination="gC7-tJ-TsY" kind="push" identifier="segueShowing" id="6UB-ab-MRA"/>
                         <segue destination="0S2-AD-puU" kind="push" identifier="segueOpenHouse" id="o1c-zM-8UF"/>
                         <segue destination="o9e-e6-Qjt" kind="push" identifier="segueCustomEvent" id="dej-01-pOF"/>
+                        <segue destination="2kf-Rm-pa6" kind="push" identifier="segueListing" id="zCp-hR-Huz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6QU-nC-5UZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -171,11 +192,12 @@
             <objects>
                 <tableViewController title="Showing" id="gC7-tJ-TsY" customClass="ShowingDetailViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="8OF-et-7KP">
-                        <rect key="frame" x="0.0" y="94" width="320" height="342"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </tableView>
                     <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Rvh-n8-ZyY"/>
                         <barButtonItem style="plain" systemItem="trash" id="h8L-RZ-uVN">
                             <connections>
                                 <action selector="deleteButtonPressed:" destination="gC7-tJ-TsY" id="jcW-6U-cvg"/>
@@ -187,17 +209,15 @@
                                 <action selector="addToCalendarButtonPressed:" destination="gC7-tJ-TsY" id="bPS-iB-PAt"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="Gki-HR-DNB"/>
-                        <barButtonItem style="plain" systemItem="action" id="6oQ-w2-eYu"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Showing" prompt="123 Maple Street" id="Z5e-6q-EQo">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="JLc-nG-f03">
+                    <navigationItem key="navigationItem" title="Showing" id="Z5e-6q-EQo">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="JLc-nG-f03">
+                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             <connections>
                                 <action selector="SaveButtonPressed:" destination="gC7-tJ-TsY" id="tg8-PY-61v"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="blackOpaque"/>
                     <connections>
                         <outlet property="addToCalendarButton" destination="vrI-aR-x3J" id="V1l-RO-bPS"/>
@@ -215,7 +235,7 @@
             <objects>
                 <tableViewController id="0S2-AD-puU" customClass="OpenHouseViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" indicatorStyle="white" bouncesZoom="NO" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="5cu-0b-aKo">
-                        <rect key="frame" x="0.0" y="94" width="320" height="342"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
@@ -224,6 +244,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="lX1-V2-KNV"/>
                         <barButtonItem style="plain" systemItem="trash" id="fGr-5M-FQ9">
                             <connections>
                                 <action selector="deleteButtonPressed:" destination="0S2-AD-puU" id="ldF-Xf-PTi"/>
@@ -235,17 +256,15 @@
                                 <action selector="actionButtonPressed:" destination="0S2-AD-puU" id="lYB-nL-I7Y"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="3pC-Aj-mgy"/>
-                        <barButtonItem style="plain" systemItem="action" id="h1g-ng-xZA"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Open House" prompt="123 Maple Street" id="gYl-Jv-hHD">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="kgk-2o-IFQ">
+                    <navigationItem key="navigationItem" title="Open House" id="gYl-Jv-hHD">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="kgk-2o-IFQ">
+                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             <connections>
                                 <action selector="SaveButtonPressed:" destination="0S2-AD-puU" id="ea3-97-b03"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="blackOpaque"/>
                     <connections>
                         <outlet property="saveButton" destination="kgk-2o-IFQ" id="gmf-dg-7vj"/>
@@ -263,7 +282,7 @@
             <objects>
                 <tableViewController id="o9e-e6-Qjt" customClass="CustomEventViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="0ZJ-1l-kbZ">
-                        <rect key="frame" x="0.0" y="94" width="320" height="342"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
@@ -272,6 +291,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="WF5-7v-C8O"/>
                         <barButtonItem style="plain" systemItem="trash" id="bNk-IJ-PCu">
                             <connections>
                                 <action selector="deleteButtonPressed:" destination="o9e-e6-Qjt" id="fxm-sj-xW7"/>
@@ -283,17 +303,15 @@
                                 <action selector="actionButtonPressed:" destination="o9e-e6-Qjt" id="ki0-Ci-dzB"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="inP-QN-U0d"/>
-                        <barButtonItem style="plain" systemItem="action" id="dNc-WF-74R"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Custom Event" prompt="123 Maple Street" id="9FM-x2-t1W">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="AbL-dg-YQf">
+                    <navigationItem key="navigationItem" title="Custom Event" id="9FM-x2-t1W">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="AbL-dg-YQf">
+                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             <connections>
                                 <action selector="SaveButtonPressed:" destination="o9e-e6-Qjt" id="AB2-SO-0t1"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="blackOpaque"/>
                     <connections>
                         <outlet property="saveButton" destination="AbL-dg-YQf" id="uHF-Au-oUe"/>
@@ -311,7 +329,7 @@
             <objects>
                 <tableViewController title="Inquiry" id="Kqz-6Q-hZc" customClass="InquiryViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="bQg-T5-kuG">
-                        <rect key="frame" x="0.0" y="94" width="320" height="342"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
@@ -320,20 +338,22 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Bj5-ia-ycY"/>
                         <barButtonItem style="plain" systemItem="trash" id="soh-Kx-VFT">
                             <connections>
                                 <action selector="deleteButtonPressed:" destination="Kqz-6Q-hZc" id="Fb9-dP-WNK"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Ehb-vL-fPL"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Inquiry" prompt="123 Maple Street" id="Ykp-rY-kHa">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="EXd-mr-VqA" userLabel="Bar Button Item - Item">
+                    <navigationItem key="navigationItem" title="Inquiry" id="Ykp-rY-kHa">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="EXd-mr-VqA" userLabel="Bar Button Item - Item">
+                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             <connections>
                                 <action selector="SaveButtonPressed:" destination="Kqz-6Q-hZc" id="F3e-PY-HyA"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="blackOpaque"/>
                     <connections>
                         <outlet property="saveButton" destination="EXd-mr-VqA" id="TX6-Vz-cOR"/>
@@ -414,7 +434,7 @@
             </objects>
             <point key="canvasLocation" x="1507" y="-249"/>
         </scene>
-        <!--Listing View Controller - Listing-->
+        <!--Listing View Controller - Listing Details-->
         <scene sceneID="TE0-cH-qEc">
             <objects>
                 <tableViewController id="2kf-Rm-pa6" customClass="ListingViewController" sceneMemberID="viewController">
@@ -438,22 +458,20 @@
                             <outlet property="delegate" destination="2kf-Rm-pa6" id="iym-M8-WcW"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="trash" id="o3N-tS-YAu">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Listing Details" id="IgL-lu-t3k">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="hvI-r0-YZd">
                             <connections>
-                                <action selector="deleteButtonPressed:" destination="2kf-Rm-pa6" id="GCM-Nf-q5g"/>
+                                <action selector="cancelButtonPressed:" destination="2kf-Rm-pa6" id="yPz-EE-lAG"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="VJz-xJ-K9c"/>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="Listing" id="IgL-lu-t3k">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="eJU-tO-xSv">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="eJU-tO-xSv">
+                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             <connections>
                                 <action selector="SaveButtonPressed:" destination="2kf-Rm-pa6" id="jw6-co-k3h"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="blackOpaque"/>
                     <connections>
                         <outlet property="saveButton" destination="eJU-tO-xSv" id="LVD-FR-IjX"/>
@@ -463,11 +481,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qcA-dR-xcV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-267" y="1179"/>
+            <point key="canvasLocation" x="-168" y="905"/>
         </scene>
     </scenes>
     <resources>
         <image name="Calendar.png" width="24" height="24"/>
+        <image name="glyphicons_151_edit.png" width="24" height="21"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -475,7 +494,8 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="UPh-zl-8Yv"/>
-        <segue reference="eNa-Qp-6ey"/>
+        <segue reference="7VP-nA-bE4"/>
+        <segue reference="vdG-AJ-pAd"/>
+        <segue reference="Fab-a7-iMS"/>
     </inferredMetricsTieBreakers>
 </document>

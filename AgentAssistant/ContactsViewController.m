@@ -41,7 +41,6 @@ AppDelegate *appDelegate;
 {
     [super viewDidLoad];
     self.navigationItem.title = @"Contacts";
-    self.navigationItem.prompt = activityLog.listing.name;
 }
 
 - (void)didReceiveMemoryWarning
@@ -103,6 +102,7 @@ AppDelegate *appDelegate;
 
 
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -136,7 +136,6 @@ AppDelegate *appDelegate;
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
         [button addTarget:self action:@selector(buttonTapped:event:) forControlEvents:  UIControlEventTouchUpInside];
-        //and created the event handling procedure - (void)buttonTapped:(id)sender event:(id)event { }
         cell.accessoryView = button;
         cell.textLabel.textColor = [UIColor blackColor];
         
@@ -198,6 +197,22 @@ AppDelegate *appDelegate;
         }
         
         [self.tableView reloadData];
+    }
+}
+
+
+
+
+- (void)buttonTapped:(id)sender event:(id)event
+{
+    NSSet *touches = [event allTouches];
+    UITouch *touch = [touches anyObject];
+    CGPoint currentTouchPosition = [touch locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint: currentTouchPosition];
+    
+    if (indexPath != nil)
+    {
+        [self tableView: self.tableView didSelectRowAtIndexPath: indexPath];
     }
 }
 

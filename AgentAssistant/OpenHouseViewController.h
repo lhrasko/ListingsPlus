@@ -47,6 +47,7 @@
 - (IBAction)actionButtonPressed:(id)sender;
 
 @property (nonatomic, retain) NSMutableArray *tableView1Data;
+@property (weak, nonatomic) IBOutlet UILabel *listingLabel;
 
 -(IBAction)SaveButtonPressed:(id)sender;
 - (IBAction)deleteButtonPressed:(id)sender;

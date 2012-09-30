@@ -34,7 +34,7 @@
 @synthesize fetchedResultsController;
 @synthesize textView;
 @synthesize saveButton;
-
+@synthesize listingLabel;
 @synthesize managedObjectContext;
 
 
@@ -191,7 +191,6 @@ int ActionSheetType;
                                                object:nil];
     
     self.navigationItem.hidesBackButton = YES;
-    self.navigationItem.prompt = listing.name;
 
     UIEdgeInsets inset = UIEdgeInsetsMake(20, 0, 0, 0);
     self.tableView.contentInset = inset;
@@ -200,6 +199,8 @@ int ActionSheetType;
         
     if (openHouseEntity == nil)
     {
+        self.title = @"New Open House";
+
         openHouseEntity = (OpenHouse *)[NSEntityDescription insertNewObjectForEntityForName:@"OpenHouse" inManagedObjectContext:managedObjectContext];
         openHouseEntity.listing = listing;
         openHouseEntity.createdDate = [NSDate date];
@@ -225,6 +226,9 @@ int ActionSheetType;
     }
     else
     {
+        self.title = @"Edit Open House";
+
+        
         // make sure calendar event still exists
         EKEventStore *store = [[EKEventStore alloc] init];
         if (openHouseEntity.calendarEventIdentifier != nil)
@@ -236,9 +240,6 @@ int ActionSheetType;
         
     }
 
-    
-    self.title = @"Open House";
-    
     
     self.tableView1Data = [NSMutableArray array];
     
@@ -567,13 +568,35 @@ int ActionSheetType;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    NSDictionary *sectionData = [self.tableView1Data objectAtIndex:section];
-    if ([[sectionData objectForKey:@"customHeaderView"] boolValue]) {;
-        return [sectionData objectForKey:@"headerView"];
-    } else {;
-        return nil;
-    };
+    if (section == 0)
+    {
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,tableView.frame.size.width,25)];
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, -20, 240, 25)];
+        
+        headerLabel.textAlignment = NSTextAlignmentCenter;
+        headerLabel.text = listing.name;
+        
+        headerLabel.textColor = [UIColor colorWithRed:0.298039 green:0.337255 blue:0.423529 alpha:1];
+        headerLabel.shadowColor = [UIColor colorWithWhite:1 alpha:1]; // or [UIColor whiteColor];
+        headerLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0];
+        headerLabel.backgroundColor = [UIColor clearColor];
+        
+        [headerView addSubview:headerLabel];
+        
+        return headerView;
+    }
+    else
+    {
+        
+        NSDictionary *sectionData = [self.tableView1Data objectAtIndex:section];
+        if ([[sectionData objectForKey:@"customHeaderView"] boolValue]) {;
+            return [sectionData objectForKey:@"headerView"];
+        } else {;
+            return nil;
+        };
+    }
 }
+
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     NSDictionary *sectionData = [self.tableView1Data objectAtIndex:section];
@@ -585,16 +608,22 @@ int ActionSheetType;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    NSDictionary *sectionData = [self.tableView1Data objectAtIndex:section];
-    if ([[sectionData objectForKey:@"customHeaderView"] boolValue]) {;
-        return [[sectionData objectForKey:@"customHeaderViewHeight"] floatValue];
-    } else {;
-        if (![[sectionData objectForKey:@"headerText"] isEqualToString:@""]) {;
-            return 32;
+    if (section == 0)
+        return 25;
+    else
+    {
+        NSDictionary *sectionData = [self.tableView1Data objectAtIndex:section];
+        if ([[sectionData objectForKey:@"customHeaderView"] boolValue]) {;
+            return [[sectionData objectForKey:@"customHeaderViewHeight"] floatValue];
         } else {;
-            return 0;
+            if (![[sectionData objectForKey:@"headerText"] isEqualToString:@""]) {;
+                return 32;
+            } else {;
+                return 0;
+            };
         };
-    };
+    }
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {

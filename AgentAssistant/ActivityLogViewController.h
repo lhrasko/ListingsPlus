@@ -37,9 +37,13 @@
 @property (strong, nonatomic) NSArray *sortedDays;
 @property (strong, nonatomic) NSDateFormatter *sectionDateFormatter;
 @property (strong, nonatomic) NSDateFormatter *cellDateFormatter;
+@property (weak, nonatomic) IBOutlet UILabel *listingLabel;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *settingButton;
 
 -(void) showWelcomeMessage;
 -(IBAction)ActionSheetButton;
 - (IBAction)sendMessageButtonPressed:(id)sender;
+- (IBAction)deleteButtonPressed:(id)sender;
+- (IBAction)settingsButtonPressed:(id)sender;
 
 @end

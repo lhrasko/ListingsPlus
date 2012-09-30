@@ -7,6 +7,9 @@
 //
 
 #import "ActivityLogViewController.h"
+
+#import "ListingViewController.h"
+
 #import "ShowingDetailViewController.h"
 #import "OpenHouseViewController.h"
 #import "CustomEventViewController.h"
@@ -33,8 +36,9 @@
 @synthesize sortedDays;
 @synthesize sectionDateFormatter;
 @synthesize cellDateFormatter;
-
+@synthesize listingLabel;
 @synthesize managedObjectContext;
+@synthesize settingButton;
 
 NSUInteger sortedEventCount;
 
@@ -187,6 +191,34 @@ NSUInteger sortedEventCount;
     [self presentViewController:picker animated:YES completion:nil];
 }
 
+- (IBAction)deleteButtonPressed:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirm Delete"
+                                                    message:@"Are you sure you want to permanently delete this listing and all associated events? This can not be undone."
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Delete", nil];
+    [alert show];
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Delete"])
+    {
+        [managedObjectContext deleteObject:listing];
+        [managedObjectContext save:nil];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }    
+}
+
+
+
+- (IBAction)settingsButtonPressed:(id)sender {
+    [self performSegueWithIdentifier:@"segueListing" sender:self];
+}
+
 
 
 // The mail compose view controller delegate method
@@ -222,6 +254,7 @@ NSUInteger sortedEventCount;
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -234,9 +267,14 @@ NSUInteger sortedEventCount;
     self.cellDateFormatter = [[NSDateFormatter alloc] init];
     [self.cellDateFormatter setDateStyle:NSDateFormatterNoStyle];
     [self.cellDateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        
+    // fix settings button
+    //settingButton.title = @"\u2699"; UIFont *f1 = [UIFont fontWithName:@"Helvetica" size:24.0]; NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:f1, UITextAttributeFont, nil];
     
-    self.navigationItem.prompt = listing.name;
+    //[settingButton setTitleTextAttributes:dict forState:UIControlStateNormal];
+    
 
+    
 }
 
 
@@ -245,18 +283,21 @@ NSUInteger sortedEventCount;
     
     if (self.sections.count == 0)
     {
-        UILabel *message = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 100)];
+        UILabel *message = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 300)];
         
-        message.text = @"Use the '+' button above to add an event to this listing.";
+        message.text = @"Use the '+' button on the toolbar above to track an activity or event for this listing. \n\n\n Use the buttons on the toolbar below to 'edit' or 'delete' the listing, or generate and an email activity report.";
         message.backgroundColor = [UIColor clearColor];
         message.textAlignment = NSTextAlignmentCenter;
         message.numberOfLines = 3;
-        message.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.0];
+        message.font = [UIFont fontWithName:@"Helvetica" size:16.0];
         message.textColor = [UIColor colorWithRed:0.298039 green:0.337255 blue:0.423529 alpha:1];
         message.shadowColor = [UIColor colorWithWhite:1 alpha:1]; // or [UIColor whiteColor];
         
         message.shadowOffset = CGSizeMake(0,1);
+        message.numberOfLines = 0;
         
+        [message sizeToFit];
+
         //Add picker to action sheet
         [tableView addSubview:message];
     }
@@ -305,6 +346,7 @@ NSUInteger sortedEventCount;
         [logsOnThisDay sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     }
     
+    self.title = listing.name;
     [self showWelcomeMessage];
     
 }
@@ -556,6 +598,13 @@ NSUInteger sortedEventCount;
             [subview removeFromSuperview];
         }
     }
+    
+    if ([segue.identifier isEqualToString:@"segueListing"]) {
+        ListingViewController *destViewController = segue.destinationViewController;
+        destViewController.managedObjectContext = self.managedObjectContext;
+        destViewController.listing = listing;
+    }
+    
     
     if ([segue.identifier isEqualToString:@"segueShowing"]) {
         ShowingDetailViewController *destViewController = segue.destinationViewController;

@@ -9,11 +9,19 @@
 #import "AppDelegate.h"
 #import "ListingsViewController.h"
 #import "Listing.h"
+#import "Appirater.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    [Appirater setAppId:@"566802084"];
+    [Appirater setDaysUntilPrompt:1];
+    [Appirater setUsesUntilPrompt:10];
+    [Appirater setSignificantEventsUntilPrompt:2];
+    [Appirater setTimeBeforeReminding:2];
+    [Appirater setDebug:NO];
     
     // OPTION 1
     
@@ -35,6 +43,8 @@
     
     /// OPTION 2
     
+    
+    
     // Get the third item of the UITabBarController (again ItemsTableViewController)
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     
@@ -42,8 +52,9 @@
     ListingsViewController *firstViewController = (ListingsViewController *)[navigationController topViewController];
     firstViewController.managedObjectContext = self.managedObjectContext;
     
-    [[UINavigationBar appearance] setTintColor:[UIColor darkGrayColor]];
+    [navigationController.navigationBar setTintColor:[UIColor colorWithRed:55.0f/255.0f green:95.0f/255.0f blue:18.0f/255.0f alpha:1]];
 
+    [Appirater appLaunched:YES];
     
     return YES;
 }
@@ -63,6 +74,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [Appirater appEnteredForeground:YES];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -109,7 +121,7 @@
         return persistentStoreCoordinator;
     }
     NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory]
-                                               stringByAppendingPathComponent: @"ListingAgent.sqlite"]];
+                                               stringByAppendingPathComponent: @"ListingsPlus.sqlite"]];
     NSError *error = nil;
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
                                   initWithManagedObjectModel:[self managedObjectModel]];

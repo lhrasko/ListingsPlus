@@ -48,6 +48,7 @@
 @property (nonatomic, retain) NSMutableArray *tableView1Data;
 @property UITextField *actifText;
 
+@property (weak, nonatomic) IBOutlet UILabel *listingLabel;
 - (IBAction)actionButtonPressed:(id)sender;
 - (IBAction)hideKeyboardButtonPressed:(id)sender;
 - (IBAction)SaveButtonPressed:(id)sender;

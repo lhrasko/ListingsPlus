@@ -18,5 +18,6 @@
 @property (nonatomic,strong) NSManagedObjectContext* managedObjectContext;
 - (IBAction)addListingButtonPressed:(id)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *imageLogo;
+- (IBAction)rateAppButtonPressed:(id)sender;
 
 @end

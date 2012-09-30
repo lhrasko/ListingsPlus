@@ -46,5 +46,6 @@
 
 - (IBAction)hideKeyboardButtonPressed:(id)sender;
 - (IBAction)SaveButtonPressed:(id)sender;
+- (IBAction)cancelButtonPressed:(id)sender;
 
 @end

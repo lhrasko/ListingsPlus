@@ -39,6 +39,7 @@
 @property (strong, nonatomic) IBOutlet UITextView *textView;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
+@property (weak, nonatomic) IBOutlet UILabel *listingLabel;
 
 @property (nonatomic, strong) Listing *listing;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;

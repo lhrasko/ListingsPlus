@@ -52,28 +52,8 @@
 #define TAG_CELL_CONTACT_SELECT  101
 #define TAG_CELL_CONTACT_ADD 102
 
-
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
-    
-    UIDatePicker *pickerView = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 0, 320, 216)];
-    
-    //Configure picker...
-    [pickerView setDatePickerMode:UIDatePickerModeDateAndTime];
-    [pickerView setMinuteInterval:15];
-    [pickerView setTag: kDatePickerTag];
-    
-    //Add picker to action sheet
-    [actionSheet addSubview:pickerView];
-    
-    //Gets an array af all of the subviews of our actionSheet
-    NSArray *subviews = [actionSheet subviews];
-    
-    [[subviews objectAtIndex:1] setFrame:CGRectMake(20, 235, 280, 46)];
-    [[subviews objectAtIndex:2] setFrame:CGRectMake(20, 295, 280, 46)];
-    
-}
-
-
+NSString *title;
+bool isNewListing = NO;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -109,16 +89,21 @@
     UIEdgeInsets inset = UIEdgeInsetsMake(20, 0, 0, 0);
     self.tableView.contentInset = inset;
     
-    
     if (listing == nil)
     {
         listing = (Listing *)[NSEntityDescription insertNewObjectForEntityForName:@"Listing" inManagedObjectContext:managedObjectContext];
         listing.createdDate = [NSDate date];
         
         [managedObjectContext save:nil];
+        title = @"New Listing";
+        isNewListing = YES;
+    }
+    else
+    {
+        title = @"Listing Details";
     }
     
-    self.title = @"Listing";
+    self.title = title;
     
     
     self.tableView1Data = [NSMutableArray array];
@@ -632,21 +617,8 @@ YIPopupTextView* popupTextView;
     if (cellToCheck.tag == 0)
     {
         cellToCheck.editing = YES;
-        
     }
     
-    // checkmark formating to select only the currently selected on
-    if (cellToCheck.tag == 1)
-    {
-        [self performSegueWithIdentifier:@"segueSource" sender:self];
-        //[self performSegueWithIdentifier:@"segueSource" sender:self];
-    }
-    
-    if (cellToCheck.tag == 2)
-    {
-        [self showCalendarAction];
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
     if (cellToCheck.tag == TAG_CELL_NOTE)
     {
         notesTag = TAG_CELL_NOTE;
@@ -657,17 +629,16 @@ YIPopupTextView* popupTextView;
         popupTextView.text = listing.note;
         [popupTextView showInView:self.view.superview];
     }
-    
-    if (cellToCheck.tag == TAG_CELL_CONTACT_SELECT)
+    else if (cellToCheck.tag == TAG_CELL_CONTACT_SELECT)
     {
         [self performSegueWithIdentifier:@"segueContacts" sender:self];
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    
-    if (cellToCheck.tag == 100)
+    else
     {
         UITextField *textField = (UITextField *)cellToCheck.accessoryView;
-        [textField becomeFirstResponder];
+        if (textField != nil)
+            [textField becomeFirstResponder];
     }
     
 }
@@ -705,13 +676,6 @@ int notesTag;
 // ----------------
 
 
--(IBAction) showCalendarAction {
-    UIActionSheet *asheet = [[UIActionSheet alloc] initWithTitle:@"Pick the date you want to see." delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Select", nil];
-    [asheet setTag:1];
-    [asheet showInView:[self.view superview]]; //note: in most cases this would be just self.view, but because I was doing this in a tabBar Application, I use the superview.
-    [asheet setFrame:CGRectMake(0, 117, 320, 383)];
-}
-
 
 - (IBAction)hideKeyboardButtonPressed:(id)sender {
     [self.view endEditing:YES];
@@ -725,19 +689,43 @@ int notesTag;
     if (notesTag > 0)
     {
         [popupTextView dismiss];
-        notesTag = 0;
-        //self.navigationItem.hidesBackButton = customEntity.hasChanges;
-        
+        notesTag = 0;        
     }
     else
     {
-        listing.modifiedDate = [NSDate date];
+        [self.view endEditing:YES];
         
-        [managedObjectContext save:nil];
+        if (listing.name.length > 0)
+        {
         
-        [self.navigationController popViewControllerAnimated:YES];
-        [self.delegate ListingViewControllerDidSave:self];
+            listing.modifiedDate = [NSDate date];
+            [managedObjectContext save:nil];
+        
+            [self.navigationController popViewControllerAnimated:YES];
+            [self.delegate ListingViewControllerDidSave:self];
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Incomplete"
+                                                            message:@"Every listing has to have at least a 'Name'"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+
+            
+        }
+        
     }
+}
+
+- (IBAction)cancelButtonPressed:(id)sender {
+    [managedObjectContext undo];
+    
+    if (!isNewListing)
+        [managedObjectContext refreshObject:listing mergeChanges:NO];
+   
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (BOOL)textFieldNameEditingEnded:(UITextField *)textField {
@@ -837,18 +825,15 @@ int notesTag;
 
 - (void)popupTextView:(YIPopupTextView *)textView willDismissWithText:(NSString *)text
 {
-    NSLog(@"will dismiss");
     if (notesTag == TAG_CELL_NOTE)
         listing.note = text;
-    
-    
-    self.navigationItem.title = @"Listing";
+
+    self.navigationItem.title = title;
     [tableView reloadData];
 }
 
 - (void)popupTextView:(YIPopupTextView *)textView didDismissWithText:(NSString *)text
 {
-    NSLog(@"did dismiss");
 }
 
 

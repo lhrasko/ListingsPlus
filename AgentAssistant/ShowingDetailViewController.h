@@ -48,6 +48,7 @@
 
 @property (nonatomic, retain) NSMutableArray *tableView1Data;
 @property UITextField *actifText;
+@property (weak, nonatomic) IBOutlet UILabel *listingLabel;
 
 -(IBAction)SaveButtonPressed:(id)sender;
 - (IBAction)addToCalendarButtonPressed:(id)sender;
