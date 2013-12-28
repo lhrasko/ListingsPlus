@@ -10,7 +10,6 @@
 #import "NoteViewController.h"
 #import "Listing.h"
 #import <QuartzCore/QuartzCore.h>
-#import "DCRoundSwitch.h"
 #import "Contact.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
