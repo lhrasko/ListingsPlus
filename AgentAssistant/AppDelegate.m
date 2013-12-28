@@ -99,7 +99,7 @@
         managedObjectContext = [[NSManagedObjectContext alloc] init];
         [managedObjectContext setPersistentStoreCoordinator: coordinator];
         
-        //Undo Support helas
+        //Undo Support
         NSUndoManager *anUndoManager = [[NSUndoManager  alloc] init];
         [managedObjectContext setUndoManager:anUndoManager];
     }
